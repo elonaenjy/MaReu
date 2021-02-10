@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class Meeting implements Serializable {
+public class Meeting {
 
         /** Identifier */
         private long idMeeting;
@@ -22,14 +22,8 @@ public class Meeting implements Serializable {
         /** date */
         private Date meetingDate;
 
-        /** heure début */
-        private Time meetingTimeDebut;
-
-        /** heure fin */
-        private Time meetingTimeFin;
-
         /** liste des participants */
-        public ArrayList participants = new ArrayList();
+        public String participants;
 
         public long getIdMeeting() {
             return idMeeting;
@@ -63,27 +57,11 @@ public class Meeting implements Serializable {
             this.meetingDate = meetingDate;
         }
 
-        public Time getMeetingTimeDebut() {
-            return meetingTimeDebut;
-        }
-
-        public void setMeetingTimeDebut(Time meetingTimeDebut) {
-            this.meetingTimeDebut = meetingTimeDebut;
-        }
-
-        public Time getMeetingTimeFin() {
-            return meetingTimeFin;
-        }
-
-        public void setMeetingTimeFin(Time meetingTimeFin) {
-            this.meetingTimeFin = meetingTimeFin;
-        }
-
-        public ArrayList getParticipants() {
+        public String getParticipants() {
             return participants;
         }
 
-        public void setParticipants(ArrayList participants) {
+        public void setParticipants(String participants) {
             this.participants = participants;
         }
 
@@ -93,17 +71,13 @@ public class Meeting implements Serializable {
          * @param idRoom
          * @param subject
          * @param meetingDate
-         * @param meetingTimeDebut
-         * @param meetingTimeFin
          * @param participants
 
          */
-        public Meeting(long idMeeting, long idRoom, String subject, Date meetingDate, Time meetingTimeDebut, Time meetingTimeFin, ArrayList participants) {
+        public Meeting(long idMeeting, long idRoom, String subject, Date meetingDate,  String participants) {
             this.idMeeting = idMeeting;
             this.idRoom = idRoom;
             this.meetingDate = meetingDate;
-            this.meetingTimeDebut = meetingTimeDebut;
-            this.meetingTimeFin = meetingTimeFin;
             this.participants = participants;
             this.subject = subject;
 
