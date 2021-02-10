@@ -11,9 +11,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.mareu.R;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.tabs.TabLayout;
 
-public class MeetingListActivity extends AppCompatActivity {
+
+public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
     // UI Components
 
