@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Ma Réu</string>
+    <string name="activity_new_meeting">New Meeting</string>
+    <string name="title_activity_zoom_meeting">ZoomMeetingActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="large_text" />
+    <string name="fab_new_meeting">Add a new meeting</string>
+</resources>
