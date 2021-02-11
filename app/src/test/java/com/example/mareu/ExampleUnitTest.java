@@ -32,15 +32,6 @@ public class ExampleUnitTest {
 
     public void createMeetingWithSuccess() {
 
-        try {
-            Date dateReunion = StringToDate("2015-12-06 17:03:00");
 
-            Meeting meetingToCreate1 = new Meeting( 1 , 1  , dateReunion, "participant1, participants2,participants3","Objet Réunion");
-            service.createMeeting( meetingToCreate1 );
-            assertTrue( service.getMeetings().contains( meetingToCreate1 ) );
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        }
+    }
+}
