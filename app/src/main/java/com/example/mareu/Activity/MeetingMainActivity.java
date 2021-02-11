@@ -1,4 +1,3 @@
-
 package com.example.mareu.Activity;
 
 import android.os.Bundle;
@@ -7,16 +6,18 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.mareu.R;
 import com.google.android.material.appbar.AppBarLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
     // UI Components
-
+    private Date dateReunion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,9 @@ public class MeetingMainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
         AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-    }
+
+                      }
+
 
 
     @Override

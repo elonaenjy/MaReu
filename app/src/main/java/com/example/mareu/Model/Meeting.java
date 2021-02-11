@@ -4,8 +4,12 @@ package com.example.mareu.Model;
 import android.text.format.Time;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Meeting {
@@ -20,12 +24,16 @@ public class Meeting {
         private String subject;
 
         /** date */
-        private Date meetingDate;
+        private DateFormat meetingDate;
 
         /** liste des participants */
         public String participants;
 
-        public long getIdMeeting() {
+    public Meeting(int i, int i1, Date dateReunion, String s, String objet_réunion) {
+    }
+
+
+    public long getIdMeeting() {
             return idMeeting;
         }
 
@@ -49,11 +57,11 @@ public class Meeting {
             this.subject = subject;
         }
 
-        public Date getMeetingDate() {
+        public DateFormat getMeetingDate() {
             return meetingDate;
         }
 
-        public void setMeetingDate(Date meetingDate) {
+        public void setMeetingDate(DateFormat meetingDate) {
             this.meetingDate = meetingDate;
         }
 
@@ -67,14 +75,8 @@ public class Meeting {
 
     /**
          * Constructor
-         * @param idMeeting
-         * @param idRoom
-         * @param subject
-         * @param meetingDate
-         * @param participants
-
-         */
-        public Meeting(long idMeeting, long idRoom, String subject, Date meetingDate,  String participants) {
+     */
+        public Meeting() {
             this.idMeeting = idMeeting;
             this.idRoom = idRoom;
             this.meetingDate = meetingDate;
