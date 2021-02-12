@@ -17,4 +17,9 @@ public interface MeetingApiService {
      */
     void createMeeting(Meeting meeting);
 
+    /**
+     * Delete a meeting
+     * @param meeting
+     */
+    void deleteMeeting(Meeting meeting);
 }

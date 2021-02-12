@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mareu.R;
+import com.example.mareu.Service.MeetingApiService;
+import com.example.mareu.di.DI;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.text.SimpleDateFormat;
@@ -16,8 +18,14 @@ import java.util.Date;
 
 public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
+
     // UI Components
     private String dateReunion;
+    private MeetingApiService service;
+    public void setup() {
+        service = DI.getNewInstanceApiService();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
