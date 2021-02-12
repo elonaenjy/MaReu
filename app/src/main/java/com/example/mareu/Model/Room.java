@@ -1,32 +1,25 @@
 package com.example.mareu.Model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Room implements Serializable {
-
+public class Room {
         /** Identifier */
         private long idRoom;
 
         /** Full name */
         private String name;
 
-        /** Avatar */
-        private String image;
-
         /**
          * Constructor
          * @param idRoom
          * @param name
-         * @param image
          */
-        public Room(long idRoom, String name, String image) {
+        public Room(long idRoom, String name) {
             this.idRoom = idRoom;
             this.name = name;
-            this.image = image;
         }
 
         public long getIdRoom() {
@@ -40,30 +33,21 @@ public class Room implements Serializable {
         public String getName() {
             return name;
         }
-
         public void setName(String name) {
             this.name = name;
         }
 
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
         private static List<Room> DUMMY_ROOMS = Arrays.asList(
-            new Room(1, "Etretat", "Etretat.jpg" ),
-            new Room(2, "Cameroun", "Cameroun.jpg"),
-            new Room(3, "Grand Canyon", "GrandCanyon.jpg" ),
-            new Room(4, "Himalaya", "Himalaya.jpg"),
-            new Room(5, "Madagascar", "Madagascar.jpg" ),
-            new Room(6, "Rizieres", "Rizieres.jpg"),
-            new Room(7, "Rome", "Rome.jpg" ),
-            new Room(8, "Tahiti", "Tahiti.jpg"),
-            new Room(9, "Vietnam", "Vietnam.jpg" ),
-            new Room(10, "Cascade", "Cascade.jpg")
+            new Room(1, "Etretat" ),
+            new Room(2, "Cameroun"),
+            new Room(3, "Grand Canyon" ),
+            new Room(4, "Himalaya"),
+            new Room(5, "Madagascar" ),
+            new Room(6, "Rizieres"),
+            new Room(7, "Rome" ),
+            new Room(8, "Tahiti"),
+            new Room(9, "Vietnam" ),
+            new Room(10, "Cascade")
         );
 
         static List<Room> generateRooms() {

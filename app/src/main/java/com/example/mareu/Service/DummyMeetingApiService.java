@@ -10,7 +10,9 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     @Override
     public List<Meeting> getMeeting() {
-        return null;
+
+
+        return meetings;
     }
 
     @Override

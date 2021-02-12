@@ -17,7 +17,7 @@ import java.util.Date;
 public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
     // UI Components
-    private Date dateReunion;
+    private String dateReunion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,7 @@ public class MeetingMainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
         AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-
-                      }
+                              }
 
 
 

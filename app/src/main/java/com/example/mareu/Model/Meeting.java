@@ -1,6 +1,5 @@
 package com.example.mareu.Model;
 
-
 import android.text.format.Time;
 
 import java.io.Serializable;
@@ -21,19 +20,28 @@ public class Meeting {
         private long idRoom;
 
         /** Full subject */
-        private String subject;
+        private String meetingSubject;
+
+        // Todo : mettre en place dans un format Date à la place des deux strings meetingDate et meetingTime */
+        /** date */
+        private String meetingDate;
 
         /** date */
-        private DateFormat meetingDate;
+        private String meetingTime;
 
         /** liste des participants */
-        public String participants;
+        public String meetingParticipants;
 
-    public Meeting(int i, int i1, Date dateReunion, String s, String objet_réunion) {
-    }
+        public Meeting(long idMeeting, long idRoom, String meetingSubject, String meetingDate, String meetingTime, String meetingParticipants) {
+            this.idMeeting = idMeeting;
+            this.idRoom = idRoom;
+            this.meetingSubject = meetingSubject;
+            this.meetingDate = meetingDate;
+            this.meetingTime = meetingTime;
+            this.meetingParticipants = meetingParticipants;
+        }
 
-
-    public long getIdMeeting() {
+        public long getIdMeeting() {
             return idMeeting;
         }
 
@@ -49,42 +57,37 @@ public class Meeting {
             this.idRoom = idRoom;
         }
 
-        public String getSubject() {
-            return subject;
+        public String getMeetingSubject() {
+            return meetingSubject;
         }
 
-        public void setSubject(String subject) {
-            this.subject = subject;
+        public void setMeetingSubject(String meetingSubject) {
+            this.meetingSubject = meetingSubject;
         }
 
-        public DateFormat getMeetingDate() {
+        public String getMeetingDate() {
             return meetingDate;
         }
 
-        public void setMeetingDate(DateFormat meetingDate) {
-            this.meetingDate = meetingDate;
+        public void setMeetingDate(String meetingDate) {
+        this.meetingDate = meetingDate;
+    }
+
+        public void setMeetingTime(String meetingTime) {
+            this.meetingTime = meetingTime;
         }
 
-        public String getParticipants() {
-            return participants;
+        public String getMeetingTime() {
+        return meetingTime;
+    }
+
+        public String getMeetingParticipants() {
+            return meetingParticipants;
         }
 
         public void setParticipants(String participants) {
-            this.participants = participants;
+            this.meetingParticipants = participants;
         }
-
-    /**
-         * Constructor
-     */
-        public Meeting() {
-            this.idMeeting = idMeeting;
-            this.idRoom = idRoom;
-            this.meetingDate = meetingDate;
-            this.participants = participants;
-            this.subject = subject;
-
-        }
-
 
         @Override
         public boolean equals(Object o) {
@@ -100,5 +103,3 @@ public class Meeting {
         }
 
     }
-
-
