@@ -1,105 +1,95 @@
 package com.example.mareu.Model;
 
-import android.text.format.Time;
-
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class Meeting {
 
-        /** Identifier */
-        public long idMeeting;
+    /**
+     * Identifier
+     */
+    public long idMeeting;
 
-        /** Identifier */
-        public long idRoom;
+    /**
+     * Identifier
+     */
+    public long idRoom;
 
-        /** Full subject */
-        public String meetingSubject;
+    /**
+     * Full subject
+     */
+    public String meetingSubject;
 
-        // Todo : mettre en place dans un format Date à la place des deux strings meetingDate et meetingTime */
-        /** date */
-        public String meetingDate;
+    /**
+     * date
+     */
+    public Date meetingDateDebut;
 
-        /** date */
-        public String meetingTime;
+    /**
+     * date
+     */
+    public Date meetingDateFin;
 
-        /** liste des participants */
-        public String meetingParticipants;
+    /**
+     * liste des participants
+     */
+    public String meetingGuestList;
 
-        public Meeting(long idMeeting, long idRoom, String meetingSubject, String meetingDate, String meetingTime, String meetingParticipants) {
-            this.idMeeting = idMeeting;
-            this.idRoom = idRoom;
-            this.meetingSubject = meetingSubject;
-            this.meetingDate = meetingDate;
-            this.meetingTime = meetingTime;
-            this.meetingParticipants = meetingParticipants;
-        }
-
-        public long getIdMeeting() {
-            return idMeeting;
-        }
-
-        public void setIdMeeting(long idMeeting) {
-            this.idMeeting = idMeeting;
-        }
-
-        public long getIdRoom() {
-            return idRoom;
-        }
-
-        public void setIdRoom(long idRoom) {
-            this.idRoom = idRoom;
-        }
-
-        public String getMeetingSubject() {
-            return meetingSubject;
-        }
-
-        public void setMeetingSubject(String meetingSubject) {
-            this.meetingSubject = meetingSubject;
-        }
-
-        public String getMeetingDate() {
-            return meetingDate;
-        }
-
-        public void setMeetingDate(String meetingDate) {
-        this.meetingDate = meetingDate;
+    public Meeting(long idMeeting, long idRoom, String meetingSubject, Date meetingDateDebut, Date meetingDateFin, String meetingGuestList) {
+        this.idMeeting = idMeeting;
+        this.idRoom = idRoom;
+        this.meetingSubject = meetingSubject;
+        this.meetingDateDebut = meetingDateDebut;
+        this.meetingDateFin = meetingDateFin;
+        this.meetingGuestList = meetingGuestList;
     }
 
-        public void setMeetingTime(String meetingTime) {
-            this.meetingTime = meetingTime;
-        }
-
-        public String getMeetingTime() {
-        return meetingTime;
+    public long getIdMeeting() {
+        return idMeeting;
     }
 
-        public String getMeetingParticipants() {
-            return meetingParticipants;
-        }
-
-        public void setParticipants(String participants) {
-            this.meetingParticipants = participants;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Meeting room = (Meeting) o;
-            return Objects.equals(idMeeting,room.idMeeting);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(idMeeting);
-        }
-
+    public void setIdMeeting(long idMeeting) {
+        this.idMeeting = idMeeting;
     }
+
+    public long getIdRoom() {
+        return idRoom;
+    }
+
+    public void setIdRoom(long idRoom) {
+        this.idRoom = idRoom;
+    }
+
+    public String getMeetingSubject() {
+        return meetingSubject;
+    }
+
+    public void setMeetingSubject(String meetingSubject) {
+        this.meetingSubject = meetingSubject;
+    }
+
+    public Date getMeetingDateDebut() {
+        return meetingDateDebut;
+    }
+
+    public void setMeetingDateDebut(Date meetingDateDebut) {
+        this.meetingDateDebut = meetingDateDebut;
+    }
+
+    public Date getMeetingDateFin() {
+        return meetingDateFin;
+    }
+
+    public void setMeetingDateFin(Date meetingDateFin) {
+        this.meetingDateFin = meetingDateFin;
+    }
+
+    public String getMeetingGuestList() {
+        return meetingGuestList;
+    }
+
+    public void setMeetingGuestList(String meetingGuestList) {
+        this.meetingGuestList = meetingGuestList;
+    }
+}
