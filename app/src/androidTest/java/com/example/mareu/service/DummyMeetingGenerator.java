@@ -46,9 +46,7 @@ abstract class DummyApiGenerator {
             new Guest(19, "Rémi", "https://thumbs.dreamstime.com/b/dachshund-christmas-santa-cute-cartoon-character-vector-illustration-happy-dog-wearing-claus-beanie-ready-celebrate-156337318.jpg", "remi@free.fr")
     );
 
-    private static ArrayList listGuests;
-
-    private static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
+        private static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
              new Meeting( 1,1, "Objet Réunion 1",
                      new Date(Long.parseLong("1623247200000")),
                      new Date(Long.parseLong("1623250800000")),
