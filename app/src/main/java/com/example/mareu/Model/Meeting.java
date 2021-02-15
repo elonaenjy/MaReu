@@ -14,20 +14,20 @@ import java.util.Objects;
 public class Meeting {
 
         /** Identifier */
-        private long idMeeting;
+        public long idMeeting;
 
         /** Identifier */
-        private long idRoom;
+        public long idRoom;
 
         /** Full subject */
-        private String meetingSubject;
+        public String meetingSubject;
 
         // Todo : mettre en place dans un format Date à la place des deux strings meetingDate et meetingTime */
         /** date */
-        private String meetingDate;
+        public String meetingDate;
 
         /** date */
-        private String meetingTime;
+        public String meetingTime;
 
         /** liste des participants */
         public String meetingParticipants;

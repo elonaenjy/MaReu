@@ -3,70 +3,48 @@ package com.example.mareu.Model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Room {
-        /** Identifier */
-        private long idRoom;
 
-        /** Full name */
-        private String name;
+    private long mId;
+    private String mRoomName;
+    private long mSeats;
+    private String mImage;
 
-        /**
-         * Constructor
-         * @param idRoom
-         * @param name
-         */
-        public Room(long idRoom, String name) {
-            this.idRoom = idRoom;
-            this.name = name;
-        }
+    public Room(long id, String roomName, long seats, String image) {
+        mId = id;
+        mRoomName = roomName;
+        mSeats = seats;
+        mImage = image;
+    }
+    private static List<Room> DUMMY_ROOMS = Arrays.asList(
+            new Room( 1, "Etretat", 3 , "etretat"),
+            new Room( 2, "Himalaya", 10, "himalaya" ),
+            new Room( 3, "Laponie", 5, "laponie" ),
+            new Room( 4, "Guadeloupe", 7, "Guadeloupe" ),
+            new Room( 5, "Etats Unis", 2, "canyon" ),
+            new Room( 6, "Madagascar", 5,"madagascar" ),
+            new Room( 7, "Rome", 20, "rome" ),
+            new Room( 8, "Tahiti", 10, "tahiti" ),
+            new Room( 9, "Thaïlande", 5, "thaïlande" ),
+            new Room( 10, "Vietnam", 5, "vietnam"),
+            new Room( 11, "Russie", 5, "kremlin")
+    );
 
-        public long getIdRoom() {
-            return idRoom;
-        }
-
-        public void setIdRoom(long idRoom) {
-            this.idRoom = idRoom;
-        }
-
-        public String getName() {
-            return name;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        private static List<Room> DUMMY_ROOMS = Arrays.asList(
-            new Room(1, "Etretat" ),
-            new Room(2, "Cameroun"),
-            new Room(3, "Grand Canyon" ),
-            new Room(4, "Himalaya"),
-            new Room(5, "Madagascar" ),
-            new Room(6, "Rizieres"),
-            new Room(7, "Rome" ),
-            new Room(8, "Tahiti"),
-            new Room(9, "Vietnam" ),
-            new Room(10, "Cascade")
-        );
-
-        static List<Room> generateRooms() {
-        return new ArrayList<>(DUMMY_ROOMS);
+    public long getId() {
+        return mId;
     }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Room room = (Room) o;
-            return Objects.equals(idRoom,room.idRoom);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(idRoom);
-        }
-
+    public String getRoomName() {
+        return mRoomName;
     }
 
+    public String getRoomImage() {
+        return mImage;
+    }
 
+    static List<Room> generateRooms() {
+        return new ArrayList<>( DUMMY_ROOMS );
+    }
+
+}
