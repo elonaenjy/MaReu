@@ -21,6 +21,7 @@ import com.example.mareu.Service.MeetingApiService;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -52,8 +53,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         Date mDateDebut = meetings.get( position ).getMeetingDateDebut();
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                DateFormat.SHORT,
-                DateFormat.SHORT );
+                DateFormat.MEDIUM,
+                DateFormat.MEDIUM, new Locale("FR","fr"));
 
         long mIdRoom = meetings.get( position ).getIdRoom();
         String roomMeeting = String.valueOf( mIdRoom );
@@ -66,9 +67,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // TextHolder for the second line
         String mGuestList = meetings.get(position).getMeetingGuestList();
         holder.mSecondLine.setText( mGuestList);
-
-
-        // ACTIONS ******************************************************************************************
 
         // Delete button
         deleteButton( holder, position );
@@ -101,7 +99,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         final ImageView mColor;
         final TextView mFirstLine;
         final TextView mSecondLine;
-
         final ImageButton mButtonDeleteMeeting;
 
         MyViewHolder(@NonNull View itemView) {
