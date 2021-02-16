@@ -1,22 +1,26 @@
 package com.example.mareu.Service;
 
+import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.Room;
+import com.example.mareu.Activity.MeetingMainActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService {
 
-    private List<Meeting> meetings = new ArrayList<>();
+    private final List<Meeting> mMeetings = DummyMeetingGenerator.generateMeetings();
+    private final List<Guest> mGuests = DummyMeetingGenerator.generateGuests();
+    private final List<Room> mRooms = DummyMeetingGenerator.generateRooms();
 
     @Override
-    public List<Meeting> getMeeting() {
-        return meetings;
+    public List<Meeting> getMeetings() {
+        return mMeetings;
     }
 
     @Override
     public void createMeeting(Meeting meeting) {
-        meetings.add(meeting);
+        mMeetings.add(meeting);
 
     }
     /**
@@ -24,7 +28,7 @@ public class DummyMeetingApiService implements MeetingApiService {
      */
     @Override
     public void deleteMeeting(Meeting meeting) {
-        meetings.remove(meeting);
+        mMeetings.remove(meeting);
     }
 
 

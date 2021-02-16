@@ -6,6 +6,8 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
 import com.example.mareu.Service.MeetingApiService;
@@ -18,12 +20,11 @@ import java.util.Date;
 
 public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
+    private MyAdapter adapter;
+    private MeetingApiService apiService;
 
-    // UI Components
-    private String dateReunion;
-    private MeetingApiService service;
     public void setup() {
-        service = DI.getNewInstanceApiService();
+        apiService = DI.getNewInstanceApiService();
     }
 
 
@@ -31,12 +32,23 @@ public class MeetingMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_list_meeting );
+
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
-        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-                              }
 
+        setUpRecyclerView();
+    }
 
+    //  ****************************************** INIT  *******************************************
+    private void setUpRecyclerView() {
+        final RecyclerView rv = findViewById(R.id.list_recycler_view);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MyAdapter();
+        rv.setAdapter(adapter);
+
+        apiService = DI.getMeetingApiService();
+        adapter.setData(apiService.getMeetings());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -51,29 +63,5 @@ public class MeetingMainActivity extends AppCompatActivity {
         item.setVisible(true);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-//        switch (item.getItemId()) {
-//            case android.R.id.home: {
-//                finish();
-//                return true;
-//            }
-//            case R.id.favorit_zoom : {
-//                if (!isFavorite) {
-//                    item.setIcon( R.drawable.ic_baseline_star_24 );
-//                    addFavorit( neighbour );
-//                } else {
-//                    item.setIcon( R.drawable.ic_baseline_star_border_24 );
-//                    deleteFavorit( neighbour );
-//                 }
-        return true;
-    }
-
-
-//        return super.onOptionsItemSelected( item );
     }
 

@@ -9,8 +9,7 @@ public interface MeetingApiService {
      * Get all the Meeting
      * @return {@link List}
      */
-    List<Meeting> getMeeting();
-
+    List<Meeting> getMeetings();
     /**
      * Create a meeting
      * @param meeting

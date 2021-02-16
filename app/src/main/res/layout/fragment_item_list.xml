@@ -1,13 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.mareu.Activity.ItemFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".Activity.ItemFragment"
-    tools:listitem="@layout/fragment_item" />
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/horizontal_margin"
+    android:layout_marginTop="@dimen/margin_half"
+    android:layout_marginEnd="@dimen/horizontal_margin"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding_normal">
+
+    <!-- IMAGE VIEW -->
+
+    <ImageView
+        android:id="@+id/item_image_meeting"
+        android:layout_width="@dimen/size_image_view"
+        android:layout_height="@dimen/size_image_view"
+        android:background="@drawable/ic_baseline_circle_24"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/room_image_list_meetings_content_description" />
+
+    <!-- BLOC OF TEXT VIEW -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_meeting_cl_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_image_meeting_delete"
+        app:layout_constraintStart_toEndOf="@id/item_image_meeting"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/item_meeting_first_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_first_line"
+            android:textColor="@color/colorTextView"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- GUEST LIST - SCROLLABLE with HorizontalScrollView -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_meeting_first_line"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="30dp">
+
+            <TextView
+                android:id="@+id/item_meeting_second_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="@string/text_second_line"
+                android:textColor="@color/colorTextView"
+                android:textStyle="italic"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_meeting_first_line" />
+        </HorizontalScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- DELETE BUTTON -->
+    <ImageButton
+        android:id="@+id/item_image_meeting_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@null"
+        android:contentDescription="@string/item_meeting_delete_description"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_meeting_cl_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
