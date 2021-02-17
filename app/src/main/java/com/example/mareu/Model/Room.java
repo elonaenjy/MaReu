@@ -14,7 +14,7 @@ public class Room {
             new Room( 1, "Etretat", 3 , "etretat"),
             new Room( 2, "Himalaya", 10, "himalaya" ),
             new Room( 3, "Laponie", 5, "laponie" ),
-            new Room( 4, "Guadeloupe", 7, "Guadeloupe" ),
+            new Room( 4, "Guadeloupe", 7, "guadeloupe" ),
             new Room( 5, "Etats Unis", 2, "canyon" ),
             new Room( 6, "Madagascar", 5,"madagascar" ),
             new Room( 7, "Rome", 20, "rome" ),

@@ -57,9 +57,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         long mId = mMeetings.get(position).getIdRoom();
         List<Room> lRoomMeeting = Room.generateRooms();
         String mRoomName = lRoomMeeting.get( (int) mId ).getRoomName();
-        String mRoomImage = lRoomMeeting.get( (int) mId ).getRoomImage() + "_round";
+        String mRoomImage = lRoomMeeting.get( (int) mId ).getRoomImage();
         System.out.println(mRoomImage);
- //       holder.mMeetingRoomImage.setImageResource(R.mipmap.mRoomImage);
+
+        holder.mMeetingRoomImage.setImageResource(R.drawable.cascade);
 
         // TextHolder for the first line
         String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomName ;

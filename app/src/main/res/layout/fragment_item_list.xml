@@ -16,7 +16,6 @@
         android:id="@+id/item_image_meeting"
         android:layout_width="@dimen/size_image_view"
         android:layout_height="@dimen/size_image_view"
-        android:background="@drawable/ic_baseline_circle_24"
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
