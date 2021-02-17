@@ -3,7 +3,6 @@ package com.example.mareu.Service;
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
-import com.example.mareu.Activity.MeetingMainActivity;
 
 import java.util.List;
 
@@ -17,6 +16,12 @@ public class DummyMeetingApiService implements MeetingApiService {
     public List<Meeting> getMeetings() {
         return mMeetings;
     }
+
+    @Override
+    public List<Room> getRooms() {
+        return mRooms;
+    }
+
 
     @Override
     public void createMeeting(Meeting meeting) {

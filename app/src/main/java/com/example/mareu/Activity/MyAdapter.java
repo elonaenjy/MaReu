@@ -10,12 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.Model.Meeting;
+
 import com.example.mareu.Service.MeetingApiService;
 
 import java.text.DateFormat;
@@ -30,7 +31,8 @@ import java.util.Locale;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private static final String TEXT_SEPARATOR = " - ";
-    private List<Meeting> meetings;
+    private List<Meeting> mMeetings;
+    private List<Room> mRooms;
     private MeetingApiService apiService;
 
     @NonNull
@@ -41,31 +43,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return new MyViewHolder( view );
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
 
         // Call the ApiService
         apiService = DI.getMeetingApiService();
 
-        // First line of the meeting : Subject - StartDate - Room
-        String subjectMeeting = meetings.get( position ).getMeetingSubject();
 
-        Date mDateDebut = meetings.get( position ).getMeetingDateDebut();
+        // First line of the meeting : Subject - StartDate - Room
+        String subjectMeeting = mMeetings.get( position ).getMeetingSubject();
+
+        Date mDateDebut = mMeetings.get( position ).getMeetingDateDebut();
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
                 DateFormat.MEDIUM,
                 DateFormat.MEDIUM, new Locale("FR","fr"));
 
-        long mIdRoom = meetings.get( position ).getIdRoom();
-        String roomMeeting = String.valueOf( mIdRoom );
+        String mRoomMeeting = mRooms.get(position).getRoomName();
 
         // TextHolder for the first line
-
-        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + roomMeeting;
+        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomMeeting ;
         holder.mFirstLine.setText( mFirstLineString );
 
         // TextHolder for the second line
-        String mGuestList = meetings.get(position).getMeetingGuestList();
+        String mGuestList = mMeetings.get(position).getMeetingGuestList();
         holder.mSecondLine.setText( mGuestList);
 
         // Delete button
@@ -73,26 +73,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public void setData(List<Meeting> meetings) {
-        this.meetings = meetings;
+        this.mMeetings = meetings;
         notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }
 
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
-            Toast.makeText( view.getContext(), "Suppression de la réunion " + meetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
+            Toast.makeText( view.getContext(), "Suppression de la réunion " + mMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             deleteItem( position );
-            setData( meetings );
+            setData( mMeetings );
         } );
     }
 
     private void deleteItem(int position) {
-        apiService.deleteMeeting( meetings.get( position ) );
+        apiService.deleteMeeting( mMeetings.get( position ) );
     }
 
     @Override
     public int getItemCount() {
-        return meetings.size();
+        return mMeetings.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

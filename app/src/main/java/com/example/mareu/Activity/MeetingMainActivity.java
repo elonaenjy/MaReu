@@ -12,10 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mareu.R;
 import com.example.mareu.Service.MeetingApiService;
 import com.example.mareu.di.DI;
-import com.google.android.material.appbar.AppBarLayout;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class MeetingMainActivity extends AppCompatActivity {
@@ -26,7 +22,6 @@ public class MeetingMainActivity extends AppCompatActivity {
     public void setup() {
         apiService = DI.getNewInstanceApiService();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,4 +59,3 @@ public class MeetingMainActivity extends AppCompatActivity {
     }
 
     }
-

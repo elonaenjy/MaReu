@@ -9,28 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("SpellCheckingInspection")
 abstract class DummyMeetingGenerator {
-
-    // 05/06/2020 14:00:00 = 1588766400000
-    // 05/04/2020 09:00:00 = 1588575600000
-    // 1hour = 3600000
-    // 1 week = 604800000
-
-    private static final List<Room> DUMMY_ROOMS = Arrays.asList(
-            new Room( 1, "Etretat", 3 , "etretat"),
-            new Room( 2, "Himalaya", 10, "himalaya" ),
-            new Room( 3, "Laponie", 5, "laponie" ),
-            new Room( 4, "Guadeloupe", 7, "Guadeloupe" ),
-            new Room( 5, "Etats Unis", 2, "canyon" ),
-            new Room( 6, "Madagascar", 5,"madagascar" ),
-            new Room( 7, "Rome", 20, "rome" ),
-            new Room( 8, "Tahiti", 10, "tahiti" ),
-            new Room( 9, "Thaïlande", 5, "thaïlande" ),
-            new Room( 10, "Vietnam", 5, "vietnam"),
-            new Room( 11, "Russie", 5, "kremlin")
-    );
-
     private static List<Guest> DUMMY_GUESTS = Arrays.asList(
             new Guest(1, "Paul", "http://clipart-library.com/data_images/163977.jpg", "Paul@orange.fr"),
             new Guest(2, "Phil", "http://clipart-library.com/newhp/kAibeA8c4.png", "Phil@free.fr"),
@@ -76,7 +55,6 @@ abstract class DummyMeetingGenerator {
             )
     );
 
-
     static List<Meeting> generateMeetings() {
         return new ArrayList<>(DUMMY_MEETINGS);
     }
@@ -85,9 +63,6 @@ abstract class DummyMeetingGenerator {
         return new ArrayList<>(DUMMY_GUESTS);
     }
 
-    static List<Room> generateRooms() {
-        return new ArrayList<>(DUMMY_ROOMS);
-    }
 
 }
 
