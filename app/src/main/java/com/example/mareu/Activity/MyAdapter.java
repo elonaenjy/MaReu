@@ -1,6 +1,5 @@
 package com.example.mareu.Activity;
 
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Meeting}.
  */
@@ -32,7 +30,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private static final String TEXT_SEPARATOR = " - ";
     private List<Meeting> mMeetings;
-    private List<Room> mRooms;
     private MeetingApiService apiService;
 
     @NonNull
@@ -49,7 +46,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // Call the ApiService
         apiService = DI.getMeetingApiService();
 
-
         // First line of the meeting : Subject - StartDate - Room
         String subjectMeeting = mMeetings.get( position ).getMeetingSubject();
 
@@ -57,8 +53,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
                 DateFormat.MEDIUM,
                 DateFormat.MEDIUM, new Locale("FR","fr"));
-
-        String mRoomMeeting = mRooms.get(position).getRoomName();
+    //    String mRoomMeeting = "Tahiti";
+        long mId = mMeetings.get(position).getIdRoom();
+        List<Room> lRoomMeeting = Room.generateRooms();
+        String mRoomMeeting = lRoomMeeting.get( (int) mId ).getRoomName();
 
         // TextHolder for the first line
         String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomMeeting ;
@@ -72,7 +70,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> meetings) {
+    public void setData(List<Meeting> meetings, List<Room> rooms) {
         this.mMeetings = meetings;
         notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }
@@ -82,7 +80,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + mMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             deleteItem( position );
-            setData( mMeetings );
+            setData( mMeetings, apiService.getRooms() );
         } );
     }
 

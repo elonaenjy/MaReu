@@ -10,7 +10,6 @@ public class Room {
     private String mRoomName;
     private long mSeats;
     private String mImage;
-
     private static final List<Room> DUMMY_ROOMS = Arrays.asList(
             new Room( 1, "Etretat", 3 , "etretat"),
             new Room( 2, "Himalaya", 10, "himalaya" ),
@@ -26,16 +25,16 @@ public class Room {
     );
 
 
-    public List<Room> generateRooms() {
-        return new ArrayList(DUMMY_ROOMS);
+    public static List<Room> generateRooms() {
+        return DUMMY_ROOMS;
     }
-
-    public Room(long id, String roomName, long seats, String image) {
+    public Room(long id, String mName, long seats, String image) {
         mId = id;
-        mRoomName = roomName;
+        mRoomName = mName;
         mSeats = seats;
         mImage = image;
     }
+
 
     public long getId() {
         return mId;

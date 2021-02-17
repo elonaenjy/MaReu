@@ -42,7 +42,7 @@ public class MeetingMainActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
 
         apiService = DI.getMeetingApiService();
-        adapter.setData(apiService.getMeetings());
+        adapter.setData(apiService.getMeetings(), apiService.getRooms());
     }
 
     @Override

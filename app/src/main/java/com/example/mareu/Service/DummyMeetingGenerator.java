@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-abstract class DummyMeetingGenerator {
+public abstract class DummyMeetingGenerator {
     private static List<Guest> DUMMY_GUESTS = Arrays.asList(
             new Guest(1, "Paul", "http://clipart-library.com/data_images/163977.jpg", "Paul@orange.fr"),
             new Guest(2, "Phil", "http://clipart-library.com/newhp/kAibeA8c4.png", "Phil@free.fr"),
@@ -33,27 +33,44 @@ abstract class DummyMeetingGenerator {
     );
 
     private static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting( 1,1, "Objet Réunion 1",
+            new Meeting( 1,3,  "Objet Réunion 1",
                     new Date(Long.parseLong("1623247200000")),
                     new Date(Long.parseLong("1623250800000")),
                     ("Marie, Henri, Remy, Fanny, Paul, Henri")
             ),
-            new Meeting( 2,2, "Objet Réunion 2",
+            new Meeting( 2,4,  "Objet Réunion 2",
                     new Date(Long.parseLong("1623247200000")),
                     new Date(Long.parseLong("1623250800000")),
                     ("Helene, Elodie")
             ),
-            new Meeting( 3,1, "Objet Réunion 3",
+            new Meeting( 3, 1, "Objet Réunion 3",
                     new Date(Long.parseLong("1613395800000")),
                     new Date(Long.parseLong("1613399400000")),
                     ("Dominique, Gertrude, Laura")
             ),
-            new Meeting( 4,2, "Objet Réunion 4",
+            new Meeting( 4, 2, "Objet Réunion 4",
                     new Date(Long.parseLong("1613397600000")),
                     new Date(Long.parseLong("1613399400000")),
                     ("Fanny, Paul, Henri")
             )
     );
+    private static final List<Room> DUMMY_ROOMS = Arrays.asList(
+            new Room( 1, "Etretat", 3 , "etretat"),
+            new Room( 2, "Himalaya", 10, "himalaya" ),
+            new Room( 3, "Laponie", 5, "laponie" ),
+            new Room( 4, "Guadeloupe", 7, "Guadeloupe" ),
+            new Room( 5, "Etats Unis", 2, "canyon" ),
+            new Room( 6, "Madagascar", 5,"madagascar" ),
+            new Room( 7, "Rome", 20, "rome" ),
+            new Room( 8, "Tahiti", 10, "tahiti" ),
+            new Room( 9, "Thaïlande", 5, "thaïlande" ),
+            new Room( 10, "Vietnam", 5, "vietnam"),
+            new Room( 11, "Russie", 5, "kremlin")
+    );
+
+    static List<Room> generateRooms() {
+        return new ArrayList(DUMMY_ROOMS);
+    }
 
     static List<Meeting> generateMeetings() {
         return new ArrayList<>(DUMMY_MEETINGS);
