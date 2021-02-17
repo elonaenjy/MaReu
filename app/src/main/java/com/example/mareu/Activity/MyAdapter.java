@@ -41,7 +41,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         // Call the ApiService
         apiService = DI.getMeetingApiService();
@@ -53,13 +53,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
                 DateFormat.MEDIUM,
                 DateFormat.MEDIUM, new Locale("FR","fr"));
-    //    String mRoomMeeting = "Tahiti";
+
         long mId = mMeetings.get(position).getIdRoom();
         List<Room> lRoomMeeting = Room.generateRooms();
-        String mRoomMeeting = lRoomMeeting.get( (int) mId ).getRoomName();
+        String mRoomName = lRoomMeeting.get( (int) mId ).getRoomName();
+        String mRoomImage = lRoomMeeting.get( (int) mId ).getRoomImage() + "_round";
+        System.out.println(mRoomImage);
+ //       holder.mMeetingRoomImage.setImageResource(R.mipmap.mRoomImage);
 
         // TextHolder for the first line
-        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomMeeting ;
+        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomName ;
         holder.mFirstLine.setText( mFirstLineString );
 
         // TextHolder for the second line
@@ -94,14 +97,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        final ImageView mColor;
+        final ImageView mMeetingRoomImage;
         final TextView mFirstLine;
         final TextView mSecondLine;
         final ImageButton mButtonDeleteMeeting;
 
         MyViewHolder(@NonNull View itemView) {
             super( itemView );
-            mColor = itemView.findViewById( R.id.item_image_meeting );
+            mMeetingRoomImage = itemView.findViewById( R.id.item_image_meeting );
             mFirstLine = itemView.findViewById( R.id.item_meeting_first_line );
             mSecondLine = itemView.findViewById( R.id.item_meeting_second_line );
             mButtonDeleteMeeting = itemView.findViewById( R.id.item_image_meeting_delete );
