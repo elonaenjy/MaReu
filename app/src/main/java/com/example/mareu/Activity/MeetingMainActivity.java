@@ -9,19 +9,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mareu.Model.Meeting;
 import com.example.mareu.R;
 import com.example.mareu.Service.MeetingApiService;
-import com.example.mareu.di.DI;
+
+import java.util.List;
 
 
 public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
     private MyAdapter adapter;
-    private MeetingApiService apiService;
 
-    public void setup() {
-        apiService = DI.getNewInstanceApiService();
-    }
+    List<Meeting> lMeetings = Meeting.generateMeetings();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +40,7 @@ public class MeetingMainActivity extends AppCompatActivity {
         adapter = new MyAdapter();
         rv.setAdapter(adapter);
 
-        apiService = DI.getMeetingApiService();
-        adapter.setData(apiService.getMeetings(), apiService.getRooms());
+        adapter.setData(lMeetings);
     }
 
     @Override

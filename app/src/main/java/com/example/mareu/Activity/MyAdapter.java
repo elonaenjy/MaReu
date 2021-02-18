@@ -11,12 +11,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-import com.example.mareu.di.DI;
 import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.Room;
 
 import com.example.mareu.Service.MeetingApiService;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -44,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         // Call the ApiService
-        apiService = DI.getMeetingApiService();
+//        apiService = DI.getMeetingApiService();
 
         // First line of the meeting : Subject - StartDate - Room
         String subjectMeeting = mMeetings.get( position ).getMeetingSubject();
@@ -60,6 +62,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         String mRoomImage = lRoomMeeting.get( (int) mId ).getRoomImage();
         System.out.println(mRoomImage);
 
+//        Glide.with(holder.mMeetingRoomImage.getContext())
+ //               .load(mRoomImage)
+ //               .apply(RequestOptions.circleCropTransform())
+ //               .into(holder.mMeetingRoomImage);
+
+
         holder.mMeetingRoomImage.setImageResource(R.drawable.cascade);
 
         // TextHolder for the first line
@@ -74,7 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> meetings, List<Room> rooms) {
+    public void setData(List<Meeting> meetings) {
         this.mMeetings = meetings;
         notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }
@@ -84,7 +92,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + mMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             deleteItem( position );
-            setData( mMeetings, apiService.getRooms() );
+            setData( mMeetings );
         } );
     }
 

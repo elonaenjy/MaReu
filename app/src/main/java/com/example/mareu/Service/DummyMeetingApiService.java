@@ -7,10 +7,9 @@ import com.example.mareu.Model.Room;
 import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService {
-
-    private final List<Meeting> mMeetings = DummyMeetingGenerator.generateMeetings();
+    private final List<Meeting> mMeetings = Meeting.generateMeetings();
     private final List<Guest> mGuests = DummyMeetingGenerator.generateGuests();
-    private final List<Room> mRooms = DummyMeetingGenerator.generateRooms();
+    private final List<Room> mRooms = Room.generateRooms();
 
     @Override
     public List<Meeting> getMeetings() {
