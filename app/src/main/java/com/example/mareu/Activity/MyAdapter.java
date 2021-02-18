@@ -1,5 +1,6 @@
 package com.example.mareu.Activity;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 
 import com.example.mareu.Service.MeetingApiService;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -29,24 +28,22 @@ import java.util.Locale;
  * {@link RecyclerView.Adapter} that can display a {@link Meeting}.
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-
     private static final String TEXT_SEPARATOR = " - ";
     private List<Meeting> mMeetings;
     private MeetingApiService apiService;
+    private Context context;
 
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from( parent.getContext() )
+            context = parent.getContext();
+            View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
         return new MyViewHolder( view );
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-
-        // Call the ApiService
-//        apiService = DI.getMeetingApiService();
 
         // First line of the meeting : Subject - StartDate - Room
         String subjectMeeting = mMeetings.get( position ).getMeetingSubject();
@@ -56,19 +53,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 DateFormat.MEDIUM,
                 DateFormat.MEDIUM, new Locale("FR","fr"));
 
-        long mId = mMeetings.get(position).getIdRoom();
+        int mId = (int) mMeetings.get(position).getIdRoom();
+        System.out.println("mId : "+mId);
+
         List<Room> lRoomMeeting = Room.generateRooms();
-        String mRoomName = lRoomMeeting.get( (int) mId ).getRoomName();
-        String mRoomImage = lRoomMeeting.get( (int) mId ).getRoomImage();
-        System.out.println(mRoomImage);
+        String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
 
-//        Glide.with(holder.mMeetingRoomImage.getContext())
- //               .load(mRoomImage)
- //               .apply(RequestOptions.circleCropTransform())
- //               .into(holder.mMeetingRoomImage);
+        String mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
 
-
-        holder.mMeetingRoomImage.setImageResource(R.drawable.cascade);
+        Integer keyImg= context.getResources().getIdentifier(mRoomImage, "drawable", context.getPackageName());
+        holder.mMeetingRoomImage.setImageResource( keyImg);
 
         // TextHolder for the first line
         String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomName ;
@@ -106,10 +100,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        final ImageView mMeetingRoomImage;
-        final TextView mFirstLine;
-        final TextView mSecondLine;
-        final ImageButton mButtonDeleteMeeting;
+        ImageView mMeetingRoomImage;
+        TextView mFirstLine;
+        TextView mSecondLine;
+        ImageButton mButtonDeleteMeeting;
 
         MyViewHolder(@NonNull View itemView) {
             super( itemView );

@@ -8,22 +8,22 @@ import java.util.List;
 public class Meeting {
 
     private static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting( 1,3,  "Objet Réunion 1",
+            new Meeting( 1,4,  "Objet Réunion 1",
                     new java.sql.Date(Long.parseLong("1623247200000")),
                     new java.sql.Date(Long.parseLong("1623250800000")),
                     ("Marie, Henri, Remy, Fanny, Paul, Henri")
             ),
-            new Meeting( 2,4,  "Objet Réunion 2",
+            new Meeting( 2,3,  "Objet Réunion 2",
                     new java.sql.Date(Long.parseLong("1623247200000")),
                     new java.sql.Date(Long.parseLong("1623250800000")),
                     ("Helene, Elodie")
             ),
-            new Meeting( 3, 1, "Objet Réunion 3",
+            new Meeting( 3, 2, "Objet Réunion 3",
                     new java.sql.Date(Long.parseLong("1613395800000")),
                     new java.sql.Date(Long.parseLong("1613399400000")),
                     ("Dominique, Gertrude, Laura")
             ),
-            new Meeting( 4, 2, "Objet Réunion 4",
+            new Meeting( 4, 1, "Objet Réunion 4",
                     new java.sql.Date(Long.parseLong("1613397600000")),
                     new java.sql.Date(Long.parseLong("1613399400000")),
                     ("Fanny, Paul, Henri")
@@ -38,12 +38,12 @@ public class Meeting {
     /**
      * Identifier
      */
-    public long idMeeting;
+    public int idMeeting;
 
     /**
      * Identifier
      */
-    public long idRoom;
+    public int idRoom;
 
     /**
      * Full subject
@@ -65,7 +65,7 @@ public class Meeting {
      */
     public String meetingGuestList;
 
-    public Meeting(long idMeeting, long idRoom, String meetingSubject, Date meetingDateDebut, Date meetingDateFin, String meetingGuestList) {
+    public Meeting(int idMeeting, int idRoom, String meetingSubject, Date meetingDateDebut, Date meetingDateFin, String meetingGuestList) {
         this.idMeeting = idMeeting;
         this.idRoom = idRoom;
         this.meetingSubject = meetingSubject;
@@ -78,7 +78,7 @@ public class Meeting {
         return idMeeting;
     }
 
-    public void setIdMeeting(long idMeeting) {
+    public void setIdMeeting(int idMeeting) {
         this.idMeeting = idMeeting;
     }
 
@@ -86,7 +86,7 @@ public class Meeting {
         return idRoom;
     }
 
-    public void setIdRoom(long idRoom) {
+    public void setIdRoom(int idRoom) {
         this.idRoom = idRoom;
     }
 
