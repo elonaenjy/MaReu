@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
@@ -54,15 +55,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 DateFormat.MEDIUM, new Locale("FR","fr"));
 
         int mId = (int) mMeetings.get(position).getIdRoom();
-        System.out.println("mId : "+mId);
 
         List<Room> lRoomMeeting = Room.generateRooms();
         String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
 
-        String mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
+        int mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
 
-        Integer keyImg= context.getResources().getIdentifier(mRoomImage, "drawable", context.getPackageName());
-        holder.mMeetingRoomImage.setImageResource( keyImg);
+        Glide.with(holder.mMeetingRoomImage.getContext())
+                .load(mRoomImage)
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.mMeetingRoomImage);
+
+
+  //      holder.mMeetingRoomImage.setImageResource( keyImg);
 
         // TextHolder for the first line
         String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomName ;

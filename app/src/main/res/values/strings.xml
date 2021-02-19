@@ -9,4 +9,19 @@
     <string name="text_second_line">GuestsList</string>
     <string name="item_meeting_delete_description">Supprimer la réunion</string>
     <string name="room_image_list_meetings_content_description">"Image salle de réunion""</string>
+    <!--Add Meeting Layout-->
+    <string name="add_meeting_subject">Saisir un titre (30 max)</string>
+    <string name="menu_creation_meeting">Créer la réunion</string>
+    <string name="add_meeting_guests">Saisir les participants</string>
+    <string name="add_meeting_datepicker">Saisir la date de la réunion</string>
+    <string name="add_meeting_timepicker">Saisir l\'heure de début de la réunion</string>
+    <string name="add_meeting_duration">Saisir la durée de la réunion</string>
+    <string name="add_meeting_room">Sélectionner la salle de la réunion</string>
+    <!--Add Meeting Layout - Creation action -->
+    <string name="toast_duration_empty">Renseignez la durée de la réunion!</string>
+    <string name="toast_subject_empty">Renseignez un titre à la réunion!</string>
+    <string name="toast_room_empty">Sélectionnez la salle de réunion!</string>
+    <string name="toast_guests_empty">Saisissez au moins un invité!</string>
+    <string name="toast_room_unavailable">La salle choisie n\'est pas disponible</string>
+
 </resources>
