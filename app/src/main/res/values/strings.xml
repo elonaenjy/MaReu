@@ -23,5 +23,6 @@
     <string name="toast_room_empty">Sélectionnez la salle de réunion!</string>
     <string name="toast_guests_empty">Saisissez au moins un invité!</string>
     <string name="toast_room_unavailable">La salle choisie n\'est pas disponible</string>
+    <string name="textview">TextView</string>
 
 </resources>

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService {
     private final List<Meeting> mMeetings = Meeting.generateMeetings();
-    private final List<Guest> mGuests = DummyMeetingGenerator.generateGuests();
+    private final List<Guest> mGuests = Guest.generateGuests();
     private final List<Room> mRooms = Room.generateRooms();
 
     @Override

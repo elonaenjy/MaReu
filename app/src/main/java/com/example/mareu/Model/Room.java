@@ -18,7 +18,7 @@ public class Room {
             new Room( 4, "Guadeloupe", 7, R.drawable.guadeloupe ),
             new Room( 5, "Italie", 2, R.drawable.rome ),
             new Room( 6, "Madagascar", 5, R.drawable.madagascar),
-            new Room( 7, "Etats Unis", 20, R.drawable.etatsunis ),
+            new Room( 7, "Asie", 20, R.drawable.rizieres ),
             new Room( 8, "Tahiti", 10, R.drawable.tahiti ),
             new Room( 9, "Thaïlande", 5,R.drawable.thailande ),
             new Room( 10, "Vietnam", 5,R.drawable.vietnam),

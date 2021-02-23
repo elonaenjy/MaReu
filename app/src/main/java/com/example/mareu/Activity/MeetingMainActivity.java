@@ -1,10 +1,12 @@
 package com.example.mareu.Activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MeetingMainActivity extends AppCompatActivity {
     private Menu menu;
     private MyAdapter adapter;

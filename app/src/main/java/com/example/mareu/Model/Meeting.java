@@ -5,28 +5,50 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class Meeting {
 
-    private static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting( 1,4,  "Objet Réunion 1",
-                    new java.sql.Date(Long.parseLong("1623247200000")),
-                    new java.sql.Date(Long.parseLong("1623250800000")),
-                    ("Marie, Henri, Remy, Fanny, Paul, Henri")
+    private static List<Meeting> DUMMY_MEETINGS = asList(
+            new Meeting(
+                    1,
+                    4,
+                    "Objet Réunion 1",
+                    new Date(1623247200000L),
+                    new Date(1623250800000L),
+                    Arrays.asList(1, 2, 3, 4)
             ),
-            new Meeting( 2,3,  "Objet Réunion 2",
-                    new java.sql.Date(Long.parseLong("1623247200000")),
-                    new java.sql.Date(Long.parseLong("1623250800000")),
-                    ("Helene, Elodie")
+            new Meeting(
+                    2,
+                    3,
+                    "Objet Réunion 2",
+                    new Date(1623247200000L),
+                    new Date(1623250800000L),
+                    Arrays.asList(4, 5, 6, 8)
             ),
-            new Meeting( 3, 2, "Objet Réunion 3",
-                    new java.sql.Date(Long.parseLong("1613395800000")),
-                    new java.sql.Date(Long.parseLong("1613399400000")),
-                    ("Dominique, Gertrude, Laura")
+            new Meeting(
+                    3,
+                    5,
+                    "Objet Réunion 3",
+                    new Date(1623247200000L),
+                    new Date(1623250800000L),
+                    Arrays.asList(13, 12, 11, 10 ,9, 8, 7)
             ),
-            new Meeting( 4, 1, "Objet Réunion 4",
-                    new java.sql.Date(Long.parseLong("1613397600000")),
-                    new java.sql.Date(Long.parseLong("1613399400000")),
-                    ("Fanny, Paul, Henri")
+            new Meeting(
+                    4,
+                    6,
+                    "Objet Réunion 4",
+                    new Date(1623247200000L),
+                    new Date(1623250800000L),
+                    Arrays.asList(14, 15)
+            ),
+            new Meeting(
+                    5,
+                    3,
+                    "Objet Réunion 5",
+                    new Date(1623247200000L),
+                    new Date(1623250800000L),
+                    Arrays.asList(9, 5)
             )
     );
 
@@ -34,91 +56,48 @@ public class Meeting {
         return new ArrayList<>(DUMMY_MEETINGS);
     }
 
-
-    /**
-     * Identifier
-     */
     public int idMeeting;
 
-    /**
-     * Identifier
-     */
     public int idRoom;
 
-    /**
-     * Full subject
-     */
     public String meetingSubject;
 
-    /**
-     * date
-     */
-    public Date meetingDateDebut;
+    public Date meetingStartDate;
 
-    /**
-     * date
-     */
-    public Date meetingDateFin;
+    public Date meetingEndDate;
 
-    /**
-     * liste des participants
-     */
-    public String meetingGuestList;
+    public List<Integer> meetingGuestListId;
 
-    public Meeting(int idMeeting, int idRoom, String meetingSubject, Date meetingDateDebut, Date meetingDateFin, String meetingGuestList) {
+    public Meeting(int idMeeting, int idRoom, String meetingSubject, Date meetingStartDate, Date meetingEndDate, List<Integer> meetingGuestListId) {
         this.idMeeting = idMeeting;
         this.idRoom = idRoom;
         this.meetingSubject = meetingSubject;
-        this.meetingDateDebut = meetingDateDebut;
-        this.meetingDateFin = meetingDateFin;
-        this.meetingGuestList = meetingGuestList;
+        this.meetingStartDate = meetingStartDate;
+        this.meetingEndDate = meetingEndDate;
+        this.meetingGuestListId = meetingGuestListId;
     }
 
     public long getIdMeeting() {
         return idMeeting;
     }
 
-    public void setIdMeeting(int idMeeting) {
-        this.idMeeting = idMeeting;
-    }
-
     public long getIdRoom() {
         return idRoom;
-    }
-
-    public void setIdRoom(int idRoom) {
-        this.idRoom = idRoom;
     }
 
     public String getMeetingSubject() {
         return meetingSubject;
     }
 
-    public void setMeetingSubject(String meetingSubject) {
-        this.meetingSubject = meetingSubject;
+    public Date getMeetingStartDate() {
+        return meetingStartDate;
     }
 
-    public Date getMeetingDateDebut() {
-        return meetingDateDebut;
+    public Date getMeetingEndDate() {
+        return meetingEndDate;
     }
 
-    public void setMeetingDateDebut(Date meetingDateDebut) {
-        this.meetingDateDebut = meetingDateDebut;
-    }
-
-    public Date getMeetingDateFin() {
-        return meetingDateFin;
-    }
-
-    public void setMeetingDateFin(Date meetingDateFin) {
-        this.meetingDateFin = meetingDateFin;
-    }
-
-    public String getMeetingGuestList() {
-        return meetingGuestList;
-    }
-
-    public void setMeetingGuestList(String meetingGuestList) {
-        this.meetingGuestList = meetingGuestList;
+    public List<Integer> getMeetingGuestListId() {
+        return meetingGuestListId;
     }
 }

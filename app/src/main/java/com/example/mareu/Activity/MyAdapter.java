@@ -1,6 +1,7 @@
 package com.example.mareu.Activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.mareu.Model.Guest;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
@@ -21,6 +23,7 @@ import com.example.mareu.Model.Room;
 import com.example.mareu.Service.MeetingApiService;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -32,50 +35,67 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TEXT_SEPARATOR = " - ";
     private List<Meeting> mMeetings;
     private MeetingApiService apiService;
-    private Context context;
+    private List<Guest> lstGuest = Guest.generateGuests();
+    private List<Room> lRoomMeeting = Room.generateRooms();
+
 
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            context = parent.getContext();
-            View view = LayoutInflater.from( parent.getContext() )
+               View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
-        return new MyViewHolder( view );
+            return new MyViewHolder( view );
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        // Init : getting the meeting information :
+        //          id meeting
+        //          id room
+        //          meeting startDate
+        //          Meeting subject
+        //          Meeting GuestList
 
-        // First line of the meeting : Subject - StartDate - Room
+        //*************** id, name and image Room **************
+        int mId = (int) mMeetings.get(position).getIdRoom();
+        String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
+        int mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
+
+        //************** Meeting Subject
         String subjectMeeting = mMeetings.get( position ).getMeetingSubject();
 
-        Date mDateDebut = mMeetings.get( position ).getMeetingDateDebut();
+        //************** Meeting StartDate
+        Date mStartDate = mMeetings.get( position ).getMeetingStartDate();
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
                 DateFormat.MEDIUM,
                 DateFormat.MEDIUM, new Locale("FR","fr"));
 
-        int mId = (int) mMeetings.get(position).getIdRoom();
+        //************** Meeting ListGuest and alim email list
+        List<Integer> listGuest = mMeetings.get( position ). getMeetingGuestListId();
+        String mGuestListMail = "";
+        int nbGuest = listGuest.size() ;
+        int idGuest = 0;
 
-        List<Room> lRoomMeeting = Room.generateRooms();
-        String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
+        System.out.println("nb guest : " +nbGuest);
+        for (int ind = 0; ind < nbGuest; ind ++ ) {
+            System.out.println("ind : " + ind);
+            idGuest = listGuest.get( ind );
+            System.out.println("liste guest :"+ idGuest);
+            mGuestListMail += lstGuest.get( idGuest - 1 ).getGuestMail() + " - ";
+            }
 
-        int mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
-
+        // Image Meeting Room
         Glide.with(holder.mMeetingRoomImage.getContext())
                 .load(mRoomImage)
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mMeetingRoomImage);
-
-
-  //      holder.mMeetingRoomImage.setImageResource( keyImg);
-
-        // TextHolder for the first line
-        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mDateDebut ) + TEXT_SEPARATOR + mRoomName ;
+        // First line of the meeting : Subject - StartDate - Room
+        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mStartDate ) + TEXT_SEPARATOR + mRoomName ;
         holder.mFirstLine.setText( mFirstLineString );
 
         // TextHolder for the second line
-        String mGuestList = mMeetings.get(position).getMeetingGuestList();
-        holder.mSecondLine.setText( mGuestList);
+        holder.mSecondLine.setText( mGuestListMail );
 
         // Delete button
         deleteButton( holder, position );
@@ -85,7 +105,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         this.mMeetings = meetings;
         notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }
-
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
