@@ -3,6 +3,8 @@ package com.example.mareu.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,5 +63,43 @@ public class AddMeetingActivity extends AppCompatActivity {
         startDatePickerText = findViewById(R.id.text_add_meeting_datepicker);
         startTimePickerText = findViewById(R.id.text_add_meeting_timepicker);
 
+        setStartDatePickerDialog();
+
     }
+
+    // DATEPICKER
+    private void setStartDatePickerDialog() {
+        final DatePickerDialog.OnDateSetListener startDate = (view, year, monthOfYear, dayOfMonth) -> {
+            datePickerCalendar.set(Calendar.YEAR, year);
+            datePickerCalendar.set(Calendar.MONTH, monthOfYear);
+            datePickerCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateStartDateLabel();
+        };
+        startDatePickerText.setOnClickListener(v -> new DatePickerDialog(AddMeetingActivity.this, startDate, datePickerCalendar
+                .get(Calendar.YEAR), datePickerCalendar.get(Calendar.MONTH),
+                datePickerCalendar.get(Calendar.DAY_OF_MONTH)).show());
+    }
+
+    private void updateStartDateLabel() {
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
+        startDatePickerText.setText(dateFormat.format(datePickerCalendar.getTime()));
+    }
+    // TIMEPICKER
+    private void setStartTimePickerDialog() {
+        final TimePickerDialog.OnTimeSetListener startTime = (view, hourOfDay, minute) -> {
+            timePickerCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            timePickerCalendar.set(Calendar.MINUTE, minute);
+            updateStartTimeLabel();
+        };
+        startTimePickerText.setOnClickListener(v -> new TimePickerDialog(AddMeetingActivity.this, startTime, timePickerCalendar
+                .get(Calendar.HOUR), timePickerCalendar.get(Calendar.MINUTE),
+                true).show());
+    }
+
+    private void updateStartTimeLabel() {
+        DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+        startTimePickerText.setText(timeFormat.format(timePickerCalendar.getTime()));
+    }
+
+
 }

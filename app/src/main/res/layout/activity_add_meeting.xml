@@ -118,9 +118,7 @@
                         android:textSize="@dimen/text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/text_add_meeting_datepicker" />
-
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
 
 
