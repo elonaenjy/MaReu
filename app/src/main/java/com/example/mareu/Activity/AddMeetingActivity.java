@@ -64,6 +64,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         startTimePickerText = findViewById(R.id.text_add_meeting_timepicker);
 
         setStartDatePickerDialog();
+        setStartTimePickerDialog();
 
     }
 
