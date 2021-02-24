@@ -1,7 +1,5 @@
 package com.example.mareu.Activity;
 
-import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import com.example.mareu.Model.Room;
 import com.example.mareu.Service.MeetingApiService;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,14 +35,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<Guest> lstGuest = Guest.generateGuests();
     private List<Room> lRoomMeeting = Room.generateRooms();
 
-
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
             return new MyViewHolder( view );
-    }
+
+             }
 
 
     @Override
@@ -77,11 +74,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         int nbGuest = listGuest.size() ;
         int idGuest = 0;
 
-        System.out.println("nb guest : " +nbGuest);
         for (int ind = 0; ind < nbGuest; ind ++ ) {
-            System.out.println("ind : " + ind);
             idGuest = listGuest.get( ind );
-            System.out.println("liste guest :"+ idGuest);
             mGuestListMail += lstGuest.get( idGuest - 1 ).getGuestMail() + " - ";
             }
 
@@ -90,11 +84,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 .load(mRoomImage)
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mMeetingRoomImage);
+
         // First line of the meeting : Subject - StartDate - Room
         String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mStartDate ) + TEXT_SEPARATOR + mRoomName ;
         holder.mFirstLine.setText( mFirstLineString );
 
-        // TextHolder for the second line
+        // second line of the meeting : guest list
         holder.mSecondLine.setText( mGuestListMail );
 
         // Delete button

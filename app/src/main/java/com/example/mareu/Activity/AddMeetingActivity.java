@@ -13,14 +13,10 @@ import android.widget.TextView;
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
-import static com.example.mareu.R.layout.activity_add_meeting;
 
 public class AddMeetingActivity extends AppCompatActivity {
 
@@ -29,7 +25,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private static final int DURATION_STEP_MINUTES = 5; // Duration interval for minutes
 
     public final List<Guest> mGuests = new ArrayList<>();
-    public Spinner mRoom;
+    public Spinner sRoom;
     public MultiAutoCompleteTextView guestsEmails;
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
@@ -54,13 +50,14 @@ public class AddMeetingActivity extends AppCompatActivity {
         // ************************************ Toolbar init ***************************************
         Toolbar toolbar = findViewById(R.id.toolbar_add_meeting);
         setSupportActionBar(toolbar);
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // FOR UI
         // ************************************ Layout bindings ************************************
         mSubject = findViewById(R.id.edit_text_add_meeting_subject);
+        startDatePickerText = findViewById(R.id.text_add_meeting_datepicker);
+        startTimePickerText = findViewById(R.id.text_add_meeting_timepicker);
 
     }
 }
