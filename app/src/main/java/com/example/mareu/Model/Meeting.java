@@ -11,9 +11,9 @@ public class Meeting {
     public static List<Meeting> generateMeetings() {
         ArrayList<Meeting> lMeetings = new ArrayList<Meeting>();
 
-        Meeting eMeeting = new Meeting( 5,
-                3,
-                "Objet Réunion 5",
+        Meeting eMeeting = new Meeting( 1,
+                1,
+                "Objet Réunion 1",
                 new Date( 1623247200000L ),
                 new Date( 1623250800000L ),
                 Arrays.asList( 9, 5 ));
@@ -109,10 +109,13 @@ public class Meeting {
         return meetingGuestListId;
     }
 
-//    public void createMeeting(Meeting meeting) {
-//        lMeetings.add(meeting);
-//    }
-    public static void deleteMeeting(ArrayList<Meeting> lMeetings, Meeting meeting) {
+    public void createMeeting(Meeting meeting) {
+        ArrayList<Meeting> lMeetings = (ArrayList<Meeting>) generateMeetings();
+        lMeetings.add(meeting);
+    }
+
+    public static void deleteMeeting(Meeting meeting) {
+        ArrayList<Meeting> lMeetings = (ArrayList<Meeting>) generateMeetings();
         lMeetings.remove(meeting);
     }
 }

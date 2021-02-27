@@ -108,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private void deleteItem(int position) {
         Meeting dMeeting = lMeetings.get( position );
-        Meeting.deleteMeeting( lMeetings,dMeeting );
+        Meeting.deleteMeeting( dMeeting );
     }
 
     @Override
