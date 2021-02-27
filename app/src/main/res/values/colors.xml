@@ -13,5 +13,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#037409</color>
+    <color name = "addMeeting">#FFF30707</color>
 
 </resources>

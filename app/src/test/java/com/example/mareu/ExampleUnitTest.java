@@ -1,14 +1,11 @@
 package com.example.mareu;
 
 import com.example.mareu.Model.Meeting;
-import com.example.mareu.Service.MeetingApiService;
 import com.example.mareu.di.DI;
 
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.text.DateFormat;
 
 import static org.junit.Assert.*;
 
