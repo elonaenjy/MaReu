@@ -19,6 +19,7 @@ import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,7 +29,7 @@ import java.util.Locale;
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TEXT_SEPARATOR = " - ";
-    private static List<Meeting> lMeetings = Meeting.generateMeetings();
+    private static ArrayList<Meeting> lMeetings = (ArrayList<Meeting>) Meeting.generateMeetings();
     public List<Guest> lstGuest = Guest.generateGuests();
     private List<Room> lRoomMeeting = Room.generateRooms();
 
@@ -93,7 +94,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public void setData(List<Meeting> meetings) {
-        this.lMeetings = meetings;
+        this.lMeetings = (ArrayList<Meeting>) meetings;
         notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }
 
@@ -107,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private void deleteItem(int position) {
         Meeting dMeeting = lMeetings.get( position );
-//        dMeeting.deleteMeeting( dMeeting );
+        Meeting.deleteMeeting( lMeetings,dMeeting );
     }
 
     @Override

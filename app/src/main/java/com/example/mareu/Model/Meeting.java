@@ -112,7 +112,7 @@ public class Meeting {
 //    public void createMeeting(Meeting meeting) {
 //        lMeetings.add(meeting);
 //    }
-//    public void deleteMeeting(Meeting meeting) {
-//        lMeetings.remove(meeting);
-//    }
+    public static void deleteMeeting(ArrayList<Meeting> lMeetings, Meeting meeting) {
+        lMeetings.remove(meeting);
+    }
 }
