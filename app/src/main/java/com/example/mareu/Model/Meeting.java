@@ -9,7 +9,7 @@ import java.util.List;
 public class Meeting {
 
     public static List<Meeting> generateMeetings() {
-        ArrayList<Meeting> lMeetings = new ArrayList<Meeting>();
+        List<Meeting> lMeetings = new ArrayList<Meeting>();
 
         Meeting eMeeting = new Meeting( 1,
                 1,
@@ -18,7 +18,7 @@ public class Meeting {
                 new Date( 1623250800000L ),
                 Arrays.asList( 9, 5 ));
 
-        lMeetings.add( eMeeting );
+        lMeetings.add(eMeeting );
 
         eMeeting = new Meeting(
                 2,
@@ -28,7 +28,8 @@ public class Meeting {
                 new Date( 1623250800000L ),
                 Arrays.asList( 4, 5, 6, 8 ));
 
-        lMeetings.add( eMeeting );
+        lMeetings.add(eMeeting );
+
         eMeeting = new Meeting(
                         3,
                         5,
@@ -38,7 +39,7 @@ public class Meeting {
                         Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
                 );
 
-        lMeetings.add( eMeeting );
+        lMeetings.add(eMeeting );
 
         eMeeting = new Meeting(
                         4,
@@ -49,7 +50,7 @@ public class Meeting {
                         Arrays.asList( 14, 15 )
                 );
 
-        lMeetings.add( eMeeting );
+        lMeetings.add(eMeeting );
 
         eMeeting = new Meeting(
                         5,
@@ -109,13 +110,4 @@ public class Meeting {
         return meetingGuestListId;
     }
 
-    public void createMeeting(Meeting meeting) {
-        ArrayList<Meeting> lMeetings = (ArrayList<Meeting>) generateMeetings();
-        lMeetings.add(meeting);
-    }
-
-    public static void deleteMeeting(Meeting meeting) {
-        ArrayList<Meeting> lMeetings = (ArrayList<Meeting>) generateMeetings();
-        lMeetings.remove(meeting);
-    }
 }

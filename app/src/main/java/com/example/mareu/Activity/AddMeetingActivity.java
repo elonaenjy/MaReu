@@ -160,7 +160,7 @@ public class AddMeetingActivity extends AppCompatActivity {
                     new Date( 1623250800000L ),
                     Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
             );
-            mMeeting.createMeeting( mMeeting );
+    //        mMeeting.createMeeting( mMeeting );
         }
     }
 

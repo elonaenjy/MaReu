@@ -29,9 +29,9 @@ import java.util.Locale;
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TEXT_SEPARATOR = " - ";
-    private static ArrayList<Meeting> lMeetings = (ArrayList<Meeting>) Meeting.generateMeetings();
+    public List<Meeting> lMeetings;
     public List<Guest> lstGuest = Guest.generateGuests();
-    private List<Room> lRoomMeeting = Room.generateRooms();
+    public List<Room> lRoomMeeting = Room.generateRooms();
 
     @NonNull
     @Override
@@ -108,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private void deleteItem(int position) {
         Meeting dMeeting = lMeetings.get( position );
-        Meeting.deleteMeeting( dMeeting );
+        lMeetings.remove( dMeeting);
     }
 
     @Override

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.StartActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start_appli"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.60" />
+
+        <ImageView
+            android:id="@+id/image_startscreen"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/start_image_size"
+            android:contentDescription="@string/start_appli_screen_content_description"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_start_appli"
+            android:src="@raw/startimage" />
+
+        <TextView
+            android:id="@+id/text_splashscreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/start_appli_text"
+            android:textColor="@android:color/black"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/image_startscreen"
+            android:text="@string/app_name" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

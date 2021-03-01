@@ -1,12 +1,10 @@
 package com.example.mareu.Activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,10 +19,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 
-public class MeetingMainActivity extends AppCompatActivity {
+public class ListMeetingActivity extends AppCompatActivity {
     private Menu menu;
     private MyAdapter adapter;
-    private static List<Meeting> lMeetings = Meeting.generateMeetings();
+
+    public List<Meeting> lMeetings = Meeting.generateMeetings();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
@@ -43,8 +43,7 @@ public class MeetingMainActivity extends AppCompatActivity {
         rv.setLayoutManager( new LinearLayoutManager( this ) );
         adapter = new MyAdapter();
         rv.setAdapter( adapter );
-
-        adapter.setData( lMeetings );
+        adapter.setData( lMeetings);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class MeetingMainActivity extends AppCompatActivity {
     private void createNewMeetingAction() {
         FloatingActionButton mButtonNewMeeting = findViewById( R.id.button_add_meeting );
         mButtonNewMeeting.setOnClickListener( v -> {
-            Intent intent = new Intent( MeetingMainActivity.this, AddMeetingActivity.class );
+            Intent intent = new Intent( ListMeetingActivity.this, AddMeetingActivity.class );
             startActivity( intent );
         } );
     }
