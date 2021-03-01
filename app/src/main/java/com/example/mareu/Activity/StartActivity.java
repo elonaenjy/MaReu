@@ -11,17 +11,17 @@ import android.widget.ImageView;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
-    public List<Meeting> lMeetings = new ArrayList<Meeting>();
+    public List<Meeting> lMeetings = Meeting.generateMeetings();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_start );
-        final Intent meetingMainActivity = new Intent().setClass(this, ListMeetingActivity.class);
 
         ImageView imageView = findViewById(R.id.image_startscreen);
         // Create the animation.
@@ -30,12 +30,16 @@ public class StartActivity extends AppCompatActivity {
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                lMeetings =  Meeting.generateMeetings();
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                 startActivity( meetingMainActivity  );
+                lMeetings =  Meeting.generateMeetings();
+                Intent intent = new Intent(StartActivity.this, ListMeetingActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
+                intent.putExtra("BUNDLE",args);
+                startActivity(intent);
             }
 
             @Override

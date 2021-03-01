@@ -16,17 +16,22 @@ import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ListMeetingActivity extends AppCompatActivity {
     private Menu menu;
     private MyAdapter adapter;
-
-    public List<Meeting> lMeetings = Meeting.generateMeetings();
+    public List<Meeting> lMeetings;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        lMeetings = (ArrayList<Meeting>) args.getSerializable("ARRAYLIST");
+
 
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
@@ -65,8 +70,11 @@ public class ListMeetingActivity extends AppCompatActivity {
     private void createNewMeetingAction() {
         FloatingActionButton mButtonNewMeeting = findViewById( R.id.button_add_meeting );
         mButtonNewMeeting.setOnClickListener( v -> {
-            Intent intent = new Intent( ListMeetingActivity.this, AddMeetingActivity.class );
-            startActivity( intent );
+            Intent intent = new Intent(ListMeetingActivity.this, AddMeetingActivity.class);
+           Bundle args = new Bundle();
+            args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
+            intent.putExtra("BUNDLE",args);
+            startActivity(intent);
         } );
     }
 }

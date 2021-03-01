@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +33,8 @@ import java.util.Date;
 import java.util.List;
 
 public class AddMeetingActivity extends AppCompatActivity {
+
+    public List<Meeting> lMeetings;
 
     public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
     private static final int DURATION_MAX_HOURS = 5; // Max duration for a meeting (in hours)
@@ -65,6 +69,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         setSupportActionBar( toolbar );
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled( true );
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        lMeetings = (ArrayList<Meeting>) args.getSerializable("ARRAYLIST");
 
         // FOR UI
         // ************************************ Layout bindings ************************************
@@ -160,8 +167,19 @@ public class AddMeetingActivity extends AppCompatActivity {
                     new Date( 1623250800000L ),
                     Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
             );
-    //        mMeeting.createMeeting( mMeeting );
+            saveMeeting(mMeeting);
+
         }
+    }
+
+    private void saveMeeting(Meeting mMeeting) {
+        lMeetings.add(mMeeting);
+        Intent intent = new Intent(AddMeetingActivity.this, ListMeetingActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
+        intent.putExtra("BUNDLE",args);
+        startActivity(intent);
+
     }
 
     private void toastCancelCreation(int intString) {
