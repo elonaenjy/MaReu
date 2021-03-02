@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.NumberPicker;
@@ -82,6 +83,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
         durationHours = findViewById( R.id.numberpicker_add_meeting_duration_hours_ );
         durationMinutes = findViewById( R.id.numberpicker_add_meeting_duration_minutes_ );
+        sRoom = findViewById(R.id.spinner_add_meeting_room);
         // ************************************ Layout Parametrization *****************************
         setStartDatePickerDialog();
         setStartTimePickerDialog();
@@ -91,7 +93,27 @@ public class AddMeetingActivity extends AppCompatActivity {
         setDurationsMinutesValues();
         setStartDatePickerDialog();
         setStartTimePickerDialog();
+        setRoomSpinnerDialog();
     }
+
+    private void setRoomSpinnerDialog() {
+        List<Room> lRoomMeeting = Room.generateRooms();
+        int nbRoom = lRoomMeeting.size();
+        System.out.println ("nb salle :" + nbRoom);
+         ArrayList<String> mRoomsList = new ArrayList<>();
+         mRoomsList.add(0, getResources().getString(R.string.add_meeting_room));
+
+        for (int mId = 1; mId < nbRoom; mId ++ ) {
+            String mRoomName = lRoomMeeting.get( mId ).getRoomName();
+            System.out.println( "nom de la salle de réunion : " + mRoomName);
+            mRoomsList.add(mRoomName);
+            String[] mRoomsArray = mRoomsList.toArray(new String[0]);
+            ArrayAdapter<String> adapterRooms
+                        = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mRoomsArray);
+            sRoom.setAdapter(adapterRooms);
+            }
+        }
+
 
     // DATEPICKER
     private void setStartDatePickerDialog() {

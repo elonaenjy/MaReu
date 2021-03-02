@@ -164,6 +164,18 @@
                     app:layout_constraintStart_toEndOf="@+id/guideline_add_meeting"
                     app:layout_constraintTop_toBottomOf="@+id/text_add_meeting_duration" />
 
+            <Spinner
+                android:id="@+id/spinner_add_meeting_room"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_double"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/numberpicker_add_meeting_duration_minutes_"
+                tools:text="@string/add_meeting_room" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
