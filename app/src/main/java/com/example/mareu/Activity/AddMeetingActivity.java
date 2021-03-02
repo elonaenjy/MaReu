@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -223,7 +224,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
         intent.putExtra("BUNDLE",args);
         startActivity(intent);
-
     }
 
     private void toastCancelCreation(int intString) {
@@ -232,6 +232,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         View toastViewCreateMeeting = toastCreateMeeting.getView();
         TextView toastTextCreateMeeting = toastViewCreateMeeting.findViewById( android.R.id.message );
         toastTextCreateMeeting.setTextColor( ContextCompat.getColor( getApplicationContext(), R.color.addMeeting ) );
+
         toastCreateMeeting.show();
     }
 
