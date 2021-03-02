@@ -46,7 +46,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     public Spinner sRoom;
     public List<Room> lRoomMeeting = Room.generateRooms();
     public int nbRoom = lRoomMeeting.size();
-
+    private long idRoom = 0;
 
     public MultiAutoCompleteTextView guestsEmails;
 
@@ -180,7 +180,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         mCalendar.add(Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES);
         Date mEndDate = mCalendar.getTime();
 
-        long idRoom = getRoomFromRoomNameSelected();
+        idRoom = getRoomFromRoomNameSelected();
 
         // Avoids meeting creation if the duration is 0h0min *******************************
         if (mSubjectString.isEmpty()) {
@@ -188,25 +188,24 @@ public class AddMeetingActivity extends AppCompatActivity {
         } else if (durationHours.getValue() == 0 && durationMinutes.getValue() == 0) {
                 toastCancelCreation( R.string.toast_duration_empty );
                  }
-    //        else if (idRoom == 0) {
-    //            toastCancelCreation(R.string.toast_room_empty);
-    //              }
-            else {
-            Meeting mMeeting = new Meeting(
-                    System.currentTimeMillis(),
-                    idRoom,
-                    mSubjectString,
-                    mStartDate,
-                    mEndDate,
-                    Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
-            );
-            saveMeeting(mMeeting);
-
+              else if (idRoom == 0) {
+                  toastCancelCreation(R.string.toast_room_empty);
+                  }
+                    else {
+                        Meeting mMeeting = new Meeting(
+                                System.currentTimeMillis(),
+                                idRoom,
+                                mSubjectString,
+                                mStartDate,
+                                mEndDate,
+                                Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
+                        );
+                        saveMeeting(mMeeting);
         }
     }
     // Gets the Room object from the Room name selected in the Spinner
     private long getRoomFromRoomNameSelected() {
-        long idRoom = 0;
+        idRoom = 0;
         for (int mId = 1; mId < nbRoom; mId ++ ) {
             Room meetingRoom = lRoomMeeting.get( mId );
             if (meetingRoom.getRoomName().equals( sRoom.getSelectedItem().toString() )) {
@@ -215,7 +214,6 @@ public class AddMeetingActivity extends AppCompatActivity {
             }
         }
         return idRoom;
-
     }
 
     private void saveMeeting(Meeting mMeeting) {
