@@ -61,9 +61,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         //************** Meeting StartDate
         Date mStartDate = lMeetings.get( position ).getMeetingStartDate();
-        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                DateFormat.MEDIUM,
-                DateFormat.MEDIUM, new Locale("FR","fr"));
+        DateFormat meetingStartDate = DateFormat.getDateInstance(DateFormat.MEDIUM);
+
+        //************** Meeting StartTime
+        DateFormat meetingStartTime = DateFormat.getTimeInstance(DateFormat.SHORT);
 
         //************** Meeting ListGuest and alim email list
         List<Integer> listGuest = lMeetings.get( position ). getMeetingGuestListId();
@@ -83,7 +84,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 .into(holder.mMeetingRoomImage);
 
         // First line of the meeting : Subject - StartDate - Room
-        String mFirstLineString = subjectMeeting + TEXT_SEPARATOR + shortDateFormat.format( mStartDate ) + TEXT_SEPARATOR + mRoomName ;
+        String mFirstLineString = subjectMeeting
+                + TEXT_SEPARATOR + meetingStartDate.format( mStartDate )
+                + TEXT_SEPARATOR + meetingStartTime.format( mStartDate )
+                + TEXT_SEPARATOR + mRoomName ;
         holder.mFirstLine.setText( mFirstLineString );
 
         // second line of the meeting : guest list

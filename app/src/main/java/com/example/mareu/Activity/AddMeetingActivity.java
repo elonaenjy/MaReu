@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddMeetingActivity extends AppCompatActivity {
 
@@ -123,7 +124,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     private void updateStartTimeLabel() {
-        DateFormat timeFormat = DateFormat.getTimeInstance( DateFormat.SHORT );
+        DateFormat timeFormat = DateFormat.getTimeInstance(
+                DateFormat.SHORT);
         startTimePickerText.setText( timeFormat.format( timePickerCalendar.getTime() ) );
     }
 
@@ -149,6 +151,14 @@ public class AddMeetingActivity extends AppCompatActivity {
         mStartDate = getStartMeetingDateTimeFromSelection();
         mGuestIdList =  Arrays.asList( 13, 12, 11, 10, 9, 8, 7 );
 
+    //------ Meeting End Date alimentation = Meeting Start Date + Meeting duration
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTime(mStartDate);
+        mCalendar.add(Calendar.HOUR_OF_DAY, durationHours.getValue());
+        mCalendar.add(Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES);
+        Date mEndDate = mCalendar.getTime();
+        System.out.println("Date debut : " + mStartDate.getTime());
+        System.out.println("Date fin : " + mEndDate.getTime());
 
         // Avoids meeting creation if the duration is 0h0min *******************************
         if (mSubjectString.isEmpty()) {
@@ -164,7 +174,7 @@ public class AddMeetingActivity extends AppCompatActivity {
                     1,
                     mSubjectString,
                     mStartDate,
-                    new Date( 1623250800000L ),
+                    mEndDate,
                     Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
             );
             saveMeeting(mMeeting);
