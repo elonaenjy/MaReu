@@ -44,6 +44,10 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     public final List<Guest> mGuests = new ArrayList<>();
     public Spinner sRoom;
+    public List<Room> lRoomMeeting = Room.generateRooms();
+    public int nbRoom = lRoomMeeting.size();
+
+
     public MultiAutoCompleteTextView guestsEmails;
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
@@ -97,15 +101,11 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
     private void setRoomSpinnerDialog() {
-        List<Room> lRoomMeeting = Room.generateRooms();
-        int nbRoom = lRoomMeeting.size();
-        System.out.println ("nb salle :" + nbRoom);
          ArrayList<String> mRoomsList = new ArrayList<>();
          mRoomsList.add(0, getResources().getString(R.string.add_meeting_room));
 
         for (int mId = 1; mId < nbRoom; mId ++ ) {
             String mRoomName = lRoomMeeting.get( mId ).getRoomName();
-            System.out.println( "nom de la salle de réunion : " + mRoomName);
             mRoomsList.add(mRoomName);
             String[] mRoomsArray = mRoomsList.toArray(new String[0]);
             ArrayAdapter<String> adapterRooms
@@ -179,21 +179,22 @@ public class AddMeetingActivity extends AppCompatActivity {
         mCalendar.add(Calendar.HOUR_OF_DAY, durationHours.getValue());
         mCalendar.add(Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES);
         Date mEndDate = mCalendar.getTime();
-        System.out.println("Date debut : " + mStartDate.getTime());
-        System.out.println("Date fin : " + mEndDate.getTime());
+
+        long idRoom = getRoomFromRoomNameSelected();
 
         // Avoids meeting creation if the duration is 0h0min *******************************
         if (mSubjectString.isEmpty()) {
-            toastCancelCreation( R.string.toast_subject_empty );
+                toastCancelCreation( R.string.toast_subject_empty );
         } else if (durationHours.getValue() == 0 && durationMinutes.getValue() == 0) {
-            toastCancelCreation( R.string.toast_duration_empty );
-            //      } else if (mRoom.getSelectedItem().toString().equals(getResources().getString(R.string.add_meeting_room))) {
-            //          toastCancelCreation(R.string.toast_room_empty);
-                  }
-        else {
+                toastCancelCreation( R.string.toast_duration_empty );
+                 }
+    //        else if (idRoom == 0) {
+    //            toastCancelCreation(R.string.toast_room_empty);
+    //              }
+            else {
             Meeting mMeeting = new Meeting(
                     System.currentTimeMillis(),
-                    1,
+                    idRoom,
                     mSubjectString,
                     mStartDate,
                     mEndDate,
@@ -202,6 +203,19 @@ public class AddMeetingActivity extends AppCompatActivity {
             saveMeeting(mMeeting);
 
         }
+    }
+    // Gets the Room object from the Room name selected in the Spinner
+    private long getRoomFromRoomNameSelected() {
+        long idRoom = 0;
+        for (int mId = 1; mId < nbRoom; mId ++ ) {
+            Room meetingRoom = lRoomMeeting.get( mId );
+            if (meetingRoom.getRoomName().equals( sRoom.getSelectedItem().toString() )) {
+                idRoom = meetingRoom.getId();
+                mId = nbRoom + 1;
+            }
+        }
+        return idRoom;
+
     }
 
     private void saveMeeting(Meeting mMeeting) {
@@ -231,7 +245,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         mCalendar.setTime( datePickerCalendar.getTime() );
         mCalendar.set( Calendar.HOUR, timePickerCalendar.get( Calendar.HOUR ) );
         mCalendar.set( Calendar.MINUTE, timePickerCalendar.get( Calendar.MINUTE ) );
-        System.out.println( "date format : " + mCalendar.getTime() );
         return mCalendar.getTime();
     }
 
