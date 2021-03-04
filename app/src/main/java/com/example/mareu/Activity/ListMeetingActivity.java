@@ -30,7 +30,7 @@ public class ListMeetingActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-
+        MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -47,7 +47,7 @@ public class ListMeetingActivity extends AppCompatActivity {
         adapter = new MyAdapter();
         rv.setAdapter( adapter );
         MyViewModel model = new ViewModelProvider(this).get(MyViewModel.class);
-        adapter.setData( model.getMeetings());
+        adapter.setData( (List<Meeting>) model.getMeeting() );
 
     }
 

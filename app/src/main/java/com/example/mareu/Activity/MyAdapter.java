@@ -42,14 +42,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        MyViewModel viewModel = new ViewModelProvider( (ViewModelStoreOwner) this ).get(MyViewModel.class);
-        viewModel.getMeetings().observe(this, lMeetings -> {
-                });
-        viewModel.getGuests().observe(this, lGuests -> {
-        });
-        viewModel.getRooms().observe(this, lRooms -> {
-        });
-
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
             return new MyViewHolder( view );
@@ -64,6 +56,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         //          meeting startDate
         //          Meeting subject
         //          Meeting GuestList
+
+        MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
+        model.getMeeting().observe( this, lMeetings -> {
+        } );
+        model.getGuest().observe( this, lGuests -> {
+        } );
+        model.getRoom().observe( this, lRooms -> {
+        } );
 
         //*************** id, name and image Room **************
         int mId = (int) lMeetings.get(position).getIdRoom();
