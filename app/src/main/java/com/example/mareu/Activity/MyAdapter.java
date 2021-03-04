@@ -9,11 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.Model.Guest;
+import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
@@ -29,14 +33,24 @@ import java.util.Locale;
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private static final String TEXT_SEPARATOR = " - ";
-    public List<Meeting> lMeetings;
-    public List<Guest> lstGuest = Guest.generateGuests();
-    public List<Room> lRoomMeeting = Room.generateRooms();
+    private MyViewModel viewModel;
+    List<Meeting> lMeetings;
+    List<Meeting> lRooms;
+    List<Meeting> lGuests;
 
     @NonNull
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-               View view = LayoutInflater.from( parent.getContext() )
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        MyViewModel viewModel = new ViewModelProvider( (ViewModelStoreOwner) this ).get(MyViewModel.class);
+        viewModel.getMeetings().observe(this, lMeetings -> {
+                });
+        viewModel.getGuests().observe(this, lGuests -> {
+        });
+        viewModel.getRooms().observe(this, lRooms -> {
+        });
+
+        View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
             return new MyViewHolder( view );
              }
@@ -53,8 +67,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         //*************** id, name and image Room **************
         int mId = (int) lMeetings.get(position).getIdRoom();
-        String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
-        int mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
+        String mRoomName = lRooms.get( mId-1 ).getRoomName();
+        int mRoomImage = lRooms.get( mId-1 ).getRoomImage();
 
         //************** Meeting Subject
         String subjectMeeting = lMeetings.get( position ).getMeetingSubject();
@@ -69,12 +83,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         //************** Meeting ListGuest and alim email list
         List<Integer> listGuest = lMeetings.get( position ). getMeetingGuestListId();
         String mGuestListMail = "";
-        int nbGuest = listGuest.size() ;
+        int nbGuest = lGuests.size() ;
         int idGuest = 0;
 
         for (int ind = 0; ind < nbGuest; ind ++ ) {
-            idGuest = listGuest.get( ind );
-            mGuestListMail += lstGuest.get( idGuest - 1 ).getGuestMail() + " - ";
+            idGuest = lGuests.get( ind );
+            mGuestListMail += lGuests.get( idGuest - 1 ).getGuestMail() + " - ";
             }
 
         // Image Meeting Room

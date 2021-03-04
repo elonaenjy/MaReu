@@ -45,7 +45,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     public final List<Guest> mGuests = new ArrayList<>();
     public Spinner sRoom;
-    public List<Room> lRoomMeeting = Room.generateRooms();
+    public List<Room> lRoomMeeting = .generateRooms();
     public int nbRoom = lRoomMeeting.size();
     private long idRoom = 0;
 

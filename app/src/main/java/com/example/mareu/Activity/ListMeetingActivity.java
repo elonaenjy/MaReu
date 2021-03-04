@@ -7,11 +7,13 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,14 +26,10 @@ import java.util.List;
 public class ListMeetingActivity extends AppCompatActivity {
     private Menu menu;
     private MyAdapter adapter;
-    public List<Meeting> lMeetings;
+    private MyViewModel viewModel;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("BUNDLE");
-        lMeetings = (ArrayList<Meeting>) args.getSerializable("ARRAYLIST");
-
 
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
@@ -48,7 +46,9 @@ public class ListMeetingActivity extends AppCompatActivity {
         rv.setLayoutManager( new LinearLayoutManager( this ) );
         adapter = new MyAdapter();
         rv.setAdapter( adapter );
-        adapter.setData( lMeetings);
+        MyViewModel model = new ViewModelProvider(this).get(MyViewModel.class);
+        adapter.setData( model.getMeetings());
+
     }
 
     @Override
@@ -71,9 +71,6 @@ public class ListMeetingActivity extends AppCompatActivity {
         FloatingActionButton mButtonNewMeeting = findViewById( R.id.button_add_meeting );
         mButtonNewMeeting.setOnClickListener( v -> {
             Intent intent = new Intent(ListMeetingActivity.this, AddMeetingActivity.class);
-           Bundle args = new Bundle();
-            args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
-            intent.putExtra("BUNDLE",args);
             startActivity(intent);
         } );
     }

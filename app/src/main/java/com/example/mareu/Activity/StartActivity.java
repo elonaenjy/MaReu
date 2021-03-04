@@ -8,15 +8,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.example.mareu.Model.Guest;
+import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
-    public List<Meeting> lMeetings = Meeting.generateMeetings();
+    public List<Guest> lGuests = MyViewModel.generateGuests();
+    public List<Meeting> lMeetings = MyViewModel.generateMeetings();
+    public List<Room> lRooms = MyViewModel.generateRooms();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +37,7 @@ public class StartActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                lMeetings =  Meeting.generateMeetings();
                 Intent intent = new Intent(StartActivity.this, ListMeetingActivity.class);
-                Bundle args = new Bundle();
-                args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
-                intent.putExtra("BUNDLE",args);
                 startActivity(intent);
             }
 
