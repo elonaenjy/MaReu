@@ -47,6 +47,14 @@ public class ListMeetingActivity<listMeetings> extends AppCompatActivity {
     private void setUpRecyclerView() {
         final MyAdapter adapter = new MyAdapter();
         RecyclerView recyclerView = findViewById(R.id.list_recycler_view);
+        viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
+            @Override
+            public void onChanged(@Nullable List<Meeting> meetingsList) {
+                listMeetings = meetingsList;
+            }
+        });
+        adapter.setData( listMeetings );
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public void onLayoutCompleted(RecyclerView.State state) {
@@ -55,21 +63,6 @@ public class ListMeetingActivity<listMeetings> extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-
-      viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
-          @Override
-          public void onChanged(@Nullable List<Meeting> meetingsList) {
-                        listMeetings = meetingsList;
-                    }
-
-      });
-         // We "wire" the LiveData : we observe it and any time the database changes, it will change
-        // the LiveData, and the observer will be triggered, calling "onChanged". This is at this
-        // moment that we tell the adapter to change its data with the special method "submitList"
-
-        listMeetings = viewModel.getMeeting().getValue();
-
-        adapter.setData( listMeetings );
     }
 
     @Override

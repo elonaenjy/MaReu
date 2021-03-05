@@ -27,8 +27,11 @@ import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,8 +49,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        viewModel = new ViewModelProvider( this ).get(MyViewModel.class);
-
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
             return new MyViewHolder( view );
@@ -62,13 +63,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         //          meeting startDate
         //          Meeting subject
         //          Meeting GuestList
-
-        viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
-            @Override
-            public void onChanged(@Nullable List<Meeting> meetingsList) {
-                listMeetings = meetingsList;
-            }
-        });
 
         viewModel.getlRooms().observe(this,  new Observer<List<Room>>() {
             @Override
@@ -88,7 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         int mId = (int) listMeetings.get(position).getIdRoom();
         String mRoomName = "Tahiti";
         int mRoomImage = R.raw.kremlin;
-        //      String mRoomName = lRooms.get( mId-1 ).getRoomName();
+  //      String mRoomName = lRooms.get( mId-1 ).getRoomName();
   //      int mRoomImage = lRooms.get( mId-1 ).getRoomImage();
 
         //************** Meeting Subject
@@ -132,10 +126,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> meetings) {
-        this.listMeetings = (ArrayList<Meeting>) meetings;
-        notifyDataSetChanged(); // dit à l'adapter de se rafraichir
-    }
+    public void setData(List<Meeting> listMeetings) {
+            listMeetings.clear();
+            listMeetings.addAll( (Collection<? extends Meeting>) viewModel.getMeeting() );
+            notifyDataSetChanged();
+        }
+
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
@@ -166,6 +162,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     public Lifecycle getLifecycle() {
         return null;
     }
+
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView mMeetingRoomImage;
