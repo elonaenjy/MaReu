@@ -11,11 +11,12 @@ import com.example.mareu.Activity.ListMeetingActivity;
 import java.util.List;
 
 public class MyViewModel extends AndroidViewModel {
+
     private MutableLiveData<List<Meeting>> lMeetings;
     private MutableLiveData<List<Guest>> lGuests;
     private MutableLiveData<List<Room>> lRooms;
 
-    //*************** ListMeeting data
+    //*************** LiveData
     public MyViewModel (Application application) {
         super (application);
         lMeetings = new MutableLiveData<>();
@@ -25,6 +26,7 @@ public class MyViewModel extends AndroidViewModel {
         lRooms = new MutableLiveData<>();
         lRooms.postValue( Room.generateRooms() );
     }
+
     public MutableLiveData<List<Meeting>> getMeeting() { return lMeetings; }
     public MutableLiveData<List<Guest>> getGuests() {
         return lGuests;
@@ -32,7 +34,6 @@ public class MyViewModel extends AndroidViewModel {
     public MutableLiveData<List<Room>> getlRooms() {
         return lRooms;
     }
-
 
 //    public void deleteMeeting(Meeting meeting) {
 //        this.lMeetings.remove(meeting);

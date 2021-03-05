@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -27,18 +26,14 @@ import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Meeting}.
  */
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements ViewModelStoreOwner, LifecycleOwner {
     private static final String TEXT_SEPARATOR = " - ";
     private MyViewModel viewModel;
@@ -49,6 +44,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        MyViewModel viewModel = new ViewModelProvider( this ).get( MyViewModel.class );
+
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
             return new MyViewHolder( view );
@@ -127,11 +124,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     }
 
     public void setData(List<Meeting> listMeetings) {
-            listMeetings.clear();
-            listMeetings.addAll( (Collection<? extends Meeting>) viewModel.getMeeting() );
             notifyDataSetChanged();
         }
-
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
@@ -162,7 +156,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     public Lifecycle getLifecycle() {
         return null;
     }
-
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView mMeetingRoomImage;
