@@ -9,12 +9,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.Model.Meeting;
-import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-
 import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
@@ -23,14 +20,6 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_start );
-        MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
-        model.getMeeting().observe( this, lMeetings -> {
-        } );
-        model.getGuest().observe( this, lGuests -> {
-        } );
-        model.getRoom().observe( this, lRooms -> {
-        } );
-
         ImageView imageView = findViewById( R.id.image_startscreen );
         // Create the animation.
 

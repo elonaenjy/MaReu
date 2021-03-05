@@ -3,11 +3,11 @@ package com.example.mareu.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
@@ -33,38 +34,37 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AddMeetingActivity extends AppCompatActivity {
-
-    public List<Meeting> lMeetings;
-
     public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
     private static final int DURATION_MAX_HOURS = 5; // Max duration for a meeting (in hours)
     private static final int DURATION_STEP_MINUTES = 15; // Duration interval for minutes
 
-    public final List<Guest> mGuests = new ArrayList<>();
-    public Spinner sRoom;
-    public List<Room> lRoomMeeting = .generateRooms();
-    public int nbRoom = lRoomMeeting.size();
-    private long idRoom = 0;
+    MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
 
-    public MultiAutoCompleteTextView guestsEmails;
+    public Spinner sRoom;
+    private long idRoom = 0;
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
     private final Calendar timePickerCalendar = Calendar.getInstance();
 
-    private Room mRoomMeeting;
+    private Room mRoom;
     private Date mStartDate;
     private NumberPicker durationMinutes, durationHours;
     private EditText mSubject;
     private TextView startDatePickerText, startTimePickerText;
     private List<Integer> mGuestIdList;
+    private List<Meeting> lMeetings;
+    private List<Guest> lGuests;
+    private List<Room> lRooms;
+    public int nbRoom = lRooms.size();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
         setContentView( R.layout.activity_add_meeting );
+
         init();
     }
 
@@ -76,11 +76,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         setSupportActionBar( toolbar );
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled( true );
-        Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("BUNDLE");
-        lMeetings = (ArrayList<Meeting>) args.getSerializable("ARRAYLIST");
 
-        // FOR UI
         // ************************************ Layout bindings ************************************
         mSubject = findViewById( R.id.edit_text_add_meeting_subject );
         startDatePickerText = findViewById( R.id.text_add_meeting_datepicker );
@@ -106,7 +102,7 @@ public class AddMeetingActivity extends AppCompatActivity {
          mRoomsList.add(0, getResources().getString(R.string.add_meeting_room));
 
         for (int mId = 1; mId < nbRoom; mId ++ ) {
-            String mRoomName = lRoomMeeting.get( mId ).getRoomName();
+            String mRoomName = lRooms.get( mId ).getRoomName();
             mRoomsList.add(mRoomName);
             String[] mRoomsArray = mRoomsList.toArray(new String[0]);
             ArrayAdapter<String> adapterRooms
@@ -208,7 +204,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private long getRoomFromRoomNameSelected() {
         idRoom = 0;
         for (int mId = 1; mId < nbRoom; mId ++ ) {
-            Room meetingRoom = lRoomMeeting.get( mId );
+            Room meetingRoom = lRooms.get( mId );
             if (meetingRoom.getRoomName().equals( sRoom.getSelectedItem().toString() )) {
                 idRoom = meetingRoom.getId();
                 mId = nbRoom + 1;
@@ -220,9 +216,6 @@ public class AddMeetingActivity extends AppCompatActivity {
     private void saveMeeting(Meeting mMeeting) {
         lMeetings.add(mMeeting);
         Intent intent = new Intent(AddMeetingActivity.this, ListMeetingActivity.class);
-        Bundle args = new Bundle();
-        args.putSerializable("ARRAYLIST",(Serializable)lMeetings);
-        intent.putExtra("BUNDLE",args);
         startActivity(intent);
     }
 

@@ -1,36 +1,38 @@
 package com.example.mareu.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mareu.Model.Guest;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.MyViewModel;
-import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-
 public class ListMeetingActivity extends AppCompatActivity {
+
     private Menu menu;
-    private MyAdapter adapter;
     private MyViewModel viewModel;
+    private List<Meeting> listMeetings;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
+//        viewModel = new ViewModelProvider( this ).get(MyViewModel.class);
+
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -38,16 +40,33 @@ public class ListMeetingActivity extends AppCompatActivity {
         setUpRecyclerView();
 
         createNewMeetingAction();
+
     }
 
     //  ****************************************** INIT  *******************************************
     private void setUpRecyclerView() {
-        final RecyclerView rv = findViewById( R.id.list_recycler_view );
-        rv.setLayoutManager( new LinearLayoutManager( this ) );
-        adapter = new MyAdapter();
-        rv.setAdapter( adapter );
-        MyViewModel model = new ViewModelProvider(this).get(MyViewModel.class);
-        adapter.setData( (List<Meeting>) model.getMeeting() );
+        final MyAdapter adapter = new MyAdapter();
+        RecyclerView recyclerView = findViewById(R.id.list_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this) {
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                recyclerView.smoothScrollToPosition(Integer.MAX_VALUE);
+            }
+        });
+        recyclerView.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider( this ).get(MyViewModel.class);
+
+        viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
+            @Override
+            public void onChanged(@Nullable List<Meeting> meetingsList) {
+                listMeetings = meetingsList;
+            }
+        });
+        recyclerView.setAdapter( adapter );
+
+        adapter.setData( listMeetings );
 
     }
 

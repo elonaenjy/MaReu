@@ -1,36 +1,37 @@
 package com.example.mareu.Model;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+
+import com.example.mareu.Activity.ListMeetingActivity;
 
 import java.util.List;
 
-public class MyViewModel extends ViewModel {
+public class MyViewModel extends AndroidViewModel {
     private MutableLiveData<List<Meeting>> lMeetings;
-    public LiveData<List<Meeting>> getMeeting() {
-        if (lMeetings == null) {
-            lMeetings = new MutableLiveData<List<Meeting>>();
-            Meeting.generateMeetings();
-        }
-        return lMeetings;
-    }
-
     private MutableLiveData<List<Guest>> lGuests;
-    public LiveData<List<Guest>> getGuest() {
-        if (lGuests == null) {
-            lGuests = new MutableLiveData<List<Guest>>();
-            Guest.generateGuests();
+    private MutableLiveData<List<Room>> lRooms;
+
+    //*************** ListMeeting data
+    public MyViewModel (Application application) {
+        super (application);
+        lMeetings = new MutableLiveData<>();
+        lMeetings.postValue( Meeting.generateMeetings() );
+ //       lGuests = new MutableLiveData<>();
+ //       lGuests.postValue( Guest.generateGuests() );
+ //       lRooms = new MutableLiveData<>();
+ //       lRooms.postValue( Room.generateRooms() );
+    }
+    public MutableLiveData<List<Meeting>> getMeeting() {
+                return lMeetings;
         }
+    public MutableLiveData<List<Guest>> getGuests() {
         return lGuests;
     }
-
-    private MutableLiveData<List<Room>> lRooms;
-    public LiveData<List<Room>> getRoom() {
-        if (lRooms == null) {
-            lRooms = new MutableLiveData<List<Room>>();
-            Room.generateRooms();
-        }
+    public MutableLiveData<List<Room>> getlRooms() {
         return lRooms;
     }
 
@@ -49,4 +50,4 @@ public class MyViewModel extends ViewModel {
 
 
 
-}
+
