@@ -20,14 +20,12 @@ public class MyViewModel extends AndroidViewModel {
         super (application);
         lMeetings = new MutableLiveData<>();
         lMeetings.postValue( Meeting.generateMeetings() );
- //       lGuests = new MutableLiveData<>();
- //       lGuests.postValue( Guest.generateGuests() );
- //       lRooms = new MutableLiveData<>();
- //       lRooms.postValue( Room.generateRooms() );
+        lGuests = new MutableLiveData<>();
+        lGuests.postValue( Guest.generateGuests() );
+        lRooms = new MutableLiveData<>();
+        lRooms.postValue( Room.generateRooms() );
     }
-    public MutableLiveData<List<Meeting>> getMeeting() {
-                return lMeetings;
-        }
+    public MutableLiveData<List<Meeting>> getMeeting() { return lMeetings; }
     public MutableLiveData<List<Guest>> getGuests() {
         return lGuests;
     }

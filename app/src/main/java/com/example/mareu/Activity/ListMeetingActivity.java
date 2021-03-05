@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class ListMeetingActivity extends AppCompatActivity {
+public class ListMeetingActivity<listMeetings> extends AppCompatActivity {
 
     private Menu menu;
     private MyViewModel viewModel;
@@ -32,7 +32,7 @@ public class ListMeetingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 //        viewModel = new ViewModelProvider( this ).get(MyViewModel.class);
-
+        viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MyViewModel.class);
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -56,18 +56,20 @@ public class ListMeetingActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider( this ).get(MyViewModel.class);
+      viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
+          @Override
+          public void onChanged(@Nullable List<Meeting> meetingsList) {
+                        listMeetings = meetingsList;
+                    }
 
-        viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
-            @Override
-            public void onChanged(@Nullable List<Meeting> meetingsList) {
-                listMeetings = meetingsList;
-            }
-        });
-        recyclerView.setAdapter( adapter );
+      });
+         // We "wire" the LiveData : we observe it and any time the database changes, it will change
+        // the LiveData, and the observer will be triggered, calling "onChanged". This is at this
+        // moment that we tell the adapter to change its data with the special method "submitList"
+
+        listMeetings = viewModel.getMeeting().getValue();
 
         adapter.setData( listMeetings );
-
     }
 
     @Override
