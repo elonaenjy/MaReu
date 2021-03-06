@@ -1,5 +1,6 @@
 package com.example.mareu.Activity;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     private static final String TEXT_SEPARATOR = " - ";
     private MyViewModel viewModel;
     private List<Meeting> listMeetings;
-    private List<Room> listRooms;
-    private List<Guest> listGuests;
+    public List<Guest> listGuests = Guest.generateGuests();
+    public List<Room> lRoomMeeting = Room.generateRooms();
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        MyViewModel viewModel = new ViewModelProvider( this ).get( MyViewModel.class );
 
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
@@ -61,26 +61,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         //          Meeting subject
         //          Meeting GuestList
 
-        viewModel.getlRooms().observe(this,  new Observer<List<Room>>() {
-            @Override
-            public void onChanged(@Nullable List<Room> roomList) {
-                listRooms = roomList;
-            }
-        });
-
-        viewModel.getGuests().observe(this,  new Observer<List<Guest>>() {
-            @Override
-            public void onChanged(@Nullable List<Guest> guestList) {
-                listGuests = guestList;
-            }
-        });
-
         //*************** id, name and image Room **************
         int mId = (int) listMeetings.get(position).getIdRoom();
-        String mRoomName = "Tahiti";
-        int mRoomImage = R.raw.kremlin;
-  //      String mRoomName = lRooms.get( mId-1 ).getRoomName();
-  //      int mRoomImage = lRooms.get( mId-1 ).getRoomImage();
+         String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
+        int mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
 
         //************** Meeting Subject
         String subjectMeeting = listMeetings.get( position ).getMeetingSubject();
@@ -123,10 +107,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> listMeetings) {
-            notifyDataSetChanged();
-        }
+    public void setData(List<Meeting> pListMeetings) {
+        //listMeetings.clear();
+        //listMeetings.addAll( (Collection<? extends Meeting>) viewModel.getMeeting() );
+        listMeetings = pListMeetings;
+        Log.i("TAG", "setData: listMeetings : " + pListMeetings.size());
 
+        Log.i("TAG", "setData: listMeetings : " + listMeetings.size());
+        notifyDataSetChanged();
+    }
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + listMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
@@ -142,7 +131,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
     @Override
     public int getItemCount() {
-        return listMeetings.size();
+
+        if (listMeetings != null)
+            return listMeetings.size();
+        else
+            return 0;
     }
 
     @NonNull

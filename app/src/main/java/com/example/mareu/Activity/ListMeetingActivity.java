@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,9 +43,9 @@ public class ListMeetingActivity extends AppCompatActivity {
     }
     //  ****************************************** INIT  *******************************************
     private void setUpRecyclerView() {
-        final MyAdapter adapter = new MyAdapter();
-        RecyclerView recyclerView = findViewById(R.id.list_recycler_view);
+        MyAdapter adapter = new MyAdapter();
 
+        RecyclerView recyclerView = findViewById(R.id.list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public void onLayoutCompleted(RecyclerView.State state) {
@@ -54,13 +55,17 @@ public class ListMeetingActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        viewModel.getMeeting().observe(this, new Observer<List<Meeting>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Meeting> lMeetings) {
-                        listMeetings = lMeetings; }
-                });
+        viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
+            @Override
+            public void onChanged(@Nullable List<Meeting> meetingsList) {
+                listMeetings = meetingsList;
+                Log.i("TAG", "onChanged: meetingList : " + meetingsList.size());
+                Log.i("TAG", "onChanged: listMeetings : " + listMeetings.size());
+                adapter.setData( listMeetings );
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-        adapter.setData( listMeetings );
     }
 
     @Override
