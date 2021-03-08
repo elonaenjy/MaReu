@@ -25,6 +25,7 @@ import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 
+import java.security.AccessController;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -109,17 +110,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     }
 
     public void setData(List<Meeting> pListMeetings, Meeting aMeeting) {
-        //listMeetings.clear();
-        //listMeetings.addAll( (Collection<? extends Meeting>) viewModel.getMeeting() );
         listMeetings = pListMeetings;
         if (aMeeting != null) {
-            listMeetings.add( aMeeting );
+            listMeetings.add( aMeeting);
             Log.i( "TAG", "reunion ajoutée : " + aMeeting.getMeetingSubject() );
-
-            viewModel.setMutableLiveDataMeetingsList( pListMeetings );
         }      ;
         Log.i( "TAG", "setData: listMeetings : " + pListMeetings.size() );
         Log.i( "TAG", "setData: listMeetings : " + listMeetings.size() );
+        aMeeting = null;
         notifyDataSetChanged();
     }
 
