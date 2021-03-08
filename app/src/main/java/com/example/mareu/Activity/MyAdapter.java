@@ -10,11 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,8 +37,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     private static final String TEXT_SEPARATOR = " - ";
     private MyViewModel viewModel;
     private List<Meeting> listMeetings;
+
     public List<Guest> listGuests = Guest.generateGuests();
     public List<Room> lRoomMeeting = Room.generateRooms();
+    public Meeting aMeeting;
 
     @NonNull
     @Override
@@ -48,8 +48,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.fragment_item_list, parent, false );
-            return new MyViewHolder( view );
-             }
+        return new MyViewHolder( view );
+    }
 
 
     @Override
@@ -61,43 +61,44 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         //          Meeting subject
         //          Meeting GuestList
 
+
         //*************** id, name and image Room **************
-        int mId = (int) listMeetings.get(position).getIdRoom();
-         String mRoomName = lRoomMeeting.get( mId-1 ).getRoomName();
-        int mRoomImage = lRoomMeeting.get( mId-1 ).getRoomImage();
+        int mId = (int) listMeetings.get( position ).getIdRoom();
+        String mRoomName = lRoomMeeting.get( mId - 1 ).getRoomName();
+        int mRoomImage = lRoomMeeting.get( mId - 1 ).getRoomImage();
 
         //************** Meeting Subject
         String subjectMeeting = listMeetings.get( position ).getMeetingSubject();
 
         //************** Meeting StartDate
         Date mStartDate = listMeetings.get( position ).getMeetingStartDate();
-        DateFormat meetingStartDate = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        DateFormat meetingStartDate = DateFormat.getDateInstance( DateFormat.MEDIUM );
 
         //************** Meeting StartTime
-        DateFormat meetingStartTime = DateFormat.getTimeInstance(DateFormat.SHORT);
+        DateFormat meetingStartTime = DateFormat.getTimeInstance( DateFormat.SHORT );
 
         //************** Meeting ListGuest and alim email list
-        List<Integer> listGuest = listMeetings.get( position ). getMeetingGuestListId();
+        List<Integer> listGuest = listMeetings.get( position ).getMeetingGuestListId();
         String mGuestListMail = "";
-        int nbGuest = listGuests.size() ;
+        int nbGuest = listGuests.size();
         int idGuest = 0;
 
- //       for (int ind = 0; ind < nbGuest; ind ++ ) {
- //           idGuest = listGuests.get( ind );
- //           mGuestListMail += listGuests.get( idGuest - 1 ).getGuestMail() + " - ";
- //           }
+        //       for (int ind = 0; ind < nbGuest; ind ++ ) {
+        //           idGuest = listGuests.get( ind );
+        //           mGuestListMail += listGuests.get( idGuest - 1 ).getGuestMail() + " - ";
+        //           }
 
         // Image Meeting Room
-        Glide.with(holder.mMeetingRoomImage.getContext())
-                .load(mRoomImage)
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.mMeetingRoomImage);
+        Glide.with( holder.mMeetingRoomImage.getContext() )
+                .load( mRoomImage )
+                .apply( RequestOptions.circleCropTransform() )
+                .into( holder.mMeetingRoomImage );
 
         // First line of the meeting : Subject - StartDate - Room
         String mFirstLineString = subjectMeeting
                 + TEXT_SEPARATOR + meetingStartDate.format( mStartDate )
                 + TEXT_SEPARATOR + meetingStartTime.format( mStartDate )
-                + TEXT_SEPARATOR + mRoomName ;
+                + TEXT_SEPARATOR + mRoomName;
         holder.mFirstLine.setText( mFirstLineString );
 
         // second line of the meeting : guest list
@@ -107,31 +108,37 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> pListMeetings) {
+    public void setData(List<Meeting> pListMeetings, Meeting aMeeting) {
         //listMeetings.clear();
         //listMeetings.addAll( (Collection<? extends Meeting>) viewModel.getMeeting() );
         listMeetings = pListMeetings;
-        Log.i("TAG", "setData: listMeetings : " + pListMeetings.size());
+        if (aMeeting != null) {
+            listMeetings.add( aMeeting );
+            Log.i( "TAG", "reunion ajoutée : " + aMeeting.getMeetingSubject() );
 
-        Log.i("TAG", "setData: listMeetings : " + listMeetings.size());
+            viewModel.setMutableLiveDataMeetingsList( pListMeetings );
+        }      ;
+        Log.i( "TAG", "setData: listMeetings : " + pListMeetings.size() );
+        Log.i( "TAG", "setData: listMeetings : " + listMeetings.size() );
         notifyDataSetChanged();
     }
+
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + listMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             deleteItem( position );
-            setData( listMeetings );
+            Meeting aMeeting = null;
+            setData( listMeetings, aMeeting );
         } );
     }
 
     private void deleteItem(int position) {
         Meeting dMeeting = listMeetings.get( position );
-        listMeetings.remove( dMeeting);
+        listMeetings.remove( dMeeting );
     }
 
     @Override
     public int getItemCount() {
-
         if (listMeetings != null)
             return listMeetings.size();
         else

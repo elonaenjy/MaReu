@@ -1,14 +1,19 @@
 package com.example.mareu.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +32,8 @@ import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -39,9 +46,13 @@ public class AddMeetingActivity extends AppCompatActivity {
     public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
     private static final int DURATION_MAX_HOURS = 5; // Max duration for a meeting (in hours)
     private static final int DURATION_STEP_MINUTES = 15; // Duration interval for minutes
+    public MyViewModel viewModel;
+    private List<Meeting> listMeetings;
+    private MutableLiveData<List<Meeting>> lMeetings;
 
-    MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
-
+    public List<Guest> listGuests = Guest.generateGuests();
+    public List<Room> lRooms = Room.generateRooms();
+    public MyAdapter adapter;
     public Spinner sRoom;
     private long idRoom = 0;
 
@@ -54,16 +65,12 @@ public class AddMeetingActivity extends AppCompatActivity {
     private EditText mSubject;
     private TextView startDatePickerText, startTimePickerText;
     private List<Integer> mGuestIdList;
-    private List<Meeting> lMeetings;
-    private List<Guest> lGuests;
-    private List<Room> lRooms;
     public int nbRoom = lRooms.size();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        MyViewModel model = new ViewModelProvider( this ).get( MyViewModel.class );
-        setContentView( R.layout.activity_add_meeting );
+         setContentView( R.layout.activity_add_meeting );
 
         init();
     }
@@ -213,10 +220,15 @@ public class AddMeetingActivity extends AppCompatActivity {
         return idRoom;
     }
 
-    private void saveMeeting(Meeting mMeeting) {
-        lMeetings.add(mMeeting);
-        Intent intent = new Intent(AddMeetingActivity.this, ListMeetingActivity.class);
-        startActivity(intent);
+        /**
+         * Adds the given task to the list of created tasks.
+         *
+         * @param mMeeting the meeting to be added to the list
+         */
+        private void saveMeeting(Meeting mMeeting) {
+            Intent intent = new Intent(AddMeetingActivity.this, ListMeetingActivity.class);
+            intent.putExtra( "MEETING", mMeeting );
+            startActivity(intent);
     }
 
     private void toastCancelCreation(int intString) {

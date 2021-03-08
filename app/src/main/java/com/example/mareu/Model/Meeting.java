@@ -2,13 +2,14 @@ package com.example.mareu.Model;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.Date;
 import java.util.List;
 
-public class Meeting {
+public class Meeting implements Serializable {
 
     public static List<Meeting> generateMeetings() {
         List<Meeting> lMeetings = new ArrayList<Meeting>();

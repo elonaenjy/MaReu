@@ -27,9 +27,16 @@ public class ListMeetingActivity extends AppCompatActivity {
     private Menu menu;
     public MyViewModel viewModel;
     public List<Meeting> listMeetings;
+    public Meeting aMeeting;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        Intent intent = getIntent();
+        if (intent != null) {
+            aMeeting = (Meeting) getIntent().getSerializableExtra( "MEETING" );
+        }
+
+
 
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MyViewModel.class);
         setContentView( R.layout.activity_list_meeting );
@@ -55,13 +62,15 @@ public class ListMeetingActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
+  //      listMeetings.add( aMeeting );
+
         viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
             @Override
             public void onChanged(@Nullable List<Meeting> meetingsList) {
                 listMeetings = meetingsList;
                 Log.i("TAG", "onChanged: meetingList : " + meetingsList.size());
                 Log.i("TAG", "onChanged: listMeetings : " + listMeetings.size());
-                adapter.setData( listMeetings );
+                adapter.setData( listMeetings , aMeeting );
                 adapter.notifyDataSetChanged();
             }
         });
