@@ -21,6 +21,10 @@ import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class ListMeetingActivity extends AppCompatActivity {
@@ -28,6 +32,8 @@ public class ListMeetingActivity extends AppCompatActivity {
     public MyViewModel viewModel;
     public List<Meeting> listMeetings;
     public Meeting aMeeting;
+    List<Meeting> listMeetingSort = new ArrayList<>();
+    private MyAdapter adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -36,9 +42,7 @@ public class ListMeetingActivity extends AppCompatActivity {
             aMeeting = (Meeting) getIntent().getSerializableExtra( "MEETING" );
         }
 
-
-
-        viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MyViewModel.class);
+        viewModel = new ViewModelProvider( this, ViewModelProvider.AndroidViewModelFactory.getInstance( this.getApplication() ) ).get( MyViewModel.class );
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -48,56 +52,82 @@ public class ListMeetingActivity extends AppCompatActivity {
         createNewMeetingAction();
 
     }
+
     //  ****************************************** INIT  *******************************************
     private void setUpRecyclerView() {
         MyAdapter adapter = new MyAdapter();
-
-        RecyclerView recyclerView = findViewById(R.id.list_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this) {
+        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
+        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
             @Override
             public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted(state);
-                recyclerView.smoothScrollToPosition(Integer.MAX_VALUE);
-            }
-        });
-        recyclerView.setAdapter(adapter);
+                super.onLayoutCompleted( state );
+                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
+                }
+            } );
 
-  //      listMeetings.add( aMeeting );
+        recyclerView.setAdapter( adapter );
 
-        viewModel.getMeeting().observe(this,  new Observer<List<Meeting>>() {
+        viewModel.getMeeting().observe( this, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(@Nullable List<Meeting> meetingsList) {
                 listMeetings = meetingsList;
-                Log.i("TAG", "onChanged: meetingList : " + meetingsList.size());
-                Log.i("TAG", "onChanged: listMeetings : " + listMeetings.size());
-                adapter.setData( listMeetings , aMeeting );
+                if (aMeeting != null) {
+                    listMeetings.add( aMeeting );
+                    Log.i( "TAG", "reunion ajoutée : " + aMeeting.getMeetingSubject() );
+                    meetingsList = listMeetings;
+                }
+                adapter.setData( listMeetings );
                 adapter.notifyDataSetChanged();
             }
-        });
-
+        } );
     }
+
+    //  ****************************************** MENU ********************************************
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate( R.menu.menu_filtre, menu );
-        showOption( R.id.filtre_list );
         return true;
     }
 
-    private void showOption(int id) {
-        MenuItem item = menu.findItem( id );
-        item.setVisible( true );
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_sort_date: {
+                List<Meeting> lMeetingSort = setDateSorter();
+                adapter.setData( lMeetingSort);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
+
+    public List<Meeting> setDateSorter() {
+        final List<Meeting> meetingsSort = listMeetings;
+        Collections.sort(meetingsSort, (o1, o2) -> {
+            if (o1.getMeetingStartDate() == null || o2.getMeetingStartDate() == null)
+                return 0;
+            return o1.getMeetingStartDate().compareTo(o2.getMeetingStartDate());
+        });
+        return meetingsSort;
+        }
 
     //  ****************************************** ACTIONS  ****************************************
 
     private void createNewMeetingAction() {
         FloatingActionButton mButtonNewMeeting = findViewById( R.id.button_add_meeting );
         mButtonNewMeeting.setOnClickListener( v -> {
-            Intent intent = new Intent(ListMeetingActivity.this, AddMeetingActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent( ListMeetingActivity.this, AddMeetingActivity.class );
+            startActivity( intent );
         } );
     }
+
+
+
+
 }

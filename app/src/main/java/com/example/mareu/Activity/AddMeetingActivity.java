@@ -54,6 +54,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     public List<Room> lRooms = Room.generateRooms();
     public MyAdapter adapter;
     public Spinner sRoom;
+    public MultiAutoCompleteTextView guestsEmails;
+
     private long idRoom = 0;
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
@@ -66,6 +68,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private TextView startDatePickerText, startTimePickerText;
     private List<Integer> mGuestIdList;
     public int nbRoom = lRooms.size();
+    private List<Meeting> lstMeetings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,8 @@ public class AddMeetingActivity extends AppCompatActivity {
         durationHours = findViewById( R.id.numberpicker_add_meeting_duration_hours_ );
         durationMinutes = findViewById( R.id.numberpicker_add_meeting_duration_minutes_ );
         sRoom = findViewById(R.id.spinner_add_meeting_room);
+        guestsEmails = findViewById(R.id.autocomplete_text_add_meeting_guests);
+
         // ************************************ Layout Parametrization *****************************
         setStartDatePickerDialog();
         setStartTimePickerDialog();
@@ -102,6 +107,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         setStartDatePickerDialog();
         setStartTimePickerDialog();
         setRoomSpinnerDialog();
+        setGuestsArrayAdapter();
     }
 
     private void setRoomSpinnerDialog() {
@@ -170,12 +176,31 @@ public class AddMeetingActivity extends AppCompatActivity {
         durationMinutes.setDisplayedValues( mins );
     }
 
+    // GUESTS LIST   - Sets the autocompletion for the Guests selection
+    private void setGuestsArrayAdapter() {
+        // Guest list : listGuests
+         ArrayList<String> mGuestsMail = new ArrayList<>();
+    //     mGuestsMail.add(0, getResources().getString(R.string.add_meeting_guests));
+        int nbGuests = listGuests.size();
+        for (int mId = 0; mId < nbGuests; mId ++ ) {
+            String mGuestEmail = listGuests.get( mId ).getGuestMail();
+            mGuestsMail.add( mGuestEmail );
+        }
+        String[] guestEmailsList = mGuestsMail.toArray( new String[0] );
+        ArrayAdapter<String> adapterGuests
+                        = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, guestEmailsList);
+        guestsEmails.setAdapter(adapterGuests);
+        guestsEmails.setThreshold(1);                                                  // Sets the minimum number of characters, to show suggestions
+        guestsEmails.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());     // then separates them with a comma
+    }
+
+
     /*************************************** SAVE REUNION ***********************************/
     // REUNION CREATION BUTTON - Creates the meeting
     private void createMeeting() {
         String mSubjectString = mSubject.getText().toString();
         mStartDate = getStartMeetingDateTimeFromSelection();
-        mGuestIdList =  Arrays.asList( 13, 12, 11, 10, 9, 8, 7 );
+
 
     //------ Meeting End Date alimentation = Meeting Start Date + Meeting duration
         Calendar mCalendar = Calendar.getInstance();
@@ -185,6 +210,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         Date mEndDate = mCalendar.getTime();
 
         idRoom = getRoomFromRoomNameSelected();
+        List<Integer> lGuestId = getIdGuestFromGuestMailSelected();
 
         // Avoids meeting creation if the duration is 0h0min *******************************
         if (mSubjectString.isEmpty()) {
@@ -202,11 +228,12 @@ public class AddMeetingActivity extends AppCompatActivity {
                                 mSubjectString,
                                 mStartDate,
                                 mEndDate,
-                                Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
-                        );
+                                lGuestId   );
                         saveMeeting(mMeeting);
         }
     }
+
+
     // Gets the Room object from the Room name selected in the Spinner
     private long getRoomFromRoomNameSelected() {
         idRoom = 0;
@@ -219,8 +246,30 @@ public class AddMeetingActivity extends AppCompatActivity {
         }
         return idRoom;
     }
+    // Gets the GuestList from the mail selected
+    private List<Integer> getIdGuestFromGuestMailSelected() {
+        List<Integer> lGuestId = new ArrayList<>();
+        String[] GuestSelected = guestsEmails.getText().toString().split(EMAILS_LIST_SEPARATOR);
+        int nbGuest = listGuests.size() ;
+        int nbGuestSelected = GuestSelected.length;
+        String email = "";
+        String email2 ="";
 
-        /**
+        for (int ind = 0; ind < nbGuestSelected; ind ++ ) {
+            email = GuestSelected[ind];
+            for (int ind2 = 0; ind2 < nbGuest; ind2 ++) {
+                email2 = listGuests.get(ind2).getGuestMail();
+                 System.out.println("email : " + email);
+                System.out.println("ref Guest : " + email2);
+                if (email.equals( email2 )) {
+                    lGuestId.add( listGuests.get(ind2).getId() );
+                }
+            }
+        }
+        return lGuestId;
+    }
+
+    /**
          * Adds the given task to the list of created tasks.
          *
          * @param mMeeting the meeting to be added to the list
@@ -261,7 +310,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         System.out.println( "date format : " + mCalendar.getTime() );
         return mCalendar.getTime();
     }
-
 
     /*************************************** MENU *****************************************/
     @Override

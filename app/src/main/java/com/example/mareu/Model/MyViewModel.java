@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class MyViewModel extends AndroidViewModel {
@@ -14,7 +15,11 @@ public class MyViewModel extends AndroidViewModel {
     public MyViewModel(Application application) {
         super( application );
         lMeetings = new MutableLiveData<>();
-        lMeetings.postValue( Meeting.generateMeetings() );
+        try {
+            lMeetings.postValue( Meeting.generateMeetings() );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public MutableLiveData<List<Meeting>> getMeeting() {
@@ -25,6 +30,7 @@ public class MyViewModel extends AndroidViewModel {
         lMeetings = new MutableLiveData<>();
         lMeetings.postValue( listMeetings );
     }
+
 }
 
 

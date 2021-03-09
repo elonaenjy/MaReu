@@ -3,6 +3,8 @@ package com.example.mareu.Model;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,7 +13,7 @@ import java.util.List;
 
 public class Meeting implements Serializable {
 
-    public static List<Meeting> generateMeetings() {
+    public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
 
         Meeting eMeeting = new Meeting( 1,
@@ -44,12 +46,19 @@ public class Meeting implements Serializable {
 
         lMeetings.add(eMeeting );
 
+        String dateValue = "04/02/2011 20:27:05";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //  04/02/2011 20:27:05
+        Date dateDeb = sdf.parse(dateValue); // returns date object
+        dateValue = "04/02/2011 21:27:05";
+        sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //  04/02/2011 20:27:05
+        Date dateFin = sdf.parse(dateValue); // returns date object
+
         eMeeting = new Meeting(
                         4,
                         6,
                         "Objet Réunion 4",
-                        new Date( 1623247200000L ),
-                        new Date( 1623250800000L ),
+                        new Date( String.valueOf( dateDeb ) ),
+                        new Date( String.valueOf( dateFin ) ),
                         Arrays.asList( 14, 15 )
                 );
 

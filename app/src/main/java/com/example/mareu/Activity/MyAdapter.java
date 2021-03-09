@@ -79,15 +79,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         DateFormat meetingStartTime = DateFormat.getTimeInstance( DateFormat.SHORT );
 
         //************** Meeting ListGuest and alim email list
-        List<Integer> listGuest = listMeetings.get( position ).getMeetingGuestListId();
+        List<Integer> listGuest = listMeetings.get( position ). getMeetingGuestListId();
         String mGuestListMail = "";
-        int nbGuest = listGuests.size();
+        int nbGuest = listGuest.size() ;
         int idGuest = 0;
 
-        //       for (int ind = 0; ind < nbGuest; ind ++ ) {
-        //           idGuest = listGuests.get( ind );
-        //           mGuestListMail += listGuests.get( idGuest - 1 ).getGuestMail() + " - ";
-        //           }
+        for (int ind = 0; ind < nbGuest; ind ++ ) {
+            idGuest = listGuest.get( ind );
+            mGuestListMail += listGuests.get( idGuest - 1 ).getGuestMail() + " - ";
+        }
 
         // Image Meeting Room
         Glide.with( holder.mMeetingRoomImage.getContext() )
@@ -109,15 +109,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> pListMeetings, Meeting aMeeting) {
+    public void setData(List<Meeting> pListMeetings) {
         listMeetings = pListMeetings;
-        if (aMeeting != null) {
-            listMeetings.add( aMeeting);
-            Log.i( "TAG", "reunion ajoutée : " + aMeeting.getMeetingSubject() );
-        }      ;
         Log.i( "TAG", "setData: listMeetings : " + pListMeetings.size() );
         Log.i( "TAG", "setData: listMeetings : " + listMeetings.size() );
-        aMeeting = null;
         notifyDataSetChanged();
     }
 
@@ -125,8 +120,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + listMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             deleteItem( position );
-            Meeting aMeeting = null;
-            setData( listMeetings, aMeeting );
+            setData( listMeetings);
         } );
     }
 
