@@ -8,6 +8,7 @@
     <string name="filter_reset_text">Réinitialiser le filtre</string>
     <string name="filter_rooms_text">Sélectionnez les salles de réunion à afficher</string>
     <string name="filter_ok_text">Voir</string>
+    <string name="toast_room_not_selected">Sélectionnez au moins une salle de réunion!</string>
 
     <string name="activity_new_meeting">New Meeting</string>
     <string name="action_settings">Settings</string>

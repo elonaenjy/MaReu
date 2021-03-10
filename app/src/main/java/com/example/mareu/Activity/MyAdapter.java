@@ -27,6 +27,8 @@ import com.example.mareu.Model.Room;
 
 import java.security.AccessController;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -111,10 +113,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
     public void setData(List<Meeting> pListMeetings) {
         listMeetings = pListMeetings;
-        Log.i( "TAG", "setData: listMeetings : " + pListMeetings.size() );
-        Log.i( "TAG", "setData: listMeetings : " + listMeetings.size() );
         notifyDataSetChanged();
     }
+
+
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {

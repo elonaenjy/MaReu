@@ -14,5 +14,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#037409</color>
     <color name = "addMeeting">#FFF30707</color>
+    <color name="toast_add_meeting_color">#CE0A24</color>
+
 
 </resources>

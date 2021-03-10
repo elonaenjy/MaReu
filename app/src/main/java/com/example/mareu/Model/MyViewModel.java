@@ -28,7 +28,7 @@ public class MyViewModel extends AndroidViewModel {
 
     public void setMutableLiveDataMeetingsList(List<Meeting> listMeetings) {
         lMeetings = new MutableLiveData<>();
-        lMeetings.postValue( listMeetings );
+        lMeetings.setValue( listMeetings );
     }
 
 }
