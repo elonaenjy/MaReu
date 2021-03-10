@@ -104,6 +104,8 @@ public class ListMeetingActivity extends AppCompatActivity {
         return true;
     }
 
+    //  ****************************************** Sort and filter  ****************************************
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -250,9 +252,6 @@ public class ListMeetingActivity extends AppCompatActivity {
 
     }
 
-
-
-
     public String[] getRoomsAsStringList() {
         int numberRooms;
         numberRooms = lRoomMeeting.size();
@@ -286,9 +285,6 @@ public class ListMeetingActivity extends AppCompatActivity {
         }
         return mMeetingsFiltered;
     }
-
-
-
 
 
     //  ****************************************** ACTIONS  ****************************************
