@@ -31,7 +31,6 @@ import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +40,7 @@ public class ListMeetingActivity extends AppCompatActivity {
     public MyViewModel viewModel;
     public List<Meeting> listMeetings;
     public List<Room> lRoomMeeting = Room.generateRooms();
-    public boolean[] KEEP_FILTER_ROOM;    // Keeps memory of the room filter selection
+    public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
 
     public Meeting aMeeting;
     List<Meeting> listMeetingSort = new ArrayList<>();
@@ -180,7 +179,6 @@ public class ListMeetingActivity extends AppCompatActivity {
         return lMeetingsFiltered;
     }
 
-
     public void setRoomsFilter() {
         // Build an AlertDialog
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -190,8 +188,8 @@ public class ListMeetingActivity extends AppCompatActivity {
         // Boolean array for initial selected items
         final boolean[] checkedRooms = new boolean[numberRooms];
         // Keep memory of the filter selection
-        if (KEEP_FILTER_ROOM != null) {
-            System.arraycopy(KEEP_FILTER_ROOM, 0, checkedRooms, 0, numberRooms);
+        if (FILTER_ROOM != null) {
+            System.arraycopy( FILTER_ROOM, 0, checkedRooms, 0, numberRooms);
         }
 
         // Set multiple choice items for alert dialog
@@ -213,13 +211,12 @@ public class ListMeetingActivity extends AppCompatActivity {
         // Set the negative/no button click listener
         builder.setNeutralButton(R.string.filter_reset_text, (dialog, which) -> {
             adapter.setData(listMeetings);
-            KEEP_FILTER_ROOM = null;
+            FILTER_ROOM = null;
         });
 
         final AlertDialog dialog = builder.create();
         // Display the alert dialog on interface
         dialog.setOnShowListener(dialogInterface -> {
-
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view -> {
                 // Checks the checked rooms
@@ -240,16 +237,15 @@ public class ListMeetingActivity extends AppCompatActivity {
                     toastTextCreateMeeting.setTextColor( ContextCompat.getColor(getApplicationContext(), R.color.toast_add_meeting_color));
                     toastRoomNotSelected.show();
                 } else {
-                    List<Meeting> mMeetingsFiltered = filterMeetingsByRoom(checkedRooms);
+                    List<Integer> lRoomSelectedId = filterRoom(checkedRooms);
+                    List<Meeting> lMeetingSelectedRoom = lMeetingsFilteredId(lRoomSelectedId);
                     dialog.dismiss();
-                    adapter.setData(mMeetingsFiltered);
-                    KEEP_FILTER_ROOM = checkedRooms;
+                    adapter.setData(lMeetingSelectedRoom);
+                    FILTER_ROOM = checkedRooms;
                 }
-
             });
         });
         dialog.show();
-
     }
 
     public String[] getRoomsAsStringList() {
@@ -257,35 +253,38 @@ public class ListMeetingActivity extends AppCompatActivity {
         numberRooms = lRoomMeeting.size();
         String[] lRooms = new String[numberRooms];
         for (int i = 0; i < numberRooms; i++) {
-            lRooms[i] = lRoomMeeting.get(i).getRoomName();
+            lRooms[i] = String.valueOf( lRoomMeeting.get(i).getRoomName() );
         }
         return lRooms;
     }
+// Create a list with the room's selected id
+    public List<Integer> filterRoom(boolean[] checkedRooms) {
+        List<Integer> lRoomSelectedId = new ArrayList<>();
 
-    public List<Meeting> filterMeetingsByRoom(boolean[] checkedRooms) {
-
-        List<Meeting> mMeetingsFiltered = new ArrayList<>();
         String[] mRooms = getRoomsAsStringList();
-        // Convert the Rooms array to list
-        final List<String> mRoomsList = Arrays.asList(mRooms);
-        int sizeMeetingsList = listMeetings.size();
-
         for (int i = 0; i < checkedRooms.length; i++) {
             boolean checked = checkedRooms[i];
             if (checked) {
-                String mRoomFiltered = mRoomsList.get(i);
-                for (int e = 0; e < sizeMeetingsList; e++) {
-
-
-                    if (mRoomFiltered.equals(listMeetings.get(e).getIdRoom())) {
-                        mMeetingsFiltered.add(listMeetings.get(e));
+                lRoomSelectedId.add(i);
                     }
+                }
+        return lRoomSelectedId;
+    }
+
+
+    private List<Meeting> lMeetingsFilteredId(List<Integer> lRoomSelectedId) {
+        int nbMeetings = listMeetings.size();
+        List<Meeting> lMeetingsFiltered = new ArrayList<>();
+        int nbRoomSelected = lRoomSelectedId.size();
+        for (int i=0; i<= nbMeetings; i++) {
+            for (int j = 0; j <=nbRoomSelected; j++) {
+                if (listMeetings.get(i).getIdMeeting() == lRoomSelectedId.get(j)) {
+                    lMeetingsFiltered.add(listMeetings.get(i));
                 }
             }
         }
-        return mMeetingsFiltered;
+        return lMeetingsFiltered;
     }
-
 
     //  ****************************************** ACTIONS  ****************************************
 
