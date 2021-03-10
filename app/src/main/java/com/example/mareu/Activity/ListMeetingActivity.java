@@ -271,14 +271,14 @@ public class ListMeetingActivity extends AppCompatActivity {
         return lRoomSelectedId;
     }
 
-
     private List<Meeting> lMeetingsFilteredId(List<Integer> lRoomSelectedId) {
         int nbMeetings = listMeetings.size();
         List<Meeting> lMeetingsFiltered = new ArrayList<>();
         int nbRoomSelected = lRoomSelectedId.size();
-        for (int i=0; i<= nbMeetings; i++) {
-            for (int j = 0; j <=nbRoomSelected; j++) {
+        for (int i=0; i< nbMeetings; i++) {
+            for (int j = 0; j <nbRoomSelected; j++) {
                 if (listMeetings.get(i).getIdMeeting() == lRoomSelectedId.get(j)) {
+                    Meeting S = listMeetings.get(i);
                     lMeetingsFiltered.add(listMeetings.get(i));
                 }
             }
