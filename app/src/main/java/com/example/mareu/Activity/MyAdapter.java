@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,15 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.Model.Guest;
-import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 
-import java.security.AccessController;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +33,6 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements ViewModelStoreOwner, LifecycleOwner {
     private static final String TEXT_SEPARATOR = " - ";
-    private MyViewModel viewModel;
     private List<Meeting> listMeetings;
 
     public List<Guest> listGuests = Guest.generateGuests();
@@ -53,7 +47,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
                 .inflate( R.layout.fragment_item_list, parent, false );
         return new MyViewHolder( view );
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
@@ -115,8 +108,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         listMeetings = pListMeetings;
         notifyDataSetChanged();
     }
-
-
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {

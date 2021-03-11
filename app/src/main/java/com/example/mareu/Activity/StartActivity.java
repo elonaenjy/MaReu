@@ -1,7 +1,6 @@
 package com.example.mareu.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.example.mareu.Model.MyViewModel;
-import com.example.mareu.Model.Meeting;
 import com.example.mareu.R;
-import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
 

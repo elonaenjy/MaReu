@@ -1,5 +1,8 @@
 package com.example.mareu.Model;
 
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.Serializable;
@@ -10,8 +13,9 @@ import java.util.Arrays;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class Meeting implements Serializable {
+public class Meeting extends ArrayList<Parcelable> implements Serializable {
 
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();

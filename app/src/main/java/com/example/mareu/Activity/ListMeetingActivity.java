@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,11 +24,13 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mareu.Model.Meeting;
-import com.example.mareu.Model.MyViewModel;
+import com.example.mareu.ViewModels.MeetingViewModel;
+
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -37,10 +38,12 @@ import java.util.List;
 
 public class ListMeetingActivity extends AppCompatActivity {
     private Menu menu;
-    public MyViewModel viewModel;
+    public MeetingViewModel viewModel;
     public List<Meeting> listMeetings;
     public List<Room> lRoomMeeting = Room.generateRooms();
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
+
+    private int ADD_MEETING_REQUEST_COODE = 20000;
 
     public Meeting aMeeting;
     List<Meeting> listMeetingSort = new ArrayList<>();
@@ -53,19 +56,24 @@ public class ListMeetingActivity extends AppCompatActivity {
             aMeeting = (Meeting) getIntent().getSerializableExtra( "MEETING" );
         }
 
-        viewModel = new ViewModelProvider( this, ViewModelProvider.AndroidViewModelFactory.getInstance( this.getApplication() ) ).get( MyViewModel.class );
+        viewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
+
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
 
-        setUpRecyclerView();
+        try {
+            setUpRecyclerView();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         createNewMeetingAction();
 
     }
 
     //  ****************************************** INIT  *******************************************
-    private void setUpRecyclerView() {
+    private void setUpRecyclerView() throws ParseException {
         MyAdapter adapter = new MyAdapter();
         RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
         recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
@@ -78,15 +86,10 @@ public class ListMeetingActivity extends AppCompatActivity {
 
         recyclerView.setAdapter( adapter );
 
-        viewModel.getMeeting().observe( this, new Observer<List<Meeting>>() {
+        viewModel.getMeetings().observe( this, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(@Nullable List<Meeting> meetingsList) {
                 listMeetings = meetingsList;
-                if (aMeeting != null) {
-                    listMeetings.add( aMeeting );
-                    Log.i( "TAG", "reunion ajoutée : " + aMeeting.getMeetingSubject() );
-                    meetingsList = listMeetings;
-                }
                 adapter.setData( listMeetings );
                 adapter.notifyDataSetChanged();
             }
@@ -291,8 +294,22 @@ public class ListMeetingActivity extends AppCompatActivity {
     private void createNewMeetingAction() {
         FloatingActionButton mButtonNewMeeting = findViewById( R.id.button_add_meeting );
         mButtonNewMeeting.setOnClickListener( v -> {
-            Intent intent = new Intent( ListMeetingActivity.this, AddMeetingActivity.class );
-            startActivity( intent );
+            Intent addMeetingIntent = new Intent(getApplicationContext(), AddMeetingActivity.class);
+            startActivityForResult(addMeetingIntent, ADD_MEETING_REQUEST_COODE);
         } );
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == ADD_MEETING_REQUEST_COODE && resultCode == RESULT_OK) {
+            String aMeeting = data.getStringExtra("MEETING");
+            System.out.println("MEETING : "+ aMeeting);
+//            try {
+//                viewModel.addMeeting(aMeeting);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+            }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

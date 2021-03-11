@@ -1,19 +1,14 @@
 package com.example.mareu.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,16 +23,11 @@ import android.widget.Toast;
 
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
-import com.example.mareu.Model.MyViewModel;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,9 +36,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
     private static final int DURATION_MAX_HOURS = 5; // Max duration for a meeting (in hours)
     private static final int DURATION_STEP_MINUTES = 15; // Duration interval for minutes
-    public MyViewModel viewModel;
+
     private List<Meeting> listMeetings;
-    private MutableLiveData<List<Meeting>> lMeetings;
 
     public List<Guest> listGuests = Guest.generateGuests();
     public List<Room> lRooms = Room.generateRooms();
@@ -259,8 +248,6 @@ public class AddMeetingActivity extends AppCompatActivity {
             email = GuestSelected[ind];
             for (int ind2 = 0; ind2 < nbGuest; ind2 ++) {
                 email2 = listGuests.get(ind2).getGuestMail();
-                 System.out.println("email : " + email);
-                System.out.println("ref Guest : " + email2);
                 if (email.equals( email2 )) {
                     lGuestId.add( listGuests.get(ind2).getId() );
                 }
@@ -275,12 +262,15 @@ public class AddMeetingActivity extends AppCompatActivity {
          * @param mMeeting the meeting to be added to the list
          */
         private void saveMeeting(Meeting mMeeting) {
-            Intent intent = new Intent(AddMeetingActivity.this, ListMeetingActivity.class);
-            intent.putExtra( "MEETING", mMeeting );
-            startActivity(intent);
-    }
+            Intent resultIntent = new Intent();
+            String s = String.valueOf(mMeeting);
+            resultIntent.putExtra( "MEETING", s );
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        }
 
-    private void toastCancelCreation(int intString) {
+
+     private void toastCancelCreation(int intString) {
         Toast toastCreateMeeting = Toast.makeText( getApplicationContext(), intString, Toast.LENGTH_LONG );
         toastCreateMeeting.setGravity( Gravity.CENTER, 0, 0 );
         View toastViewCreateMeeting = toastCreateMeeting.getView();
@@ -303,11 +293,9 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     private Date getEndMeetingDateTimeFromSelection() {
         Calendar mCalendar = Calendar.getInstance();
-        System.out.println( "startdate : " + mStartDate );
         mCalendar.setTime( mStartDate );
         mCalendar.add( Calendar.HOUR_OF_DAY, durationHours.getValue() );
         mCalendar.add( Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES );
-        System.out.println( "date format : " + mCalendar.getTime() );
         return mCalendar.getTime();
     }
 
