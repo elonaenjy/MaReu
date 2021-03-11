@@ -263,8 +263,8 @@ public class AddMeetingActivity extends AppCompatActivity {
          */
         private void saveMeeting(Meeting mMeeting) {
             Intent resultIntent = new Intent();
-            String s = String.valueOf(mMeeting);
-            resultIntent.putExtra( "MEETING", s );
+
+            resultIntent.putExtra( "MEETING", mMeeting );
             setResult(RESULT_OK, resultIntent);
             finish();
         }
