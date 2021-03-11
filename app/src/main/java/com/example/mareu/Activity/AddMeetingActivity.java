@@ -26,6 +26,7 @@ import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -218,6 +219,7 @@ public class AddMeetingActivity extends AppCompatActivity {
                                 mStartDate,
                                 mEndDate,
                                 lGuestId   );
+                        System.out.println("meeting avant save : " + mMeeting.getMeetingSubject());
                         saveMeeting(mMeeting);
         }
     }
@@ -262,9 +264,12 @@ public class AddMeetingActivity extends AppCompatActivity {
          * @param mMeeting the meeting to be added to the list
          */
         private void saveMeeting(Meeting mMeeting) {
-            Intent resultIntent = new Intent();
+            System.out.println("meeting dans save : " + mMeeting.getMeetingSubject());
 
+            Intent resultIntent = new Intent();
             resultIntent.putExtra( "MEETING", mMeeting );
+            System.out.println("meeting apres result.putExtra : " + mMeeting.getMeetingSubject());
+
             setResult(RESULT_OK, resultIntent);
             finish();
         }

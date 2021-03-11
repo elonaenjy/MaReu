@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.ViewModels.MeetingViewModel;
 
@@ -30,6 +31,7 @@ import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,6 +43,8 @@ public class ListMeetingActivity extends AppCompatActivity {
     public MeetingViewModel viewModel;
     public List<Meeting> listMeetings;
     public List<Room> lRoomMeeting = Room.generateRooms();
+    public List<Guest> lGuestMeeting = Guest.generateGuests();
+
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
 
     private int ADD_MEETING_REQUEST_COODE = 20000;
@@ -51,11 +55,6 @@ public class ListMeetingActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        Intent intent = getIntent();
-        if (intent != null) {
-            aMeeting = (Meeting) getIntent().getSerializableExtra( "MEETING" );
-        }
-
         viewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
 
         setContentView( R.layout.activity_list_meeting );
@@ -88,8 +87,8 @@ public class ListMeetingActivity extends AppCompatActivity {
 
         viewModel.getMeetings().observe( this, new Observer<List<Meeting>>() {
             @Override
-            public void onChanged(@Nullable List<Meeting> meetingsList) {
-                listMeetings = meetingsList;
+            public void onChanged(@Nullable List<Meeting> listMeetingsRef) {
+                listMeetings = listMeetingsRef;
                 adapter.setData( listMeetings );
                 adapter.notifyDataSetChanged();
             }
@@ -111,7 +110,6 @@ public class ListMeetingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.menu_sort_date: {
                 List<Meeting> lMeetingSort = setDateSorter();
@@ -281,8 +279,7 @@ public class ListMeetingActivity extends AppCompatActivity {
         for (int i=0; i< nbMeetings; i++) {
             for (int j = 0; j <nbRoomSelected; j++) {
                 if (listMeetings.get(i).getIdMeeting() == lRoomSelectedId.get(j)) {
-                    Meeting S = listMeetings.get(i);
-                    lMeetingsFiltered.add(listMeetings.get(i));
+                      lMeetingsFiltered.add(listMeetings.get(i));
                 }
             }
         }
@@ -301,15 +298,16 @@ public class ListMeetingActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == ADD_MEETING_REQUEST_COODE && resultCode == RESULT_OK) {
-            String aMeeting = data.getStringExtra("MEETING");
-            System.out.println("MEETING : "+ aMeeting);
-//            try {
-//                viewModel.addMeeting(aMeeting);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
+        if (requestCode == ADD_MEETING_REQUEST_COODE && resultCode == RESULT_OK) {
+            Meeting aMeeting = (Meeting) data.getSerializableExtra("MEETING");
+            try {
+                viewModel.addMeeting( aMeeting );
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        super.onActivityResult(requestCode, resultCode, data);
+            super.onActivityResult( requestCode, resultCode, data );
+        }
+
     }
 
 }

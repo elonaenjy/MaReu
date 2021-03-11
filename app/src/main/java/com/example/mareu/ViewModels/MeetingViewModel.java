@@ -16,8 +16,6 @@ public class MeetingViewModel extends ViewModel {
     public LiveData<List<Meeting>> getMeetings() throws ParseException {
         if(lMeetings == null) {
             lMeetings = new MutableLiveData<List<Meeting>>();
-    ///kv        List<Meeting> emptyList = new ArrayList<Meeting>();
-    //kv         meetings.setValue(emptyList);
             List<Meeting> listMeetingsRef = Meeting.generateMeetings();
             lMeetings.setValue(listMeetingsRef);
         }

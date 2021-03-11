@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Meeting extends ArrayList<Parcelable> implements Serializable {
+public class Meeting implements Serializable {
 
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
