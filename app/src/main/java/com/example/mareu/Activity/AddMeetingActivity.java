@@ -28,6 +28,7 @@ import com.example.mareu.R;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,6 +51,7 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
     private final Calendar timePickerCalendar = Calendar.getInstance();
+    private static final int REQUEST_CODE_NO_ADD = 10 ;
 
     private Room mRoom;
     private Date mStartDate;
@@ -64,7 +66,6 @@ public class AddMeetingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
          setContentView( R.layout.activity_add_meeting );
-
         init();
     }
 
@@ -75,7 +76,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById( R.id.toolbar_add_meeting );
         setSupportActionBar( toolbar );
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled( true );
+//        actionBar.setDisplayHomeAsUpEnabled( false );
 
         // ************************************ Layout bindings ************************************
         mSubject = findViewById( R.id.edit_text_add_meeting_subject );
@@ -219,8 +220,7 @@ public class AddMeetingActivity extends AppCompatActivity {
                                 mStartDate,
                                 mEndDate,
                                 lGuestId   );
-                        System.out.println("meeting avant save : " + mMeeting.getMeetingSubject());
-                        saveMeeting(mMeeting);
+                        finMeeting(mMeeting);
         }
     }
 
@@ -263,13 +263,9 @@ public class AddMeetingActivity extends AppCompatActivity {
          *
          * @param mMeeting the meeting to be added to the list
          */
-        private void saveMeeting(Meeting mMeeting) {
-            System.out.println("meeting dans save : " + mMeeting.getMeetingSubject());
-
+        private void finMeeting(Meeting mMeeting) {
             Intent resultIntent = new Intent();
             resultIntent.putExtra( "MEETING", mMeeting );
-            System.out.println("meeting apres result.putExtra : " + mMeeting.getMeetingSubject());
-
             setResult(RESULT_OK, resultIntent);
             finish();
         }
@@ -314,11 +310,20 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_button_create_meeting) {
-            createMeeting();
-            return true;
-        }// If we got here, the user's action was not recognized.
-        // Invoke the superclass to handle it.
+        switch (item.getItemId()) {
+            case R.id.menu_retour_arriere: {
+                Meeting vMeeting = null;
+                finMeeting(vMeeting);
+                finish();
+                return true;
+            }
+            case R.id.menu_button_create_meeting: {
+                createMeeting();
+                return true;
+            }
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+        }
         return super.onOptionsItemSelected( item );
-    }
-}
+
+    }}

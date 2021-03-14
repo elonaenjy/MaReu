@@ -307,6 +307,10 @@ public class ListMeetingActivity extends AppCompatActivity {
             }
             super.onActivityResult( requestCode, resultCode, data );
         }
+        if (requestCode == ADD_MEETING_REQUEST_COODE && resultCode == 10) {
+            super.onActivityResult( requestCode, resultCode, data );
+        }
+
 
     }
 

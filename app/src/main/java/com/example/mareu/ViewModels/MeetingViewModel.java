@@ -24,7 +24,9 @@ public class MeetingViewModel extends ViewModel {
 
     public void addMeeting(Meeting meeting) throws ParseException {
         List<Meeting> newListMeeting = getMeetings().getValue();
-        newListMeeting.add(meeting);
+        if (meeting != null) {
+            newListMeeting.add( meeting );
+        }
         this.lMeetings.setValue(newListMeeting);
     }
 

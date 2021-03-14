@@ -4,6 +4,13 @@
     tools:context="com.example.mareu.Activity.AddMeetingActivity">
 
     <item
+        android:id="@+id/menu_retour_arriere"
+        android:icon="@drawable/ic_baseline_arrow_back_24"
+        app:showAsAction="always"
+        android:title="Retour arrière">
+
+    </item>
+    <item
         android:id="@+id/menu_overflow_button_create_meeting"
         android:icon="@drawable/ic_baseline_save_24"
         android:title="@string/menu_creation_meeting"
