@@ -1,6 +1,5 @@
 package com.example.mareu.Activity;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelStore;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,7 +26,7 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link Meeting}.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements ViewModelStoreOwner, LifecycleOwner {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     private static final String TEXT_SEPARATOR = " - ";
     private List<Meeting> listMeetings;
 
@@ -130,17 +125,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             return 0;
     }
 
-    @NonNull
-    @Override
-    public ViewModelStore getViewModelStore() {
-        return null;
-    }
-
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-        return null;
-    }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView mMeetingRoomImage;
