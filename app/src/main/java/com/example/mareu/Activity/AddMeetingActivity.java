@@ -61,7 +61,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private List<Integer> mGuestIdList;
     public int nbRoom = lRooms.size();
     private List<Meeting> lstMeetings;
-
+    public boolean topVide = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -105,8 +105,8 @@ public class AddMeetingActivity extends AppCompatActivity {
          ArrayList<String> mRoomsList = new ArrayList<>();
          mRoomsList.add(0, getResources().getString(R.string.add_meeting_room));
 
-        for (int mId = 1; mId < nbRoom; mId ++ ) {
-            String mRoomName = lRooms.get( mId ).getRoomName();
+        for (int mId = 1; mId <= nbRoom; mId ++ ) {
+            String mRoomName = lRooms.get( mId-1 ).getRoomName();
             mRoomsList.add(mRoomName);
             String[] mRoomsArray = mRoomsList.toArray(new String[0]);
             ArrayAdapter<String> adapterRooms
@@ -171,7 +171,6 @@ public class AddMeetingActivity extends AppCompatActivity {
     private void setGuestsArrayAdapter() {
         // Guest list : listGuests
          ArrayList<String> mGuestsMail = new ArrayList<>();
-    //     mGuestsMail.add(0, getResources().getString(R.string.add_meeting_guests));
         int nbGuests = listGuests.size();
         for (int mId = 0; mId < nbGuests; mId ++ ) {
             String mGuestEmail = listGuests.get( mId ).getGuestMail();
@@ -200,7 +199,8 @@ public class AddMeetingActivity extends AppCompatActivity {
         mCalendar.add(Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES);
         Date mEndDate = mCalendar.getTime();
 
-        idRoom = getRoomFromRoomNameSelected();
+        getRoomFromRoomNameSelected();
+
         List<Integer> lGuestId = getIdGuestFromGuestMailSelected();
 
         // Avoids meeting creation if the duration is 0h0min *******************************
@@ -209,7 +209,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         } else if (durationHours.getValue() == 0 && durationMinutes.getValue() == 0) {
                 toastCancelCreation( R.string.toast_duration_empty );
                  }
-              else if (idRoom == 0) {
+              else if (topVide) {
                   toastCancelCreation(R.string.toast_room_empty);
                   }
                     else {
@@ -228,14 +228,17 @@ public class AddMeetingActivity extends AppCompatActivity {
     // Gets the Room object from the Room name selected in the Spinner
     private long getRoomFromRoomNameSelected() {
         idRoom = 0;
-        for (int mId = 1; mId < nbRoom; mId ++ ) {
+        topVide = true;
+        for (int mId = 0; mId <= nbRoom; mId ++ ) {
             Room meetingRoom = lRooms.get( mId );
             if (meetingRoom.getRoomName().equals( sRoom.getSelectedItem().toString() )) {
                 idRoom = meetingRoom.getId();
                 mId = nbRoom + 1;
+                topVide = false;
             }
+
         }
-        return idRoom;
+        return (idRoom);
     }
     // Gets the GuestList from the mail selected
     private List<Integer> getIdGuestFromGuestMailSelected() {
