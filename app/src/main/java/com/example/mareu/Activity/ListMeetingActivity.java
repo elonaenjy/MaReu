@@ -31,7 +31,6 @@ import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -113,7 +112,11 @@ public class ListMeetingActivity extends AppCompatActivity {
         switch (id) {
             case R.id.menu_sort_date: {
                 List<Meeting> lMeetingSort = setDateSorter();
-                adapter.setData( lMeetingSort);
+                try {
+                    viewModel.filtre( lMeetingSort);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
 
@@ -157,10 +160,19 @@ public class ListMeetingActivity extends AppCompatActivity {
             int month = datePicker.getMonth();
             int day = datePicker.getDayOfMonth();
             mCalendarPicker.set(year, month, day);
-            adapter.setData(filterMeetingsByDate(mCalendarPicker));
+            List<Meeting> lMeetingsFiltered = filterMeetingsByDate(mCalendarPicker);
+            try {
+                viewModel.filtre( lMeetingsFiltered);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         });
         builder.setNeutralButton(R.string.filter_reset_text, (dialog, id) -> {
-            adapter.setData(listMeetings);
+            try {
+                viewModel.deleteFilter( listMeetings);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         });
         builder.show();
     }
@@ -211,7 +223,12 @@ public class ListMeetingActivity extends AppCompatActivity {
 
         // Set the negative/no button click listener
         builder.setNeutralButton(R.string.filter_reset_text, (dialog, which) -> {
-            adapter.setData(listMeetings);
+            try {
+                viewModel.deleteFilter( listMeetings);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             FILTER_ROOM = null;
         });
 
@@ -241,7 +258,11 @@ public class ListMeetingActivity extends AppCompatActivity {
                     List<Integer> lRoomSelectedId = filterRoom(checkedRooms);
                     List<Meeting> lMeetingSelectedRoom = lMeetingsFilteredId(lRoomSelectedId);
                     dialog.dismiss();
-                    adapter.setData(lMeetingSelectedRoom);
+                    try {
+                        viewModel.filtre( lMeetingSelectedRoom);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     FILTER_ROOM = checkedRooms;
                 }
             });
@@ -310,8 +331,6 @@ public class ListMeetingActivity extends AppCompatActivity {
         if (requestCode == ADD_MEETING_REQUEST_COODE && resultCode == 10) {
             super.onActivityResult( requestCode, resultCode, data );
         }
-
-
     }
 
 }
