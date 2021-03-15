@@ -55,7 +55,6 @@ public class ListMeetingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         viewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
-
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
