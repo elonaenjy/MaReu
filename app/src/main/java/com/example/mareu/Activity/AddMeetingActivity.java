@@ -184,7 +184,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         guestsEmails.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());     // then separates them with a comma
     }
 
-
     /*************************************** SAVE REUNION ***********************************/
     // REUNION CREATION BUTTON - Creates the meeting
     private void createMeeting() {
@@ -224,19 +223,17 @@ public class AddMeetingActivity extends AppCompatActivity {
         }
     }
 
-
     // Gets the Room object from the Room name selected in the Spinner
     private long getRoomFromRoomNameSelected() {
         idRoom = 0;
         topVide = true;
-        for (int mId = 0; mId <= nbRoom; mId ++ ) {
+        for (int mId = 1; mId <= nbRoom; mId ++ ) {
             Room meetingRoom = lRooms.get( mId );
             if (meetingRoom.getRoomName().equals( sRoom.getSelectedItem().toString() )) {
                 idRoom = meetingRoom.getId();
                 mId = nbRoom + 1;
                 topVide = false;
             }
-
         }
         return (idRoom);
     }

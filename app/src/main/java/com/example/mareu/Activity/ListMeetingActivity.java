@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.ViewModels.MeetingViewModel;
 
@@ -34,7 +33,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 public class ListMeetingActivity extends AppCompatActivity {
@@ -42,15 +40,9 @@ public class ListMeetingActivity extends AppCompatActivity {
     public MeetingViewModel viewModel;
     public List<Meeting> listMeetings;
     public List<Room> lRoomMeeting = Room.generateRooms();
-    public List<Guest> lGuestMeeting = Guest.generateGuests();
 
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
-
     private int ADD_MEETING_REQUEST_COODE = 20000;
-
-    public Meeting aMeeting;
-    List<Meeting> listMeetingSort = new ArrayList<>();
-    private MyAdapter adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -64,9 +56,7 @@ public class ListMeetingActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         createNewMeetingAction();
-
     }
 
     //  ****************************************** INIT  *******************************************
@@ -94,7 +84,6 @@ public class ListMeetingActivity extends AppCompatActivity {
     }
 
     //  ****************************************** MENU ********************************************
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -103,45 +92,22 @@ public class ListMeetingActivity extends AppCompatActivity {
         return true;
     }
 
-    //  ****************************************** Sort and filter  ****************************************
-
+    //  ****************************************** filter  ****************************************
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.menu_sort_date: {
-                List<Meeting> lMeetingSort = setDateSorter();
-                try {
-                    viewModel.filtre( lMeetingSort);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-
             case R.id.menu_filter_date: {
                 setDateFilter();
                 return true;
             }
-
             case R.id.menu_filter_room: {
                 setRoomsFilter();
                 return true;
             }
-
             default:
                 return super.onOptionsItemSelected( item );
         }
-    }
-
-    public List<Meeting> setDateSorter() {
-        final List<Meeting> lMeetingsSort = listMeetings;
-        Collections.sort(lMeetingsSort, (o1, o2) -> {
-            if (o1.getMeetingStartDate() == null || o2.getMeetingStartDate() == null)
-                return 0;
-            return o1.getMeetingStartDate().compareTo(o2.getMeetingStartDate());
-        });
-        return lMeetingsSort;
     }
 
     private void setDateFilter() {
@@ -209,17 +175,13 @@ public class ListMeetingActivity extends AppCompatActivity {
             // Update the current focused item's checked status
             checkedRooms[which] = isChecked;
         });
-
         // Specify the dialog is not cancelable
         builder.setCancelable(false);
-
         // Set a title for alert dialog
         builder.setTitle(R.string.filter_rooms_text);
-
         // Set the positive/yes button click listener
         builder.setPositiveButton(R.string.filter_ok_text, (dialog, which) -> {
         });
-
         // Set the negative/no button click listener
         builder.setNeutralButton(R.string.filter_reset_text, (dialog, which) -> {
             try {
@@ -227,10 +189,8 @@ public class ListMeetingActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             FILTER_ROOM = null;
         });
-
         final AlertDialog dialog = builder.create();
         // Display the alert dialog on interface
         dialog.setOnShowListener(dialogInterface -> {
@@ -244,7 +204,6 @@ public class ListMeetingActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
                 // if no rooms checked, Toast to alert user
                 if (!atLeastOneChecked) {
                     Toast toastRoomNotSelected = Toast.makeText(getApplicationContext(), R.string.toast_room_not_selected, Toast.LENGTH_SHORT);
@@ -296,18 +255,22 @@ public class ListMeetingActivity extends AppCompatActivity {
         int nbMeetings = listMeetings.size();
         List<Meeting> lMeetingsFiltered = new ArrayList<>();
         int nbRoomSelected = lRoomSelectedId.size();
-        for (int i=0; i< nbMeetings; i++) {
-            for (int j = 0; j <nbRoomSelected; j++) {
-                if (listMeetings.get(i).getIdMeeting() == lRoomSelectedId.get(j)) {
-                      lMeetingsFiltered.add(listMeetings.get(i));
+        int i = 0;
+        while (i < nbRoomSelected) {
+            System.out.println("Room sélectionné : " + lRoomSelectedId.get(i) + " i : " + i );
+            for (int j = 0; j < nbMeetings; j++) {
+                System.out.println("Meeting idRoom: " +listMeetings.get(j).getIdRoom()+ " j : " + j );
+                int idRoom = lRoomSelectedId.get(i);
+                if (listMeetings.get(j).getIdRoom() == idRoom + 1) {
+                      lMeetingsFiltered.add(listMeetings.get(j));
                 }
             }
+            i = i + 1;
         }
         return lMeetingsFiltered;
     }
 
     //  ****************************************** ACTIONS  ****************************************
-
     private void createNewMeetingAction() {
         FloatingActionButton mButtonNewMeeting = findViewById( R.id.button_add_meeting );
         mButtonNewMeeting.setOnClickListener( v -> {
