@@ -257,15 +257,13 @@ public class ListMeetingActivity extends AppCompatActivity {
         int nbRoomSelected = lRoomSelectedId.size();
         int i = 0;
         while (i < nbRoomSelected) {
-            System.out.println("Room sélectionné : " + lRoomSelectedId.get(i) + " i : " + i );
             for (int j = 0; j < nbMeetings; j++) {
-                System.out.println("Meeting idRoom: " +listMeetings.get(j).getIdRoom()+ " j : " + j );
                 int idRoom = lRoomSelectedId.get(i);
                 if (listMeetings.get(j).getIdRoom() == idRoom + 1) {
                       lMeetingsFiltered.add(listMeetings.get(j));
                 }
             }
-            i = i + 1;
+            i ++;
         }
         return lMeetingsFiltered;
     }

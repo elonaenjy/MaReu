@@ -61,8 +61,10 @@ public class Meeting implements Serializable {
                         4,
                         6,
                         "Objet Réunion 4",
-                        new Date( String.valueOf( dateDeb ) ),
-                        new Date( String.valueOf( dateFin ) ),
+//                new Date( String.valueOf( dateDeb ) ),
+//                new Date( String.valueOf( dateFin ) ),
+                         new Date( 1623247200000L ),
+                         new Date( 1623250800000L ),
                         Arrays.asList( 14, 15 )
                 );
 
