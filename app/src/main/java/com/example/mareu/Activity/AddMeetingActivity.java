@@ -25,6 +25,7 @@ import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
+import com.example.mareu.ViewModels.MeetingViewModel;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -237,6 +238,8 @@ public class AddMeetingActivity extends AppCompatActivity {
         }
         return (idRoom);
     }
+
+
     // Gets the GuestList from the mail selected
     private List<Integer> getIdGuestFromGuestMailSelected() {
         List<Integer> lGuestId = new ArrayList<>();

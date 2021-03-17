@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -19,68 +20,42 @@ public class Meeting implements Serializable {
 
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
+        int idRoom = 0;
+        for (int j = 0; j<20 ; j++){
+            Meeting aMeeting = alimMeeting(j);
+            lMeetings.add( aMeeting );
+            System.out.println(aMeeting.getIdMeeting()+ "" + aMeeting.getMeetingSubject() + aMeeting.meetingStartDate + aMeeting.getMeetingEndDate());
+        }
+        return lMeetings;
+    }
 
-        Meeting eMeeting = new Meeting( 1,
-                1,
-                "Objet Réunion 1",
-                new Date( 1623247200000L ),
-                new Date( 1623250800000L ),
+    private static Meeting alimMeeting(int j) {
+        Calendar mCalendarDeb = Calendar.getInstance();
+        Calendar mCalendarFin = Calendar.getInstance();
+        int mAnnee = 2021;
+        int mMois = (int) (Math.random() * (11));
+        int mJour = (int) (Math.random() * (27));
+        int mHourDeb = (int) (Math.random() * (23));
+        int mHourFin = mHourDeb + 1;
+        if (mHourDeb >= 23) {
+            mHourFin = 1;
+            mJour++;
+        }
+        int mMinute = (int) (Math.random() * (58));
+        int idRoom = (int) (Math.random() * (10));
+        String mSubjectMeeting = "Objet de la reunion " + j;
+        mCalendarDeb.set( mAnnee, mMois, mJour, mHourDeb, mMinute );
+        mCalendarFin.set( mAnnee, mMois, mJour, mHourFin, mMinute );
+        Date dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        Date dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        Meeting aMeeting = new Meeting( System.currentTimeMillis(),
+                idRoom +1,
+                mSubjectMeeting,
+                 dateDebMeeting,
+                 dateFinMeeting,
                 Arrays.asList( 9, 5 ));
 
-        lMeetings.add(eMeeting );
-
-        eMeeting = new Meeting(
-                2,
-                3,
-                "Objet Réunion 2",
-                new Date( 1623247200000L ),
-                new Date( 1623250800000L ),
-                Arrays.asList( 4, 5, 6, 8 ));
-
-        lMeetings.add(eMeeting );
-
-        eMeeting = new Meeting(
-                        3,
-                        5,
-                        "Objet Réunion 3",
-                        new Date( 1623247200000L ),
-                        new Date( 1623250800000L ),
-                        Arrays.asList( 13, 12, 11, 10, 9, 8, 7 )
-                );
-
-        lMeetings.add(eMeeting );
-
-        String dateValue = "04/02/2011 20:27:05";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //  04/02/2011 20:27:05
-        Date dateDeb = sdf.parse(dateValue); // returns date object
-        dateValue = "04/02/2011 21:27:05";
-        sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //  04/02/2011 20:27:05
-        Date dateFin = sdf.parse(dateValue); // returns date object
-
-        eMeeting = new Meeting(
-                        4,
-                        6,
-                        "Objet Réunion 4",
-//                new Date( String.valueOf( dateDeb ) ),
-//                new Date( String.valueOf( dateFin ) ),
-                         new Date( 1623247200000L ),
-                         new Date( 1623250800000L ),
-                        Arrays.asList( 14, 15 )
-                );
-
-        lMeetings.add(eMeeting );
-
-        eMeeting = new Meeting(
-                        5,
-                        3,
-                        "Objet Réunion 5",
-                        new Date( 1623247200000L ),
-                        new Date( 1623250800000L ),
-                        Arrays.asList( 9, 5 )
-                );
-
-        lMeetings.add( eMeeting );
-        return lMeetings;
+         return aMeeting;
     }
 
     public long idMeeting;

@@ -41,9 +41,10 @@ public class MeetingViewModel extends ViewModel {
         this.lMeetingsRef.setValue(meetingList);
     }
 
+
     public void filtre(List<Meeting> meetingList) throws ParseException {
         List<Meeting> filtreListMeeting = getMeetings().getValue();
-                this.lMeetings.setValue(meetingList);
+        this.lMeetings.setValue(meetingList);
     }
     public void deleteFilter(List<Meeting> meetingList) throws ParseException {
         List<Meeting> filtreListMeeting = lMeetingsRef.getValue();
