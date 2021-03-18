@@ -6,7 +6,7 @@
     <color name="colorTextView">#000000</color>
     <color name="red">#FFF30707</color>
     <color name="white">#FFFFFFFF</color>
-    <color name = "addMeeting">#FFF30707</color>
+    <color name = "addMeeting">#FF5722</color>
     <color name="toast_add_meeting_color">#CE0A24</color>
 
 
