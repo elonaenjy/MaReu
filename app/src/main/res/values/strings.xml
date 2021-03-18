@@ -2,16 +2,12 @@
     <string name="app_name">Ma Réu</string>
     <string name="start_appli_screen_content_description">Ma Réu</string>
     <!--Filters texts-->
-    <string name="menu_sort_date">Trier par date</string>
     <string name="menu_filter_date">Filtrer par date</string>
     <string name="menu_filter_room">Filtrer par salle de réunion</string>
     <string name="filter_reset_text">Réinitialiser le filtre</string>
     <string name="filter_rooms_text">Sélectionnez les salles de réunion à afficher</string>
     <string name="filter_ok_text">Voir</string>
     <string name="toast_room_not_selected">Sélectionnez au moins une salle de réunion!</string>
-    <string name="activity_new_meeting">New Meeting</string>
-    <string name="action_settings">Settings</string>
-    <string name="large_text" />
     <string name="fab_new_meeting">Add a new meeting</string>
     <!--List Meeting Layout-->
     <string name="text_first_line">Subject - StartDate - Start Time - Room</string>
@@ -30,7 +26,5 @@
     <string name="toast_duration_empty">Renseignez la durée de la réunion!</string>
     <string name="toast_subject_empty">Saisir un objet à la réunion !</string>
     <string name="toast_room_empty">Sélectionnez la salle de réunion!</string>
-    <string name="toast_guests_empty">Saisissez au moins un invité!</string>
-    <string name="textview">TextView</string>
 
 </resources>

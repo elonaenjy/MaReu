@@ -11,12 +11,7 @@
             <item name="windowNoTitle">true</item>
         </style>
 
-        <style name="AppTheme.NoActionBar">
-            <item name="windowActionBar">false</item>
-            <item name="windowNoTitle">true</item>
-        </style>
-
-        <style name="AppTheme.ActionBar">
+    <style name="AppTheme.ActionBar">
             <item name="windowActionBar">true</item>
             <item name="windowNoTitle">true</item>
         </style>
