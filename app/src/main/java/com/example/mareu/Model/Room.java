@@ -34,7 +34,7 @@ public class Room {
         mImage = image;
     }
 
-    public long getId() {
+    public int getId() {
         return mId;
     }
 

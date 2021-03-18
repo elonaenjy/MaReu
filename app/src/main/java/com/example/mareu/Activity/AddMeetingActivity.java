@@ -27,6 +27,7 @@ import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     public Spinner sRoom;
     public MultiAutoCompleteTextView guestsEmails;
 
-    private long idRoom = 0;
+    private int idRoom = 0;
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
     private final Calendar timePickerCalendar = Calendar.getInstance();
@@ -199,6 +200,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         getRoomFromRoomNameSelected();
 
         List<Integer> lGuestId = getIdGuestFromGuestMailSelected();
+        int lGuestIdNb = lGuestId.size();
 
         // Avoids meeting creation if the duration is 0h0min *******************************
         if (mSubjectString.isEmpty()) {
@@ -207,6 +209,10 @@ public class AddMeetingActivity extends AppCompatActivity {
             toastCancelCreation( R.string.toast_duration_empty );
         } else if (topVide) {
             toastCancelCreation( R.string.toast_room_empty );
+        } else if (!checkRoomAvailability(idRoom, mStartDate, mEndDate)) {
+            toastCancelCreation( R.string.toast_room_not_available );
+        }else if (lGuestIdNb == 0) {
+            toastCancelCreation( R.string.toast_guest_empty );
         } else {
             Meeting mMeeting = new Meeting(
                     System.currentTimeMillis(),
@@ -232,6 +238,26 @@ public class AddMeetingActivity extends AppCompatActivity {
             }
         }
         return (idRoom);
+    }
+
+    // ROOM AVAILABILITY CHECKER
+    private boolean checkRoomAvailability(int roomId, Date startDate, Date endDate) {
+        boolean roomAvailable = false;
+        try {
+            for (Meeting meetingIterator : Meeting.generateMeetings()) {
+                if (roomId == (meetingIterator.getIdRoom())
+                        && ((startDate.after(meetingIterator.getMeetingStartDate())
+                        && startDate.before((meetingIterator.getMeetingEndDate())))
+                        || (endDate.after(meetingIterator.getMeetingStartDate())
+                        && endDate.before(meetingIterator.getMeetingEndDate())))) {
+                    roomAvailable = true;
+                    break;
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return roomAvailable;
     }
 
 

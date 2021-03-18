@@ -20,11 +20,10 @@ public class Meeting implements Serializable {
 
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
-        int idRoom = 0;
+
         for (int j = 0; j<20 ; j++){
             Meeting aMeeting = alimMeeting(j);
             lMeetings.add( aMeeting );
-            System.out.println(aMeeting.getIdMeeting()+ "" + aMeeting.getMeetingSubject() + aMeeting.meetingStartDate + aMeeting.getMeetingEndDate());
         }
         return lMeetings;
     }
@@ -60,7 +59,7 @@ public class Meeting implements Serializable {
 
     public long idMeeting;
 
-    public long idRoom;
+    public int idRoom;
 
     public String meetingSubject;
 
@@ -70,7 +69,7 @@ public class Meeting implements Serializable {
 
     public List<Integer> meetingGuestListId;
 
-    public Meeting(long idMeeting, long idRoom, String meetingSubject, Date meetingStartDate, Date meetingEndDate, List<Integer> meetingGuestListId) {
+    public Meeting(long idMeeting, int idRoom, String meetingSubject, Date meetingStartDate, Date meetingEndDate, List<Integer> meetingGuestListId) {
         this.idMeeting = idMeeting;
         this.idRoom = idRoom;
         this.meetingSubject = meetingSubject;
@@ -79,11 +78,7 @@ public class Meeting implements Serializable {
         this.meetingGuestListId = meetingGuestListId;
     }
 
-    public long getIdMeeting() {
-        return idMeeting;
-    }
-
-    public long getIdRoom() {
+    public int getIdRoom() {
         return idRoom;
     }
 
