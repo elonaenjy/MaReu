@@ -229,7 +229,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private long getRoomFromRoomNameSelected() {
         idRoom = 0;
         topVide = true;
-        for (int mId = 1; mId <= nbRoom; mId++) {
+        for (int mId = 0; mId < nbRoom; mId++) {
             Room meetingRoom = lRooms.get( mId );
             if (meetingRoom.getRoomName().equals( sRoom.getSelectedItem().toString() )) {
                 idRoom = meetingRoom.getId();
