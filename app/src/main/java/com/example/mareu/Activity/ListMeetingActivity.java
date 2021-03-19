@@ -238,14 +238,15 @@ public class ListMeetingActivity extends AppCompatActivity {
                     toastRoomNotSelected.show();
                 } else{
                     List<Integer> lRoomSelectedId=filterRoom(checkedRooms);
-                    List<Meeting> lMeetingSelectedRoom=lMeetingsFilteredId(lRoomSelectedId);
+                    List<Meeting> lMeetingsFiltered=lMeetingsFilteredId(lRoomSelectedId);
                     dialog.dismiss();
+                    showFilter(lMeetingsFiltered);
                     FILTER_ROOM=checkedRooms;
                 }
             });
         });
         dialog.show();
-        return null;
+                return null;
     }
 
     public String[]getRoomsAsStringList(){
@@ -278,8 +279,8 @@ public class ListMeetingActivity extends AppCompatActivity {
         int nbRoomSelected=lRoomSelectedId.size();
         int i=0;
         while(i<nbRoomSelected){
+            int idRoom=lRoomSelectedId.get(i);
             for(int j=0;j<nbMeetings; j++){
-                int idRoom=lRoomSelectedId.get(i);
                 if(listMeetings.get(j).getIdRoom()==idRoom+1){
                     lMeetingsFiltered.add(listMeetings.get(j));
                 }
@@ -302,14 +303,8 @@ public class ListMeetingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
             Meeting aMeeting=(Meeting)data.getSerializableExtra("MEETING");
-            addMeeting(aMeeting);
+            listMeetings.add(aMeeting);
             super.onActivityResult(requestCode,resultCode,data);
-        }
-    }
-
-    private void addMeeting(Meeting aMeeting) {
-    if (aMeeting != null) {
-        listMeetings.add( aMeeting );
         }
     }
 }
