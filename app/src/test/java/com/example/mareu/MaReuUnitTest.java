@@ -2,6 +2,7 @@ package com.example.mareu;
 
 import com.example.mareu.Activity.AddMeetingActivity;
 import com.example.mareu.Model.Meeting;
+import com.example.mareu.Util.CalledFunction;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,13 +28,6 @@ import static junit.framework.TestCase.assertEquals;
  */
 @RunWith(JUnit4.class)
 public class MaReuUnitTest {
-
-    @Before
-     public void setup() throws ParseException {
-         List<Meeting> lMeetings = initListe();
-         int listSize = lMeetings.size();
-       }
-
 
     /**
      * Test thats the generate listMmeeting is called when the activity begins the first time. So the list must be empty
@@ -65,46 +59,28 @@ public class MaReuUnitTest {
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 3,4,6 ) );
-        lMeetings.add( aMeeting );
+
+        CalledFunction.addMeeting( aMeeting, lMeetings );
+
         int finSize = lMeetings.size();
         int diffSize = finSize - debSize;
         assertEquals( 1, diffSize );
+
     }
-
-
     /**
      * Test  the FilterMeeting by Room  with a initlist with 7 itemst
      */
+    @Test
     public void FilterbyRoom() {
         List<Meeting> lMeetings = initListe();
-        List<Integer> lRoomSelectedId = Arrays.asList( 1, 2, 3 );
-        Assert.assertEquals( AddMeetingActivity. );
+        List<Integer> lRoomSelectedId = Arrays.asList( 1, 9 );
+        List<Meeting> lMeetingFiltered = new ArrayList<>();
+
+        lMeetingFiltered = CalledFunction.lMeetingsFilteredId(lRoomSelectedId, lMeetings);
+
+        int nbMeetingFiltered = lMeetingFiltered.size();
+        assertEquals (2, nbMeetingFiltered);
     }
-
-        // We create a list for each meeting, to check the list returned just contain the linked meeting
-        List<Meeting> listOne = new ArrayList<Meeting>( Collections.singleton(mMeetingOne));
-        List<Meeting> listTwo = new ArrayList<Meeting>(Collections.singleton(mMeetingTwo));
-        List<Meeting> listThree = new ArrayList<Meeting>(Collections.singleton(mMeetingThree));
-
-        calendar.set(2020, 5, 10, 8, 0); // meetingOne
-        // What is returned should just contain the meeting one
-        Assert.assertEquals(apiService.filterMeetingsByDate(calendar), listOne);
-        // and so meeting2 and meeting3 are not in the List
-        Assert.assertFalse(apiService.filterMeetingsByDate(calendar).contains(mMeetingTwo));
-        Assert.assertFalse(apiService.filterMeetingsByDate(calendar).contains(mMeetingThree));
-
-        calendar.set(2020, 5, 11, 8, 0); // meetingTwo
-        Assert.assertEquals(apiService.filterMeetingsByDate(calendar), listTwo);
-
-        calendar.set(2020, 5, 12, 8, 0); // meetingThree
-        Assert.assertEquals(apiService.filterMeetingsByDate(calendar), listThree);
-
-        calendar.set(9999, 9, 9, 8, 0);
-        // No Meeting should fit that date, so the list returned should be empty
-        Assert.assertTrue(apiService.filterMeetingsByDate(calendar).isEmpty());
-
-    }
-
 
 
 
@@ -190,6 +166,18 @@ public class MaReuUnitTest {
         aMeeting = new Meeting( System.currentTimeMillis(),
                 7,
                 "Objet Reunion 7",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 1,2,3,4,9, 5 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 13, 10, 00 );
+        mCalendarDeb.set( 2021, 02, 13, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                10,
+                "Objet Reunion 8",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 1,2,3,4,9, 5 ) );
