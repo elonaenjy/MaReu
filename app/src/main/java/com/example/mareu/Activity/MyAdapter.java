@@ -17,6 +17,7 @@ import com.example.mareu.Model.Guest;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
+import com.example.mareu.Util.CalledFunction;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -107,15 +108,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + listMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
-            deleteItem( position );
+            listMeetings = CalledFunction.deleteItem(position, listMeetings ) ;
             setData( listMeetings);
         } );
     }
 
-    private void deleteItem(int position) {
-        Meeting dMeeting = listMeetings.get( position );
-        listMeetings.remove( dMeeting );
-    }
 
     @Override
     public int getItemCount() {

@@ -302,8 +302,14 @@ public class ListMeetingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
             Meeting aMeeting=(Meeting)data.getSerializableExtra("MEETING");
-            listMeetings.add(aMeeting);
+            addMeeting(aMeeting);
             super.onActivityResult(requestCode,resultCode,data);
+        }
+    }
+
+    private void addMeeting(Meeting aMeeting) {
+    if (aMeeting != null) {
+        listMeetings.add( aMeeting );
         }
     }
 }
