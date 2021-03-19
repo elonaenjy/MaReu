@@ -1,8 +1,6 @@
 package com.example.mareu;
 
-import com.example.mareu.Activity.MyAdapter;
 import com.example.mareu.Model.Meeting;
-import com.example.mareu.Util.CalledFunction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,15 +32,14 @@ public class MaReuUnitTest {
        }
 
 
-
     /**
      * Test thats the generate listMmeeting is called when the activity begins the first time. So the list must be empty
      */
     @Test
     public void generateListWithSuccess() throws ParseException {
-        List<Meeting> lMeetings = initListe();
+        List<Meeting> lMeetings = Meeting.generateMeetings();
         int listSize = lMeetings.size();
-        assertEquals( 7, listSize );
+        assertEquals( 20, listSize );
     }
 
     /**
@@ -61,7 +58,7 @@ public class MaReuUnitTest {
         Date dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         Meeting aMeeting = new Meeting( System.currentTimeMillis(),
                 1,
-                "Objet Reunion 1",
+                "Sujet de la reunion",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 3,4,6 ) );
@@ -71,18 +68,6 @@ public class MaReuUnitTest {
         assertEquals( 1, diffSize );
     }
 
-    /**
-     * Test thats the add meeting function creates a new meeting to the list with a empty list
-     */
-    @Test
-    public void deleteListWithSuccess() throws ParseException {
-        List<Meeting> lMeetings = initListe();
-        int sizeDeb = lMeetings.size();
-        lMeetings = CalledFunction.deleteItem(2, lMeetings ) ;
-        int sizeFin = lMeetings.size();
-        int sizediff = sizeDeb - sizeFin;
-        assertEquals( 1, sizediff );
-    }
 
     private List<Meeting> initListe() {
         List<Meeting> lMeetings = new ArrayList<>();

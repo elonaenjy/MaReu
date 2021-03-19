@@ -17,7 +17,6 @@ import com.example.mareu.Model.Guest;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
-import com.example.mareu.Util.CalledFunction;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -52,8 +51,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
         //          meeting startDate
         //          Meeting subject
         //          Meeting GuestList
-
-
         //*************** id, name and image Room **************
         int mId = (int) listMeetings.get( position ).getIdRoom();
         String mRoomName = lRoomMeeting.get( mId - 1 ).getRoomName();
@@ -108,11 +105,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + listMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
-            listMeetings = CalledFunction.deleteItem(position, listMeetings ) ;
+            Meeting dMeeting = listMeetings.get( position );
+            listMeetings.remove( dMeeting );
             setData( listMeetings);
         } );
     }
-
 
     @Override
     public int getItemCount() {
@@ -121,7 +118,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
         else
             return 0;
     }
-
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView mMeetingRoomImage;
@@ -137,6 +133,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
             mButtonDeleteMeeting = itemView.findViewById( R.id.item_image_meeting_delete );
         }
     }
-
 }
 
