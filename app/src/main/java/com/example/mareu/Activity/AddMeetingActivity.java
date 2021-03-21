@@ -25,6 +25,7 @@ import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
+import com.example.mareu.Util.CalledFunction;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -39,6 +40,14 @@ public class AddMeetingActivity extends AppCompatActivity {
     private static final int DURATION_STEP_MINUTES = 15; // Duration interval for minutes
 
     private List<Meeting> listMeetings;
+
+    {
+        try {
+            listMeetings = Meeting.generateMeetings();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<Guest> listGuests = Guest.generateGuests();
     public List<Room> lRooms = Room.generateRooms();
@@ -189,7 +198,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         String mSubjectString = mSubject.getText().toString();
         mStartDate = getStartMeetingDateTimeFromSelection();
 
-
         //------ Meeting End Date alimentation = Meeting Start Date + Meeting duration
         Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTime( mStartDate );
@@ -209,10 +217,10 @@ public class AddMeetingActivity extends AppCompatActivity {
             toastCancelCreation( R.string.toast_duration_empty );
         } else if (topVide) {
             toastCancelCreation( R.string.toast_room_empty );
-        } else if (checkRoomAvailability(idRoom, mStartDate, mEndDate)) {
+        } else if (CalledFunction.checkRoomAvailability(idRoom, mStartDate, mEndDate, listMeetings)) {
             toastCancelCreation( R.string.toast_room_not_available );
         }else if (lGuestIdNb == 0) {
-            toastCancelCreation( R.string.toast_guest_empty );
+                        toastCancelCreation( R.string.toast_guest_empty );
         } else {
             Meeting mMeeting = new Meeting(
                     System.currentTimeMillis(),
@@ -240,25 +248,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         return (idRoom);
     }
 
-    // ROOM AVAILABILITY CHECKER
-    private boolean checkRoomAvailability(int roomId, Date startDate, Date endDate) {
-        boolean roomAvailable = false;
-        try {
-            for (Meeting meetingIterator : Meeting.generateMeetings()) {
-                if (roomId == (meetingIterator.getIdRoom())
-                        && ((startDate.after(meetingIterator.getMeetingStartDate())
-                        && startDate.before((meetingIterator.getMeetingEndDate())))
-                        || (endDate.after(meetingIterator.getMeetingStartDate())
-                        && endDate.before(meetingIterator.getMeetingEndDate())))) {
-                    roomAvailable = true;
-                    break;
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return roomAvailable;
-    }
 
 
     // Gets the GuestList from the mail selected

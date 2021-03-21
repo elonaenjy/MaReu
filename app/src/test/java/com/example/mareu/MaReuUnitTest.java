@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -28,6 +29,8 @@ import static junit.framework.TestCase.assertEquals;
  */
 @RunWith(JUnit4.class)
 public class MaReuUnitTest {
+
+    private Date datePicker;
 
     /**
      * Test thats the generate listMmeeting is called when the activity begins the first time. So the list must be empty
@@ -61,6 +64,7 @@ public class MaReuUnitTest {
                 Arrays.asList( 3,4,6 ) );
 
         CalledFunction.addMeeting( aMeeting, lMeetings );
+        assertTrue(lMeetings.contains( aMeeting ));
 
         int finSize = lMeetings.size();
         int diffSize = finSize - debSize;
@@ -68,7 +72,7 @@ public class MaReuUnitTest {
 
     }
     /**
-     * Test  the FilterMeeting by Room  with a initlist with 7 itemst
+     * Test  the FilterMeeting by Room  with a initlist with 7 items
      */
     @Test
     public void FilterbyRoom() {
@@ -81,20 +85,70 @@ public class MaReuUnitTest {
         int nbMeetingFiltered = lMeetingFiltered.size();
         assertEquals (2, nbMeetingFiltered);
     }
+    /**
+     * Test  the FilterMeeting by Date with a initlist with 7 items
+     */
+    @Test
+    public void FilterByDate() {
+        List<Meeting> lMeetings = initListe();
 
+        Calendar mCalendarPicker=Calendar.getInstance();
+        mCalendarPicker.set( 2021, 02, 20, 10, 00 );
+        List<Meeting> lMeetingsFiltered=CalledFunction.filterMeetingsByDate(2021, 02, 20,  lMeetings);
+        int nbMeetingSelected = lMeetingsFiltered.size();
+        assertEquals( 1, nbMeetingSelected  );
+    }
 
+    /**
+     * Test  the availability of a room
+     */
+    @Test
+    public void checkRoomAvailability() {
+        List<Meeting> lMeetings = initListe();
+        int idRoom = 1;
+        Calendar mCalendarDeb = Calendar.getInstance();
+        Calendar mCalendarFin = Calendar.getInstance();
+        mCalendarDeb.set( 2021, 02, 12, 10, 30 );
+        mCalendarFin.set( 2021, 02, 12, 11, 30 );
+        Date mStartDate = new Date( mCalendarDeb.getTimeInMillis() );
+        Date mEndDate = new Date( mCalendarFin.getTimeInMillis() );
+        boolean available = CalledFunction.checkRoomAvailability(  idRoom, mStartDate, mEndDate, lMeetings);
+        assertEquals(false, available);
+
+        mCalendarDeb = Calendar.getInstance();
+        mCalendarFin = Calendar.getInstance();
+        mCalendarDeb.set( 2021, 01, 01, 07, 30 );
+        mCalendarFin.set( 2021, 01, 01, 10, 30 );
+        mStartDate = new Date( mCalendarDeb.getTimeInMillis() );
+        mEndDate = new Date( mCalendarFin.getTimeInMillis() );
+        available = CalledFunction.checkRoomAvailability(  idRoom, mStartDate, mEndDate, lMeetings);
+        assertEquals(true, available);
+
+    }
 
     private List<Meeting> initListe() {
         List<Meeting> lMeetings = new ArrayList<>();
         Calendar mCalendarDeb = Calendar.getInstance();
         Calendar mCalendarFin = Calendar.getInstance();
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
         Date dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         Date dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         Meeting aMeeting = new Meeting( System.currentTimeMillis(),
                 1,
                 "Objet Reunion 1",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 3,4,6 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 20, 10, 00 );
+        mCalendarDeb.set( 2021, 02, 20, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                1,
+                "Objet Reunion filtre sur date1",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 3,4,6 ) );
@@ -112,7 +166,7 @@ public class MaReuUnitTest {
                 Arrays.asList( 9, 5 ) );
         lMeetings.add( aMeeting );
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
@@ -124,7 +178,7 @@ public class MaReuUnitTest {
         lMeetings.add( aMeeting );
 
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
@@ -136,7 +190,7 @@ public class MaReuUnitTest {
         lMeetings.add( aMeeting );
 
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
@@ -148,7 +202,7 @@ public class MaReuUnitTest {
         lMeetings.add( aMeeting );
 
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
          aMeeting = new Meeting( System.currentTimeMillis(),
@@ -160,7 +214,7 @@ public class MaReuUnitTest {
         lMeetings.add( aMeeting );
 
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
@@ -172,7 +226,7 @@ public class MaReuUnitTest {
         lMeetings.add( aMeeting );
 
         mCalendarDeb.set( 2021, 02, 13, 10, 00 );
-        mCalendarDeb.set( 2021, 02, 13, 11, 00 );
+        mCalendarFin.set( 2021, 02, 13, 11, 00 );
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),

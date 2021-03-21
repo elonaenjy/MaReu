@@ -128,7 +128,7 @@ public class ListMeetingActivity extends AppCompatActivity {
             int month=datePicker.getMonth();
             int day=datePicker.getDayOfMonth();
             mCalendarPicker.set(year,month,day);
-            List<Meeting> lMeetingsFiltered=filterMeetingsByDate(mCalendarPicker);
+            List<Meeting> lMeetingsFiltered=CalledFunction.filterMeetingsByDate(year, month, day, listMeetings);
             showFilter(lMeetingsFiltered);
 
         });
@@ -170,22 +170,6 @@ public class ListMeetingActivity extends AppCompatActivity {
         adapter.setData( listMeetings );
         adapter.notifyDataSetChanged();
     }
-
-    public List<Meeting> filterMeetingsByDate(Calendar datePicked){
-        final List<Meeting> meetings=listMeetings;
-        List<Meeting> lMeetingsFiltered=new ArrayList<>();
-        int size=meetings.size();
-        for(int e=0;e<size; e++){
-            Calendar mMeetingsCalendar=Calendar.getInstance();
-            mMeetingsCalendar.setTime(meetings.get(e).getMeetingStartDate());
-            if(datePicked.get(Calendar.YEAR)==mMeetingsCalendar.get(Calendar.YEAR)
-                    &&datePicked.get(Calendar.DAY_OF_YEAR)==mMeetingsCalendar.get(Calendar.DAY_OF_YEAR)){
-                lMeetingsFiltered.add(meetings.get(e));
-            }
-        }
-        return lMeetingsFiltered;
-    }
-
     public List<Meeting> setRoomsFilter(){
         // Build an AlertDialog
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
