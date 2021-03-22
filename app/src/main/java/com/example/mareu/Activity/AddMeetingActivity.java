@@ -217,7 +217,7 @@ public class AddMeetingActivity extends AppCompatActivity {
             toastCancelCreation( R.string.toast_duration_empty );
         } else if (topVide) {
             toastCancelCreation( R.string.toast_room_empty );
-        } else if (CalledFunction.checkRoomAvailability(idRoom, mStartDate, mEndDate, listMeetings)) {
+        } else if (!CalledFunction.checkRoomAvailability(idRoom, mStartDate, mEndDate, listMeetings)) {
             toastCancelCreation( R.string.toast_room_not_available );
         }else if (lGuestIdNb == 0) {
                         toastCancelCreation( R.string.toast_guest_empty );
