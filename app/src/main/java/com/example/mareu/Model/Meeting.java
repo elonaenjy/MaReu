@@ -21,10 +21,118 @@ public class Meeting implements Serializable {
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
 
-        for (int j = 0; j<20 ; j++){
-            Meeting aMeeting = alimMeeting(j);
-            lMeetings.add( aMeeting );
-        }
+//        for (int j = 0; j<20 ; j++){
+//            Meeting aMeeting = alimMeeting(j);
+//            lMeetings.add( aMeeting );
+//        }
+        Calendar mCalendarDeb = Calendar.getInstance();
+        Calendar mCalendarFin = Calendar.getInstance();
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
+        Date dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        Date dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        Meeting aMeeting = new Meeting( System.currentTimeMillis(),
+                1,
+                "Objet Reunion 1",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 3,4,6 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 20, 10, 00 );
+        mCalendarDeb.set( 2021, 02, 20, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                1,
+                "Objet Reunion filtre sur date1",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 3,4,6 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarDeb.set( 2021, 02, 12, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                2,
+                "Objet Reunion 2",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 9, 5 ) );
+        lMeetings.add( aMeeting );
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                3,
+                "Objet Reunion 3",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 6,7,8 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                4,
+                "Objet Reunion 4",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 3,4,5, 6 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                5,
+                "Objet Reunion 5",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 1, 2 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                6,
+                "Objet Reunion 6",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 5,6,7,8,10) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 12, 10, 00 );
+        mCalendarFin.set( 2021, 02, 12, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                7,
+                "Objet Reunion 7",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 1,2,3,4,9, 5 ) );
+        lMeetings.add( aMeeting );
+
+        mCalendarDeb.set( 2021, 02, 13, 10, 00 );
+        mCalendarFin.set( 2021, 02, 13, 11, 00 );
+        dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
+        dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
+        aMeeting = new Meeting( System.currentTimeMillis(),
+                10,
+                "Objet Reunion 8",
+                dateDebMeeting,
+                dateFinMeeting,
+                Arrays.asList( 1,2,3,4,9, 5 ) );
+        lMeetings.add( aMeeting );
         return lMeetings;
     }
 

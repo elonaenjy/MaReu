@@ -39,7 +39,7 @@ public class MaReuUnitTest {
     public void generateListWithSuccess() throws ParseException {
         List<Meeting> lMeetings = Meeting.generateMeetings();
         int listSize = lMeetings.size();
-        assertEquals( 20, listSize );
+        assertEquals( 9, listSize );
     }
 
     /**

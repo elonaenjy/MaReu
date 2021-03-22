@@ -123,7 +123,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         }
     }
 
-
     // DATEPICKER
     private void setStartDatePickerDialog() {
         final DatePickerDialog.OnDateSetListener startDate = (view, year, monthOfYear, dayOfMonth) -> {
@@ -248,8 +247,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         return (idRoom);
     }
 
-
-
     // Gets the GuestList from the mail selected
     private List<Integer> getIdGuestFromGuestMailSelected() {
         List<Integer> lGuestId = new ArrayList<>();
@@ -282,7 +279,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         setResult( RESULT_OK, resultIntent );
         finish();
     }
-
 
     private void toastCancelCreation(int intString) {
         Toast toastCreateMeeting = Toast.makeText( getApplicationContext(), intString, Toast.LENGTH_LONG );
@@ -338,6 +334,5 @@ public class AddMeetingActivity extends AppCompatActivity {
             // Invoke the superclass to handle it.
         }
         return super.onOptionsItemSelected( item );
-
     }
 }
