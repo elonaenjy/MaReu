@@ -1,6 +1,5 @@
 package com.example.mareu;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -13,12 +12,12 @@ import androidx.test.espresso.action.Tap;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.mareu.Activity.ListMeetingActivity;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.utils.DeleteViewAction;
+import com.example.mareu.Activity.ListMeetingActivity;
 
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsInstanceOf;
@@ -39,7 +38,6 @@ import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -49,7 +47,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsAnything.anything;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -57,8 +54,10 @@ import static org.junit.Assert.assertThat;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class InstrumentedTest {
+
     private static int INITIAL_LIST_SIZE = 0;
 
     static {
