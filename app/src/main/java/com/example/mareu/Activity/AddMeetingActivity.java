@@ -60,6 +60,12 @@ public class AddMeetingActivity extends AppCompatActivity {
     private final Calendar datePickerCalendar = Calendar.getInstance();
     private final Calendar timePickerCalendar = Calendar.getInstance();
 
+    private int daySelected;
+    private int monthSelected;
+    private int yearSelected;
+    private int hourSelected;
+    private int minuteSelected;
+
     private Room mRoom;
     private Date mStartDate;
     private NumberPicker durationMinutes, durationHours;
@@ -129,6 +135,10 @@ public class AddMeetingActivity extends AppCompatActivity {
             datePickerCalendar.set( Calendar.YEAR, year );
             datePickerCalendar.set( Calendar.MONTH, monthOfYear );
             datePickerCalendar.set( Calendar.DAY_OF_MONTH, dayOfMonth );
+            yearSelected = Calendar.YEAR;
+            monthSelected = Calendar.MONTH;
+            daySelected = Calendar.DAY_OF_MONTH;
+
             updateStartDateLabel();
         };
         startDatePickerText.setOnClickListener( v -> new DatePickerDialog( AddMeetingActivity.this, startDate, datePickerCalendar
@@ -146,17 +156,18 @@ public class AddMeetingActivity extends AppCompatActivity {
         final TimePickerDialog.OnTimeSetListener startTime = (view, hourOfDay, minute) -> {
             timePickerCalendar.set( Calendar.HOUR_OF_DAY, hourOfDay );
             timePickerCalendar.set( Calendar.MINUTE, minute );
-            updateStartTimeLabel();
+            hourSelected = hourOfDay;
+            minuteSelected = minute;
+            updateStartTimeLabel(hourSelected, minuteSelected);
         };
         startTimePickerText.setOnClickListener( v -> new TimePickerDialog( AddMeetingActivity.this, startTime, timePickerCalendar
                 .get( Calendar.HOUR ), timePickerCalendar.get( Calendar.MINUTE ),
                 true ).show() );
     }
 
-    private void updateStartTimeLabel() {
-        DateFormat timeFormat = DateFormat.getTimeInstance(
-                DateFormat.SHORT );
-        startTimePickerText.setText( timeFormat.format( timePickerCalendar.getTime() ) );
+    private void updateStartTimeLabel(int hourSelected, int minuteSelected) {
+        String timeTexte = hourSelected + " h " + minuteSelected;
+        startTimePickerText.setText( timeTexte );
     }
 
     // DURATION MINUTES
@@ -196,6 +207,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private void createMeeting() {
         String mSubjectString = mSubject.getText().toString();
         mStartDate = getStartMeetingDateTimeFromSelection();
+
 
         //------ Meeting End Date alimentation = Meeting Start Date + Meeting duration
         Calendar mCalendar = Calendar.getInstance();
@@ -296,8 +308,8 @@ public class AddMeetingActivity extends AppCompatActivity {
         Calendar mCalendar = Calendar.getInstance();
         // Replacing with a new value - date from datePicker, time from timePicker
         mCalendar.setTime( datePickerCalendar.getTime() );
-        mCalendar.set( Calendar.HOUR, timePickerCalendar.get( Calendar.HOUR ) );
-        mCalendar.set( Calendar.MINUTE, timePickerCalendar.get( Calendar.MINUTE ) );
+        mCalendar.set( Calendar.HOUR, hourSelected );
+        mCalendar.set( Calendar.MINUTE, minuteSelected );
         return mCalendar.getTime();
     }
 

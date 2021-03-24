@@ -15,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.mareu.Activity.StartActivity;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.utils.DeleteViewAction;
 import com.example.mareu.Activity.ListMeetingActivity;
@@ -39,10 +40,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsAnything.anything;
 import static org.hamcrest.core.IsNot.not;
@@ -69,23 +68,15 @@ public class InstrumentedTest {
     }
 
     @Rule
-    public final ActivityTestRule<ListMeetingActivity> mActivityRule =
-            new ActivityTestRule<>(ListMeetingActivity.class);
+    public final ActivityTestRule<StartActivity> mActivityRule =
+            new ActivityTestRule<>(StartActivity.class);
 
     @Before
     public void setUp() {
-        ListMeetingActivity mActivity = mActivityRule.getActivity();
+        StartActivity mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
     }
 
-    // Verify the launch of the start activity
-    @Test
-    public void startActivityTest() {
-        ViewInteraction frameLayout = onView(
-                allOf( withParent( withParent( IsInstanceOf.<View>instanceOf( android.widget.FrameLayout.class ) ) ),
-                        isDisplayed() ) );
-        frameLayout.check( matches( isDisplayed() ) );
-    }
 
     /**
      * We ensure that our recyclerview is displaying at least on item when we launch the app with an init liste
@@ -112,16 +103,16 @@ public class InstrumentedTest {
         // START DATE FILLING
         onView(withId(R.id.text_add_meeting_datepicker))
                 .perform(click());
-        onView(withClassName( Matchers.equalTo( DatePicker.class.getName()))).perform( PickerActions.setDate(2021, 1, 1));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 6, 6));
         onView(withText("OK")).perform(click());
         // START TIME FILLING
         onView(withId(R.id.text_add_meeting_timepicker))
                 .perform(click());
-        onView(withClassName(Matchers.equalTo( TimePicker.class.getName()))).perform(PickerActions.setTime(15, 0));
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15, 0));
         onView(withText("OK")).perform(click());
         // DURATION FILLING
         onView(withId(R.id.numberpicker_add_meeting_duration_hours_))
-                .perform(new GeneralClickAction( Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+                .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
         onView(withId(R.id.numberpicker_add_meeting_duration_minutes_))
                 .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
         // ROOM FILLING
@@ -132,7 +123,6 @@ public class InstrumentedTest {
         onView(withId(R.id.autocomplete_text_add_meeting_guests))
                 .perform(typeText("f"));
         onData(anything()).atPosition(1).perform(click());
-        onData(anything()).atPosition(2).perform(click());
 
         // Click on the creation button for a new meeting
         onView(withId(R.id.menu_overflow_button_create_meeting))
@@ -162,11 +152,8 @@ public class InstrumentedTest {
     // Verify the room is not available
     @Test
     public void addMeetingWithNotAvailableRoomThrowsToast() {
-        // Click on the creation button for a new meeting
-        onView(withId(R.id.button_add_meeting))
-                .perform(click());
-
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
+
         // Click on the creation button for a new meeting
         onView(withId(R.id.button_add_meeting))
                 .perform(click());
@@ -178,12 +165,12 @@ public class InstrumentedTest {
         // START DATE FILLING
         onView(withId(R.id.text_add_meeting_datepicker))
                 .perform(click());
-        onView(withClassName( Matchers.equalTo( DatePicker.class.getName()))).perform( PickerActions.setDate(2021, 1, 1));
+        onView(withClassName( Matchers.equalTo( DatePicker.class.getName()))).perform( PickerActions.setDate(2021,3 , 12));
         onView(withText("OK")).perform(click());
         // START TIME FILLING
         onView(withId(R.id.text_add_meeting_timepicker))
                 .perform(click());
-        onView(withClassName(Matchers.equalTo( TimePicker.class.getName()))).perform(PickerActions.setTime(15, 0));
+        onView(withClassName(Matchers.equalTo( TimePicker.class.getName()))).perform(PickerActions.setTime(10, 30));
         onView(withText("OK")).perform(click());
         // DURATION FILLING
         onView(withId(R.id.numberpicker_add_meeting_duration_hours_))
@@ -193,11 +180,19 @@ public class InstrumentedTest {
         // ROOM FILLING
         onView(withId(R.id.spinner_add_meeting_room))
                 .perform(click());
+        onData(anything()).atPosition(0).perform(click());
+
+        // GUESTS FILLING
+        onView(withId(R.id.autocomplete_text_add_meeting_guests))
+                .perform(typeText("f"));
         onData(anything()).atPosition(1).perform(click());
 
         // Click on the creation button for a new meeting
         onView(withId(R.id.menu_overflow_button_create_meeting))
-                .perform(doubleClick());
+                .perform(click());
+        // Click to confirm the création of the meeting
+        onView(withText(R.string.menu_creation_meeting))
+                .perform(click());
 
         // Result : We check that the Toast is displayed on screen
         onView(withText(R.string.toast_room_not_available)).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
