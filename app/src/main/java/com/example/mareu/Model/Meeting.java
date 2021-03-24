@@ -25,6 +25,11 @@ public class Meeting implements Serializable {
 //            Meeting aMeeting = alimMeeting(j);
 //            lMeetings.add( aMeeting );
 //        }
+ //       lMeetings = initList(lMeetings);
+        return lMeetings;
+    }
+     private static List<Meeting> initList(List<Meeting> lMeetings) {
+
         Calendar mCalendarDeb = Calendar.getInstance();
         Calendar mCalendarFin = Calendar.getInstance();
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
@@ -135,6 +140,7 @@ public class Meeting implements Serializable {
         lMeetings.add( aMeeting );
         return lMeetings;
     }
+
 
     private static Meeting alimMeeting(int j) {
         Calendar mCalendarDeb = Calendar.getInstance();
