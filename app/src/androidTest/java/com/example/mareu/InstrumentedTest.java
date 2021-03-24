@@ -1,6 +1,8 @@
 package com.example.mareu;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -20,7 +22,10 @@ import com.example.mareu.Model.Meeting;
 import com.example.mareu.utils.DeleteViewAction;
 import com.example.mareu.Activity.ListMeetingActivity;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,6 +38,7 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.doubleClick;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
@@ -42,6 +48,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsAnything.anything;
 import static org.hamcrest.core.IsNot.not;
@@ -211,32 +218,169 @@ public class InstrumentedTest {
     }
 
     @Test
-    public void filterMeetingByDate() {
-        // Open the overflow menu
-        onView(withId(R.id.menu_overflow_button_create_meeting))
-                .perform(click());
-        // Click on the item menu filter by date
-        onView(withText(R.string.menu_filter_date))
-                .perform(click());
-        // Pick a date, example 6th may 2020 ( 2 meetings hardcoded in DummyMaReuApiGenerator for this date )
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 5, 6));
-        onView(withText(R.string.filter_ok_text)).perform(click());
-        // We check that the count of items is 0 <-> Because 0 meetings in the initList
-        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
-        // #################### REPEAT for another date picked ! #####################
-        // Open the overflow menu
-        onView(withId(R.id.menu_overflow_button_create_meeting))
-                .perform(click());
-        // Click on the item menu filter by date
-        onView(withText(R.string.menu_filter_date))
-                .perform(click());
+    public void filtreByDate() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 300 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        // Pick another date, example 13th march 2021 ( 1 meeting ! )
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2021, 02, 13));
-        onView(withText(R.string.filter_ok_text)).perform(click());
-        // We check that the count of items is 1
-        onView(withId(R.id.list_recycler_view)).check(withItemCount(1));
+        ViewInteraction actionMenuItemView = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 250 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par date" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView.perform( click() );
+
+        ViewInteraction materialButton = onView(
+                allOf( withId( android.R.id.button1 ), withText( "Voir" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                3 ) ) );
+        materialButton.perform( scrollTo(), click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 300 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
+
+        ViewInteraction actionMenuItemView2 = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView2.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 250 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView2 = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par date" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView2.perform( click() );
+
+        ViewInteraction materialButton2 = onView(
+                allOf( withId( android.R.id.button3 ), withText( "Réinitialiser le filtre" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                0 ) ) );
+        materialButton2.perform( scrollTo(), click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 300 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction actionMenuItemView3 = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView3.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 250 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView3 = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par date" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView3.perform( click() );
+
+        ViewInteraction materialButton3 = onView(
+                allOf( withId( android.R.id.button1 ), withText( "Voir" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                3 ) ) );
+        materialButton3.perform( scrollTo(), click() );
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
+
     }
 
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText( "Child at position " + position + " in parent " );
+                parentMatcher.describeTo( description );
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches( parent )
+                        && view.equals( ((ViewGroup) parent).getChildAt( position ) );
+            }
+        };
+    }
 
 }
