@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CalledFunction {
+public class Repository {
 
     public static List<Meeting> addMeeting(Meeting aMeeting, List<Meeting> listMeetings) {
         if (aMeeting != null) {

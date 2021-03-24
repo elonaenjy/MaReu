@@ -25,7 +25,7 @@ import com.example.mareu.Model.Meeting;
 
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-import com.example.mareu.Util.CalledFunction;
+import com.example.mareu.Util.Repository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -128,7 +128,7 @@ public class ListMeetingActivity extends AppCompatActivity {
             int month=datePicker.getMonth();
             int day=datePicker.getDayOfMonth();
             mCalendarPicker.set(year,month,day);
-            List<Meeting> lMeetingsFiltered=CalledFunction.filterMeetingsByDate(year, month, day, listMeetings);
+            List<Meeting> lMeetingsFiltered=Repository.filterMeetingsByDate(year, month, day, listMeetings);
             showFilter(lMeetingsFiltered);
 
         });
@@ -223,7 +223,7 @@ public class ListMeetingActivity extends AppCompatActivity {
                     toastRoomNotSelected.show();
                 } else{
                     List<Integer> lRoomSelectedId=filterRoom(checkedRooms);
-                    List<Meeting> lMeetingsFiltered=CalledFunction.lMeetingsFilteredId(lRoomSelectedId,listMeetings);
+                    List<Meeting> lMeetingsFiltered=Repository.lMeetingsFilteredId(lRoomSelectedId,listMeetings);
                     dialog.dismiss();
                     showFilter(lMeetingsFiltered);
                     FILTER_ROOM=checkedRooms;
@@ -272,7 +272,7 @@ public class ListMeetingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
             Meeting aMeeting=(Meeting)data.getSerializableExtra("MEETING");
-            CalledFunction.addMeeting(aMeeting, listMeetings);
+            Repository.addMeeting(aMeeting, listMeetings);
             super.onActivityResult(requestCode,resultCode,data);
         }
     }

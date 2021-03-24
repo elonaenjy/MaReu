@@ -25,7 +25,7 @@ import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-import com.example.mareu.Util.CalledFunction;
+import com.example.mareu.Util.Repository;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class AddMeetingActivity extends AppCompatActivity {
     public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
@@ -154,20 +155,18 @@ public class AddMeetingActivity extends AppCompatActivity {
     // TIMEPICKER
     private void setStartTimePickerDialog() {
         final TimePickerDialog.OnTimeSetListener startTime = (view, hourOfDay, minute) -> {
-            timePickerCalendar.set( Calendar.HOUR_OF_DAY, hourOfDay );
-            timePickerCalendar.set( Calendar.MINUTE, minute );
-            hourSelected = hourOfDay;
-            minuteSelected = minute;
-            updateStartTimeLabel(hourSelected, minuteSelected);
+            timePickerCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            timePickerCalendar.set(Calendar.MINUTE, minute);
+            updateStartTimeLabel();
         };
-        startTimePickerText.setOnClickListener( v -> new TimePickerDialog( AddMeetingActivity.this, startTime, timePickerCalendar
-                .get( Calendar.HOUR ), timePickerCalendar.get( Calendar.MINUTE ),
-                true ).show() );
+        startTimePickerText.setOnClickListener(v -> new TimePickerDialog(AddMeetingActivity.this, startTime, timePickerCalendar
+                .get(Calendar.HOUR), timePickerCalendar.get(Calendar.MINUTE),
+                true).show());
     }
 
-    private void updateStartTimeLabel(int hourSelected, int minuteSelected) {
-        String timeTexte = hourSelected + " h " + minuteSelected;
-        startTimePickerText.setText( timeTexte );
+    private void updateStartTimeLabel() {
+        DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+        startTimePickerText.setText(timeFormat.format(timePickerCalendar.getTime()));
     }
 
     // DURATION MINUTES
@@ -208,9 +207,10 @@ public class AddMeetingActivity extends AppCompatActivity {
         String mSubjectString = mSubject.getText().toString();
         mStartDate = getStartMeetingDateTimeFromSelection();
 
-
         //------ Meeting End Date alimentation = Meeting Start Date + Meeting duration
+
         Calendar mCalendar = Calendar.getInstance();
+        timePickerCalendar.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         mCalendar.setTime( mStartDate );
         mCalendar.add( Calendar.HOUR_OF_DAY, durationHours.getValue() );
         mCalendar.add( Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES );
@@ -228,7 +228,7 @@ public class AddMeetingActivity extends AppCompatActivity {
             toastCancelCreation( R.string.toast_duration_empty );
         } else if (topVide) {
             toastCancelCreation( R.string.toast_room_empty );
-        } else if (!CalledFunction.checkRoomAvailability(idRoom, mStartDate, mEndDate, listMeetings)) {
+        } else if (!Repository.checkRoomAvailability(idRoom, mStartDate, mEndDate, listMeetings)) {
             toastCancelCreation( R.string.toast_room_not_available );
         }else if (lGuestIdNb == 0) {
                         toastCancelCreation( R.string.toast_guest_empty );
@@ -307,9 +307,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         // Creating a calendar
         Calendar mCalendar = Calendar.getInstance();
         // Replacing with a new value - date from datePicker, time from timePicker
-        mCalendar.setTime( datePickerCalendar.getTime() );
-        mCalendar.set( Calendar.HOUR, hourSelected );
-        mCalendar.set( Calendar.MINUTE, minuteSelected );
+        mCalendar.setTime(datePickerCalendar.getTime());
+        mCalendar.set(Calendar.HOUR, timePickerCalendar.get(Calendar.HOUR));
+        mCalendar.set(Calendar.MINUTE, timePickerCalendar.get(Calendar.MINUTE));
         return mCalendar.getTime();
     }
 

@@ -21,11 +21,7 @@ public class Meeting implements Serializable {
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
 
-//        for (int j = 0; j<20 ; j++){
-//            Meeting aMeeting = alimMeeting(j);
-//            lMeetings.add( aMeeting );
-//        }
- //       lMeetings = initList(lMeetings);
+       lMeetings = initList(lMeetings);
         return lMeetings;
     }
      private static List<Meeting> initList(List<Meeting> lMeetings) {
