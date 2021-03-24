@@ -221,8 +221,8 @@ public class InstrumentedTest {
         // Pick a date, example 6th may 2020 ( 2 meetings hardcoded in DummyMaReuApiGenerator for this date )
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 5, 6));
         onView(withText(R.string.filter_ok_text)).perform(click());
-        // We check that the count of items is 2 <-> Because 2 meetings hardcoded in DummyMaReuApiGenerator
-        onView(withId(R.id.list_recycler_view)).check(withItemCount(2));
+        // We check that the count of items is 0 <-> Because 0 meetings in the initList
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
         // #################### REPEAT for another date picked ! #####################
         // Open the overflow menu
         onView(withId(R.id.menu_overflow_button_create_meeting))
@@ -231,11 +231,11 @@ public class InstrumentedTest {
         onView(withText(R.string.menu_filter_date))
                 .perform(click());
 
-        // Pick another date, example 6th may 2019 ( 0 meetings ! )
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2019, 5, 6));
+        // Pick another date, example 13th march 2021 ( 1 meeting ! )
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2021, 02, 13));
         onView(withText(R.string.filter_ok_text)).perform(click());
-        // We check that the count of items is 0
-        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
+        // We check that the count of items is 1
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(1));
     }
 
 
