@@ -302,9 +302,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         mCalendar.set(Calendar.MINUTE, timePickerCalendar.get(Calendar.MINUTE));
         mCalendar.set(Calendar.AM_PM, timePickerCalendar.get(Calendar.AM_PM));
 
-//       final int ampm = timePickerCalendar.get(Calendar.AM_PM);
-//            mCalendar.set(Calendar.AM_PM,ampm);
-
         return mCalendar.getTime();
     }
 
