@@ -6,6 +6,7 @@ import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.GeneralClickAction;
 import androidx.test.espresso.action.GeneralLocation;
@@ -87,6 +88,12 @@ public class InstrumentedTest {
      */
     @Test
     public void MaReuList_shouldNotBeEmpty() {
+        try {
+            Thread.sleep( 900 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // First scroll to the position that needs to be matched and click on it.
         onView(withId(R.id.list_recycler_view)).check(matches(hasMinimumChildCount(1)));
     }
@@ -94,6 +101,11 @@ public class InstrumentedTest {
     // Verify the add action contributes to create a new item in the list
     @Test
     public void addMeetingWithSucess() {
+        try {
+            Thread.sleep( 900 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
         // Click on the creation button for a new meeting
@@ -141,6 +153,11 @@ public class InstrumentedTest {
     // Verify a subject is given
     @Test
     public void addMeetingWithMissingSubjectThrowsToast() {
+        try {
+            Thread.sleep( 900 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Click on the creation button for a new meeting
         onView(withId(R.id.button_add_meeting))
                 .perform(click());
@@ -156,6 +173,11 @@ public class InstrumentedTest {
     // Verify the room is not available
     @Test
     public void addMeetingWithNotAvailableRoomThrowsToast() {
+        try {
+            Thread.sleep( 900 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
 
         // Click on the creation button for a new meeting
@@ -205,6 +227,11 @@ public class InstrumentedTest {
     // Verify the delete action suppress one item in the list
     @Test
     public void deleteMeetingWithSuccess() {
+        try {
+            Thread.sleep( 900 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
         // Push on delete button for meeting at index = 1
@@ -220,7 +247,7 @@ public class InstrumentedTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep( 300 );
+            Thread.sleep( 900 );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -239,7 +266,7 @@ public class InstrumentedTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep( 250 );
+            Thread.sleep( 650 );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -267,7 +294,7 @@ public class InstrumentedTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep( 300 );
+            Thread.sleep( 600 );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -287,7 +314,7 @@ public class InstrumentedTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep( 250 );
+            Thread.sleep( 650 );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -310,6 +337,178 @@ public class InstrumentedTest {
                                         0 ),
                                 0 ) ) );
         materialButton2.perform( scrollTo(), click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 600 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction actionMenuItemView3 = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView3.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 650 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView3 = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par date" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView3.perform( click() );
+
+        ViewInteraction materialButton3 = onView(
+                allOf( withId( android.R.id.button1 ), withText( "Voir" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                3 ) ) );
+        materialButton3.perform( scrollTo(), click() );
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
+
+    }
+    @Test
+    public void filterByRoom() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 600 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction actionMenuItemView = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 250 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par salle de réunion" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView.perform( click() );
+
+        DataInteraction appCompatCheckedTextView = onData( Matchers.anything() )
+                .inAdapterView( allOf( withClassName( Matchers.is( "com.android.internal.app.AlertController$RecycleListView" ) ),
+                        childAtPosition(
+                                withClassName( Matchers.is( "android.widget.FrameLayout" ) ),
+                                0 ) ) )
+                .atPosition( 5 );
+        appCompatCheckedTextView.perform( click() );
+
+        ViewInteraction materialButton = onView(
+                allOf( withId( android.R.id.button1 ), withText( "Voir" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                3 ) ) );
+        materialButton.perform( scrollTo(), click() );
+
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(1));
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 300 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction actionMenuItemView2 = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView2.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 250 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView2 = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par salle de réunion" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView2.perform( click() );
+
+        DataInteraction appCompatCheckedTextView2 = onData( Matchers.anything() )
+                .inAdapterView( allOf( withClassName( Matchers.is( "com.android.internal.app.AlertController$RecycleListView" ) ),
+                        childAtPosition(
+                                withClassName( Matchers.is( "android.widget.FrameLayout" ) ),
+                                0 ) ) )
+                .atPosition( 5 );
+        appCompatCheckedTextView2.perform( click() );
+
+        ViewInteraction materialButton2 = onView(
+                allOf( withId( android.R.id.button1 ), withText( "Voir" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                3 ) ) );
+        materialButton2.perform( scrollTo(), click() );
+
+        ViewInteraction materialButton3 = onView(
+                allOf( withId( android.R.id.button3 ), withText( "Réinitialiser le filtre" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                0 ) ) );
+        materialButton3.perform( scrollTo(), click() );
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -340,7 +539,7 @@ public class InstrumentedTest {
         }
 
         ViewInteraction materialTextView3 = onView(
-                allOf( withId( R.id.title ), withText( "Filtrer par date" ),
+                allOf( withId( R.id.title ), withText( "Filtrer par salle de réunion" ),
                         childAtPosition(
                                 childAtPosition(
                                         withId( R.id.content ),
@@ -349,16 +548,71 @@ public class InstrumentedTest {
                         isDisplayed() ) );
         materialTextView3.perform( click() );
 
-        ViewInteraction materialButton3 = onView(
+        DataInteraction appCompatCheckedTextView3 = onData( Matchers.anything() )
+                .inAdapterView( allOf( withClassName( Matchers.is( "com.android.internal.app.AlertController$RecycleListView" ) ),
+                        childAtPosition(
+                                withClassName( Matchers.is( "android.widget.FrameLayout" ) ),
+                                0 ) ) )
+                .atPosition( 10 );
+        appCompatCheckedTextView3.perform( click() );
+
+        ViewInteraction materialButton4 = onView(
                 allOf( withId( android.R.id.button1 ), withText( "Voir" ),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName( Matchers.is( "android.widget.ScrollView" ) ),
                                         0 ),
                                 3 ) ) );
-        materialButton3.perform( scrollTo(), click() );
+        materialButton4.perform( scrollTo(), click() );
+
         onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
 
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 300 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction actionMenuItemView4 = onView(
+                allOf( withId( R.id.menu_overflow_button_create_meeting ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.toolbar ),
+                                        1 ),
+                                0 ),
+                        isDisplayed() ) );
+        actionMenuItemView4.perform( click() );
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 250 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction materialTextView4 = onView(
+                allOf( withId( R.id.title ), withText( "Filtrer par salle de réunion" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.content ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        materialTextView4.perform( click() );
+
+        ViewInteraction materialButton5 = onView(
+                allOf( withId( android.R.id.button3 ), withText( "Réinitialiser le filtre" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName( Matchers.is( "android.widget.ScrollView" ) ),
+                                        0 ),
+                                0 ) ) );
+        materialButton5.perform( scrollTo(), click() );
     }
 
     private static Matcher<View> childAtPosition(
