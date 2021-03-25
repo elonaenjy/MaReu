@@ -20,13 +20,11 @@ import androidx.test.rule.ActivityTestRule;
 import com.example.mareu.Activity.StartActivity;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.utils.DeleteViewAction;
-import com.example.mareu.Activity.ListMeetingActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -83,7 +81,6 @@ public class InstrumentedTest {
         StartActivity mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
     }
-
 
     /**
      * We ensure that our recyclerview is displaying at least on item when we launch the app with an init liste
