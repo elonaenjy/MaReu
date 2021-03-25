@@ -128,6 +128,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     // DATEPICKER
     private void setStartDatePickerDialog() {
         final DatePickerDialog.OnDateSetListener startDate = (view, year, monthOfYear, dayOfMonth) -> {
+            datePickerCalendar.setTimeZone( TimeZone.getTimeZone( "Europe/Paris" ) );
             datePickerCalendar.set( Calendar.YEAR, year );
             datePickerCalendar.set( Calendar.MONTH, monthOfYear );
             datePickerCalendar.set( Calendar.DAY_OF_MONTH, dayOfMonth );
