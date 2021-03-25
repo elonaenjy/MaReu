@@ -47,7 +47,7 @@ public class ListMeetingActivity extends AppCompatActivity {
     public List<Room> lRoomMeeting = Room.generateRooms();
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
     private Menu menu;
-    private int ADD_MEETING_REQUEST_COODE = 20000;
+    private final int ADD_MEETING_REQUEST_COODE = 20000;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );

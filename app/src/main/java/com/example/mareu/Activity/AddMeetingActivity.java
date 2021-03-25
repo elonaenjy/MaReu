@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class AddMeetingActivity extends AppCompatActivity {
@@ -58,14 +59,8 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     private int idRoom = 0;
 
-    private final Calendar datePickerCalendar = Calendar.getInstance();
-    private final Calendar timePickerCalendar = Calendar.getInstance();
-
-    private int daySelected;
-    private int monthSelected;
-    private int yearSelected;
-    private int hourSelected;
-    private int minuteSelected;
+    private final Calendar datePickerCalendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"), Locale.FRANCE);
+    private final Calendar timePickerCalendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"), Locale.FRANCE);
 
     private Room mRoom;
     private Date mStartDate;
@@ -136,10 +131,6 @@ public class AddMeetingActivity extends AppCompatActivity {
             datePickerCalendar.set( Calendar.YEAR, year );
             datePickerCalendar.set( Calendar.MONTH, monthOfYear );
             datePickerCalendar.set( Calendar.DAY_OF_MONTH, dayOfMonth );
-            yearSelected = Calendar.YEAR;
-            monthSelected = Calendar.MONTH;
-            daySelected = Calendar.DAY_OF_MONTH;
-
             updateStartDateLabel();
         };
         startDatePickerText.setOnClickListener( v -> new DatePickerDialog( AddMeetingActivity.this, startDate, datePickerCalendar
@@ -209,8 +200,8 @@ public class AddMeetingActivity extends AppCompatActivity {
 
         //------ Meeting End Date alimentation = Meeting Start Date + Meeting duration
 
-        Calendar mCalendar = Calendar.getInstance();
-        timePickerCalendar.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        Calendar mCalendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"), Locale.FRANCE);
+
         mCalendar.setTime( mStartDate );
         mCalendar.add( Calendar.HOUR_OF_DAY, durationHours.getValue() );
         mCalendar.add( Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES );
@@ -305,7 +296,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     // Get Date & Time from the pickers
     private Date getStartMeetingDateTimeFromSelection() {
         // Creating a calendar
-        Calendar mCalendar = Calendar.getInstance();
+       Calendar mCalendar = Calendar.getInstance(TimeZone.getTimeZone("Euope/Paris"), Locale.FRANCE);
         // Replacing with a new value - date from datePicker, time from timePicker
         mCalendar.setTime(datePickerCalendar.getTime());
         mCalendar.set(Calendar.HOUR, timePickerCalendar.get(Calendar.HOUR));
@@ -313,13 +304,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         return mCalendar.getTime();
     }
 
-    private Date getEndMeetingDateTimeFromSelection() {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTime( mStartDate );
-        mCalendar.add( Calendar.HOUR_OF_DAY, durationHours.getValue() );
-        mCalendar.add( Calendar.MINUTE, durationMinutes.getValue() * DURATION_STEP_MINUTES );
-        return mCalendar.getTime();
-    }
 
     /*************************************** MENU *****************************************/
     @Override

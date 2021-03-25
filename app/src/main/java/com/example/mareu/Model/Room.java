@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Room {
 
-    private int mId;
-    private String mRoomName;
-    private int mImage;
+    private final int mId;
+    private final String mRoomName;
+    private final int mImage;
     private static final List<Room> DUMMY_ROOMS = Arrays.asList(
             new Room( 1, "Etretat", R.raw.etretat),
             new Room( 2, "Himalaya",  R.raw.himalaya ),

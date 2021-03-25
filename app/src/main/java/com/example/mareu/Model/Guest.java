@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Guest {
-    private int mId;
-    private String mGuestName;
-    private String mGuestUrl;
-    private String mGuestMail;
+    private final int mId;
+    private final String mGuestName;
+    private final String mGuestUrl;
+    private final String mGuestMail;
 
     public Guest(int id, String guestName, String avatarUrl, String guestMail) {
         mId = id;
@@ -17,7 +17,7 @@ public class Guest {
         mGuestMail = guestMail;
     }
 
-    private static List<Guest> DUMMY_GUESTS = Arrays.asList(
+    private static final List<Guest> DUMMY_GUESTS = Arrays.asList(
             new Guest(1, "Paul", "http://clipart-library.com/data_images/163977.jpg", "Paul@lamzone.com.fr"),
             new Guest(2, "Phil", "http://clipart-library.com/newhp/kAibeA8c4.png", "Phil@lamzone.com"),
             new Guest(3, "Guillaume", "http://clipart-library.com/data_images/163960.png", "Guillaume@lamzone.com"),
