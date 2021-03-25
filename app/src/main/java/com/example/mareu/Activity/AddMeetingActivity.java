@@ -147,6 +147,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     // TIMEPICKER
     private void setStartTimePickerDialog() {
         final TimePickerDialog.OnTimeSetListener startTime = (view, hourOfDay, minute) -> {
+            datePickerCalendar.setTimeZone( TimeZone.getTimeZone( "Europe/Paris" ) );
             timePickerCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
             timePickerCalendar.set(Calendar.MINUTE, minute);
             updateStartTimeLabel();
@@ -297,7 +298,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     // Get Date & Time from the pickers
     private Date getStartMeetingDateTimeFromSelection() {
         // Creating a calendar
-       Calendar mCalendar = Calendar.getInstance(TimeZone.getTimeZone("Euope/Paris"), Locale.FRANCE);
+       Calendar mCalendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"), Locale.FRANCE);
         // Replacing with a new value - date from datePicker, time from timePicker
         mCalendar.setTime(datePickerCalendar.getTime());
         mCalendar.set(Calendar.HOUR, timePickerCalendar.get(Calendar.HOUR));
