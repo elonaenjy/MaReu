@@ -21,11 +21,11 @@ public class Meeting implements Serializable {
     public static List<Meeting> generateMeetings() throws ParseException {
         List<Meeting> lMeetings = new ArrayList<Meeting>();
 
-       lMeetings = initList(lMeetings);
+   //    lMeetings = initList(lMeetings);
         return lMeetings;
     }
      private static List<Meeting> initList(List<Meeting> lMeetings) {
-
+// Method used for technical test during the developpment
         Calendar mCalendarDeb = Calendar.getInstance();
         Calendar mCalendarFin = Calendar.getInstance();
         mCalendarDeb.set( 2021, 02, 12, 10, 00 );
