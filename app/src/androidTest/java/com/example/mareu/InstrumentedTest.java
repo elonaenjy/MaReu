@@ -84,10 +84,10 @@ public class InstrumentedTest {
     }
 
     /**
-     * We ensure that our recyclerview is displaying at least on item when we launch the app with an init liste
+     * We ensure that our recyclerview is displaying at least on item when we launch the app
      */
     @Test
-    public void MaReuList_shouldNotBeEmpty() {
+    public void MaReuList_shouldBeEmptyAtBegin() {
         try {
             Thread.sleep( 900 );
         } catch (InterruptedException e) {
@@ -95,7 +95,7 @@ public class InstrumentedTest {
         }
 
         // First scroll to the position that needs to be matched and click on it.
-        onView(withId(R.id.list_recycler_view)).check(matches(hasMinimumChildCount(1)));
+        onView(withId(R.id.list_recycler_view)).check(matches(hasMinimumChildCount(0)));
     }
 
     // Verify the add action contributes to create a new item in the list
@@ -173,13 +173,8 @@ public class InstrumentedTest {
     // Verify the room is not available
     @Test
     public void addMeetingWithNotAvailableRoomThrowsToast() {
-        try {
-            Thread.sleep( 900 );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
-
         // Click on the creation button for a new meeting
         onView(withId(R.id.button_add_meeting))
                 .perform(click());
@@ -191,23 +186,22 @@ public class InstrumentedTest {
         // START DATE FILLING
         onView(withId(R.id.text_add_meeting_datepicker))
                 .perform(click());
-        onView(withClassName( Matchers.equalTo( DatePicker.class.getName()))).perform( PickerActions.setDate(2021,3 , 12));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 6, 6));
         onView(withText("OK")).perform(click());
         // START TIME FILLING
         onView(withId(R.id.text_add_meeting_timepicker))
                 .perform(click());
-        onView(withClassName(Matchers.equalTo( TimePicker.class.getName()))).perform(PickerActions.setTime(10, 30));
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15, 0));
         onView(withText("OK")).perform(click());
         // DURATION FILLING
         onView(withId(R.id.numberpicker_add_meeting_duration_hours_))
-                .perform(new GeneralClickAction( Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+                .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
         onView(withId(R.id.numberpicker_add_meeting_duration_minutes_))
                 .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
         // ROOM FILLING
         onView(withId(R.id.spinner_add_meeting_room))
                 .perform(click());
-        onData(anything()).atPosition(0).perform(click());
-
+        onData(anything()).atPosition(1).perform(click());
         // GUESTS FILLING
         onView(withId(R.id.autocomplete_text_add_meeting_guests))
                 .perform(typeText("f"));
@@ -216,7 +210,51 @@ public class InstrumentedTest {
         // Click on the creation button for a new meeting
         onView(withId(R.id.menu_overflow_button_create_meeting))
                 .perform(click());
-        // Click to confirm the création of the meeting
+        // Click on the item menu filter by date
+        onView(withText(R.string.menu_creation_meeting))
+                .perform(click());
+        // Result : We check that the count of items is equal to INITIAL_LIST_SIZE+1
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE + 1));
+
+        /// first meeting created. Create a new meeting with the same infos.
+        // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
+        // Click on the creation button for a new meeting
+        onView(withId(R.id.button_add_meeting))
+                .perform(click());
+        // SUBJECT FILLING
+        onView(withId(R.id.edit_text_add_meeting_subject))
+                .perform(click());
+        onView(withId(R.id.edit_text_add_meeting_subject))
+                .perform(typeText("New meeting"));
+        // START DATE FILLING
+        onView(withId(R.id.text_add_meeting_datepicker))
+                .perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 6, 6));
+        onView(withText("OK")).perform(click());
+        // START TIME FILLING
+        onView(withId(R.id.text_add_meeting_timepicker))
+                .perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15, 0));
+        onView(withText("OK")).perform(click());
+        // DURATION FILLING
+        onView(withId(R.id.numberpicker_add_meeting_duration_hours_))
+                .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+        onView(withId(R.id.numberpicker_add_meeting_duration_minutes_))
+                .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+        // ROOM FILLING
+        onView(withId(R.id.spinner_add_meeting_room))
+                .perform(click());
+        onData(anything()).atPosition(1).perform(click());
+        // GUESTS FILLING
+        onView(withId(R.id.autocomplete_text_add_meeting_guests))
+                .perform(typeText("f"));
+        onData(anything()).atPosition(1).perform(click());
+
+        // Click on the creation button for a new meeting
+        onView(withId(R.id.menu_overflow_button_create_meeting))
+                .perform(click());
+        // Click on the item menu filter by date
         onView(withText(R.string.menu_creation_meeting))
                 .perform(click());
 
@@ -232,6 +270,46 @@ public class InstrumentedTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
+        // Click on the creation button for a new meeting
+        onView(withId(R.id.button_add_meeting))
+                .perform(click());
+        // SUBJECT FILLING
+        onView(withId(R.id.edit_text_add_meeting_subject))
+                .perform(click());
+        onView(withId(R.id.edit_text_add_meeting_subject))
+                .perform(typeText("New meeting"));
+        // START DATE FILLING
+        onView(withId(R.id.text_add_meeting_datepicker))
+                .perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 6, 6));
+        onView(withText("OK")).perform(click());
+        // START TIME FILLING
+        onView(withId(R.id.text_add_meeting_timepicker))
+                .perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15, 0));
+        onView(withText("OK")).perform(click());
+        // DURATION FILLING
+        onView(withId(R.id.numberpicker_add_meeting_duration_hours_))
+                .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+        onView(withId(R.id.numberpicker_add_meeting_duration_minutes_))
+                .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+        // ROOM FILLING
+        onView(withId(R.id.spinner_add_meeting_room))
+                .perform(click());
+        onData(anything()).atPosition(1).perform(click());
+        // GUESTS FILLING
+        onView(withId(R.id.autocomplete_text_add_meeting_guests))
+                .perform(typeText("f"));
+        onData(anything()).atPosition(1).perform(click());
+
+        // Click on the creation button for a new meeting
+        onView(withId(R.id.menu_overflow_button_create_meeting))
+                .perform(click());
+        // Click on the item menu filter by date
+        onView(withText(R.string.menu_creation_meeting))
+                .perform(click());
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
         // Push on delete button for meeting at index = 1

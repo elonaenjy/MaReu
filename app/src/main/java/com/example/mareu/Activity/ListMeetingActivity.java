@@ -35,7 +35,7 @@ import java.util.List;
 
 public class ListMeetingActivity extends AppCompatActivity {
     public List<Meeting> listMeetings;
-
+    public List<Meeting> majList;
     {
         try {
             listMeetings = Meeting.generateMeetings();
@@ -66,20 +66,7 @@ public class ListMeetingActivity extends AppCompatActivity {
 
     //  ****************************************** INIT  *******************************************
     private void setUpRecyclerView() throws ParseException {
-        MyAdapter adapter = new MyAdapter();
-        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted( state );
-                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
-            }
-        } );
-
-        recyclerView.setAdapter( adapter );
-
-        adapter.setData( listMeetings );
-        adapter.notifyDataSetChanged();
+        majListRecycler( listMeetings);
     }
 
 
@@ -140,36 +127,15 @@ public class ListMeetingActivity extends AppCompatActivity {
     }
 
     private void showFilter(List<Meeting> lMeetingsFiltered) {
-        MyAdapter adapter = new MyAdapter();
-        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted( state );
-                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
-            }
-        } );
-        recyclerView.setAdapter( adapter );
-        adapter.setData( lMeetingsFiltered );
-        adapter.notifyDataSetChanged();
+        majList = lMeetingsFiltered;
+        majListRecycler( majList );
     }
 
     private void deleteFilter() {
-        MyAdapter adapter = new MyAdapter();
-        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted( state );
-                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
-            }
-        } );
-
-        recyclerView.setAdapter( adapter );
-
-        adapter.setData( listMeetings );
-        adapter.notifyDataSetChanged();
+        majList = listMeetings;
+        majListRecycler( majList );
     }
+
     public List<Meeting> setRoomsFilter(){
         // Build an AlertDialog
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -273,7 +239,26 @@ public class ListMeetingActivity extends AppCompatActivity {
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
             Meeting aMeeting=(Meeting)data.getSerializableExtra("MEETING");
             Repository.addMeeting(aMeeting, listMeetings);
+            majList = listMeetings;
+            majListRecycler( majList );
             super.onActivityResult(requestCode,resultCode,data);
         }
+    }
+
+    public  void majListRecycler(List<Meeting> listMeetings) {
+        MyAdapter adapter = new MyAdapter();
+        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
+        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted( state );
+                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
+            }
+        } );
+
+        recyclerView.setAdapter( adapter );
+
+        adapter.setData( this.listMeetings );
+        adapter.notifyDataSetChanged();
     }
 }
