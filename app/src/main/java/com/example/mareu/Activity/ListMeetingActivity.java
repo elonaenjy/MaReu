@@ -245,7 +245,7 @@ public class ListMeetingActivity extends AppCompatActivity {
         }
     }
 
-    public  void majListRecycler(List<Meeting> listMeetings) {
+    public  void majListRecycler(List<Meeting> majList) {
         MyAdapter adapter = new MyAdapter();
         RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
         recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
@@ -258,7 +258,7 @@ public class ListMeetingActivity extends AppCompatActivity {
 
         recyclerView.setAdapter( adapter );
 
-        adapter.setData( this.listMeetings );
+        adapter.setData( majList );
         adapter.notifyDataSetChanged();
     }
 }
