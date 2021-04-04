@@ -132,12 +132,12 @@ public class FilterByRoomWithSuccess {
         // Click on the creation button for a new meeting
         onView( withId( R.id.menu_overflow_button_create_meeting ) )
                 .perform( click() );
-        // Click on the item menu filter by date
         onView( withText( R.string.menu_creation_meeting ) )
                 .perform( click() );
         // Result : We check that the count of items is equal to INITIAL_LIST_SIZE+1
         onView( withId( R.id.list_recycler_view ) ).check( withItemCount( 2 ) );
-//////// filtre
+
+        //////// filter By Room
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:

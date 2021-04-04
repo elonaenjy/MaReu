@@ -48,7 +48,7 @@ public class FilterByDateWithSuccess {
     public ActivityTestRule<StartActivity> mActivityTestRule = new ActivityTestRule<>( StartActivity.class );
 
     @Test
-    public void filterByRoomWithSuccess() {
+    public void filterByDateWithSuccess() {
 
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView( ViewMatchers.withId( R.id.list_recycler_view ) ).check( withItemCount( 0 ) );
