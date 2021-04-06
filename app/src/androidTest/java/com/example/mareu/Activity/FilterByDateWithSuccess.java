@@ -49,6 +49,14 @@ public class FilterByDateWithSuccess {
 
     @Test
     public void filterByDateWithSuccess() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep( 600 );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView( ViewMatchers.withId( R.id.list_recycler_view ) ).check( withItemCount( 0 ) );
@@ -84,7 +92,7 @@ public class FilterByDateWithSuccess {
         // GUESTS FILLING
         onView( withId( R.id.autocomplete_text_add_meeting_guests ) )
                 .perform( typeText( "f" ) );
-        onData( anything() ).atPosition( 1 ).perform( click() );
+        onData( anything() ).atPosition( 1 ).perform( scrollTo() , click() );
 
         // ROOM FILLING
         onView(withId(R.id.spinner_add_meeting_room))

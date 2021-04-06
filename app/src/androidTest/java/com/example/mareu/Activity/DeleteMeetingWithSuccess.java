@@ -20,6 +20,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.example.mareu.Activity.StartActivity;
+import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.example.mareu.utils.DeleteViewAction;
 
@@ -61,7 +62,7 @@ public class DeleteMeetingWithSuccess {
     public void deleteMeetingWithSuccess() {
 
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
-        onView( withId( R.id.list_recycler_view ) ).check( withItemCount( INITIAL_LIST_SIZE ) );
+        onView( withId( R.id.list_recycler_view ) ).check( withItemCount( 0 ) );
         // Click on the creation button for a new meeting
         onView( withId( R.id.button_add_meeting ) )
                 .perform( click() );
@@ -129,6 +130,7 @@ public class DeleteMeetingWithSuccess {
         // ROOM FILLING
         onView( withId( R.id.spinner_add_meeting_room ) )
                 .perform( click() );
+
         onData( IsAnything.anything() ).atPosition( 2 ).perform( click() );
         // GUESTS FILLING
         onView( withId( R.id.autocomplete_text_add_meeting_guests ) )
