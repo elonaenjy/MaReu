@@ -21,11 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mareu.Model.Guest;
-import com.example.mareu.Model.Meeting;
-import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-import com.example.mareu.Util.Repository;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class AddMeetingActivity extends AppCompatActivity {
     public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI

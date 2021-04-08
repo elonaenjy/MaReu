@@ -1,9 +1,5 @@
 package com.example.mareu;
 
-import com.example.mareu.Model.Meeting;
-import com.example.mareu.Util.Repository;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

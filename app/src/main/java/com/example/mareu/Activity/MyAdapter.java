@@ -13,10 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.mareu.Model.Guest;
 import com.example.mareu.R;
-import com.example.mareu.Model.Meeting;
-import com.example.mareu.Model.Room;
 
 import java.text.DateFormat;
 import java.util.Date;
