@@ -1,6 +1,6 @@
 package com.example.mareu.Model;
 
-import com.openclassrooms.entrevoisins.R;
+import com.example.mareu.R;
 
 import java.util.Arrays;
 import java.util.List;

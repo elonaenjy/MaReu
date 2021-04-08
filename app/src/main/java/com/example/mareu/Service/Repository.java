@@ -24,7 +24,7 @@ public class Repository {
         lMeetings.remove(dMeeting);
     }
 
-    public void createMeeting(Meeting aMeeting) {
+    public static void createMeeting(Meeting aMeeting) {
         lMeetings.add(aMeeting);
     }
 

@@ -42,25 +42,24 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     public List<Guest> lGuests = Guest.generateGuests();
     public List<Room> lRooms = Room.generateRooms();
-    public MyAdapter adapter;
-    public Spinner sRoom;
-    public MultiAutoCompleteTextView guestsEmails;
+    private Spinner sRoom;
+    private MultiAutoCompleteTextView guestsEmails;
 
     private int idRoom = 0;
 
     private final Calendar datePickerCalendar = Calendar.getInstance();
     private final Calendar timePickerCalendar = Calendar.getInstance();
 
-    private Room mRoom;
+//    private Room mRoom;
     private Date mStartDate;
     private NumberPicker durationMinutes, durationHours;
     private EditText mSubject;
     private TextView startDatePickerText, startTimePickerText;
-    private List<Integer> mGuestIdList;
+//    private List<Integer> mGuestIdList;
     private int nbRoom = lRooms.size();
     private int nbGuests = lGuests.size();
 
-    private List<Meeting> lstMeetings;
+//    private List<Meeting> lstMeetings;
     public boolean topVide = false;
 
     @Override
@@ -243,7 +242,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private List<Integer> getIdGuestFromGuestMailSelected() {
         List<Integer> lGuestId = new ArrayList<>();
         String[] GuestSelected = guestsEmails.getText().toString().split( EMAILS_LIST_SEPARATOR );
-        int nbGuest = listGuests.size();
+        int nbGuest = lGuests.size();
         int nbGuestSelected = GuestSelected.length;
         String email = "";
         String email2 = "";
@@ -251,9 +250,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         for (int ind = 0; ind < nbGuestSelected; ind++) {
             email = GuestSelected[ind];
             for (int ind2 = 0; ind2 < nbGuest; ind2++) {
-                email2 = listGuests.get( ind2 ).getGuestMail();
+                email2 = lGuests.get( ind2 ).getGuestMail();
                 if (email.equals( email2 )) {
-                    lGuestId.add( listGuests.get( ind2 ).getId() );
+                    lGuestId.add( lGuests.get( ind2 ).getId() );
                 }
             }
         }
@@ -267,7 +266,15 @@ public class AddMeetingActivity extends AppCompatActivity {
      */
     private void finMeeting(Meeting mMeeting) {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra( "MEETING", mMeeting );
+        Repository.createMeeting(mMeeting);
+        Toast toastCreateMeeting = Toast.makeText( getApplicationContext(), R.string.toast_create_Meeting, Toast.LENGTH_LONG );
+        toastCreateMeeting.setGravity( Gravity.CENTER, 0, 0 );
+        View toastViewCreateMeeting = toastCreateMeeting.getView();
+        TextView toastTextCreateMeeting = toastViewCreateMeeting.findViewById( android.R.id.message );
+        toastTextCreateMeeting.setTextColor( ContextCompat.getColor( getApplicationContext(), R.color.white ) );
+
+        toastCreateMeeting.show();
+  //      resultIntent.putExtra( "MEETING", mMeeting );
         setResult( RESULT_OK, resultIntent );
         finish();
     }
