@@ -46,26 +46,26 @@ public class Repository {
         return lMeetingsFiltered;
     }
 
-    public static List<Meeting> filterMeetingsByDate(int year, int month, int day, List<Meeting> listMeetings) {
-        final List<Meeting> meetings=listMeetings;
+    public static List<Meeting> filterMeetingsByDate(int year, int month, int day) {
+
         List<Meeting> mMeetingsFiltered = new ArrayList<>();
-        int size = meetings.size();
+        int size = lMeetings.size();
         for (int e = 0; e < size; e++) {
             Calendar mMeetingsCalendar = Calendar.getInstance();
-            mMeetingsCalendar.setTime(meetings.get(e).getMeetingStartDate());
+            mMeetingsCalendar.setTime(lMeetings.get(e).getMeetingStartDate());
             if (year == mMeetingsCalendar.get(Calendar.YEAR)
                     && (month == mMeetingsCalendar.get(Calendar.MONTH))
                     && (day == mMeetingsCalendar.get(Calendar.DAY_OF_MONTH))){
-                mMeetingsFiltered.add(meetings.get(e));
+                mMeetingsFiltered.add(lMeetings.get(e));
             }
         }
         return mMeetingsFiltered;
     }
 
     // ROOM AVAILABILITY CHECKER
-    public static boolean checkRoomAvailability(int roomId, Date startDate, Date endDate, List<Meeting> meetingList) {
+    public static boolean checkRoomAvailability(int roomId, Date startDate, Date endDate) {
         boolean roomAvailable = true;
-        for (Meeting meetingIterator : meetingList) {
+        for (Meeting meetingIterator : lMeetings) {
             if (roomId == (meetingIterator.getIdRoom())
                     && (startDate.after(meetingIterator.getMeetingStartDate())
                     && startDate.before((meetingIterator.getMeetingEndDate()))))

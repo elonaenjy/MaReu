@@ -22,30 +22,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mareu.R;
+import com.example.mareu.Service.Repository;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import com.example.mareu.Model.Guest;
+import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.Room;
+
 
 public class AddMeetingActivity extends AppCompatActivity {
-    public static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
+    private static final String EMAILS_LIST_SEPARATOR = ", "; // Separator for listview in UI
     private static final int DURATION_MAX_HOURS = 5; // Max duration for a meeting (in hours)
     private static final int DURATION_STEP_MINUTES = 15; // Duration interval for minutes
 
-    private List<Meeting> listMeetings;
 
-    {
-        try {
-            listMeetings = Meeting.generateMeetings();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<Guest> listGuests = Guest.generateGuests();
+    public List<Guest> lGuests = Guest.generateGuests();
     public List<Room> lRooms = Room.generateRooms();
     public MyAdapter adapter;
     public Spinner sRoom;
@@ -62,7 +57,9 @@ public class AddMeetingActivity extends AppCompatActivity {
     private EditText mSubject;
     private TextView startDatePickerText, startTimePickerText;
     private List<Integer> mGuestIdList;
-    public int nbRoom = lRooms.size();
+    private int nbRoom = lRooms.size();
+    private int nbGuests = lGuests.size();
+
     private List<Meeting> lstMeetings;
     public boolean topVide = false;
 
@@ -174,9 +171,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     private void setGuestsArrayAdapter() {
         // Guest list : listGuests
         ArrayList<String> mGuestsMail = new ArrayList<>();
-        int nbGuests = listGuests.size();
         for (int mId = 0; mId < nbGuests; mId++) {
-            String mGuestEmail = listGuests.get( mId ).getGuestMail();
+            String mGuestEmail = lGuests.get( mId ).getGuestMail();
             mGuestsMail.add( mGuestEmail );
         }
         String[] guestEmailsList = mGuestsMail.toArray( new String[0] );
@@ -212,7 +208,7 @@ public class AddMeetingActivity extends AppCompatActivity {
             toastCancelCreation( R.string.toast_duration_empty );
         } else if (topVide) {
             toastCancelCreation( R.string.toast_room_empty );
-        } else if (!Repository.checkRoomAvailability(idRoom, mStartDate, mEndDate, listMeetings)) {
+        } else if (!Repository.checkRoomAvailability(idRoom, mStartDate, mEndDate)) {
             toastCancelCreation( R.string.toast_room_not_available );
         }else if (lGuestIdNb == 0) {
                         toastCancelCreation( R.string.toast_guest_empty );
