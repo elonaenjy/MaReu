@@ -106,7 +106,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + lMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             Meeting dMeeting = lMeetings.get( position );
-            lMeetings.remove( dMeeting );
+            Repository.deleteMeeting( dMeeting );
             setData( lMeetings);
         } );
     }

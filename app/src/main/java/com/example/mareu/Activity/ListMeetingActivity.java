@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ListMeetingActivity extends AppCompatActivity {
+public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
     private MyAdapter adapter;
+    public List<Meeting> lMeetings;
+    public List<Room> lRoomsMeeting  ;
 
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
     private Menu menu;
@@ -60,10 +62,10 @@ public class ListMeetingActivity extends AppCompatActivity {
                 recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
             }
         } );
-
         recyclerView.setAdapter( adapter );
-        adapter.setData(Repository.getMeetings());
-
+        lMeetings = Repository.getMeetings();
+        lRoomsMeeting = Repository.getRooms();
+        adapter.setData(lMeetings);
         adapter.notifyDataSetChanged();
      }
 
@@ -125,20 +127,20 @@ public class ListMeetingActivity extends AppCompatActivity {
     }
 
     private void showFilter(List<Meeting> lMeetingsFiltered) {
-        majList = lMeetingsFiltered;
-        majListRecycler( majList );
-    }
+        adapter.setData(lMeetingsFiltered);
+        adapter.notifyDataSetChanged();
+            }
 
     private void deleteFilter() {
-        majList = listMeetings;
-        majListRecycler( majList );
+        adapter.setData(lMeetings);
+        adapter.notifyDataSetChanged();
     }
 
     public List<Meeting> setRoomsFilter(){
         // Build an AlertDialog
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
         // String array for alert dialog multi choice items
-        final int numberRooms=lRoomMeeting.size();
+        final int numberRooms=lRoomsMeeting.size();
         String[]mRooms=getRoomsAsStringList();
         // Boolean array for initial selected items
         final boolean[]checkedRooms=new boolean[numberRooms];
@@ -200,10 +202,10 @@ public class ListMeetingActivity extends AppCompatActivity {
 
     public String[]getRoomsAsStringList(){
         int numberRooms;
-        numberRooms=lRoomMeeting.size();
+        numberRooms=lRoomsMeeting.size();
         String[]lRooms=new String[numberRooms];
         for(int i=0;i<numberRooms; i++){
-            lRooms[i]=String.valueOf(lRoomMeeting.get(i).getRoomName());
+            lRooms[i]=String.valueOf(lRoomsMeeting.get(i).getRoomName());
         }
         return lRooms;
     }

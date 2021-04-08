@@ -11,10 +11,10 @@ import java.util.List;
 
 public class Repository {
 
-    private static List<Meeting> lMeetings = Meeting.generateMeeting();
+    public static List<Meeting> lMeetings = Meeting.generateMeeting();
     private static List<Guest> lGuests = Guest.generateGuests();
     private static List<Room> lRooms = Room.generateRooms();
-    private List<Meeting> filteredMeetingList = new ArrayList<>();
+    public List<Meeting> filteredMeetingList = new ArrayList<>();
     public static List<Meeting> getMeetings() {
         return lMeetings;
     }
@@ -26,7 +26,7 @@ public class Repository {
     }
 
 
-    public void deleteMeeting(Meeting dMeeting) {
+    public static void deleteMeeting(Meeting dMeeting) {
         lMeetings.remove(dMeeting);
     }
 
