@@ -120,7 +120,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     }
 
 
-    public void setData(List<Meeting> meetings) {
+    public void setData(List<Meeting> lMeetings) {
         this.lMeetings = lMeetings;
         notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }

@@ -59,13 +59,6 @@ public class InstrumentedTest {
 
     private static int INITIAL_LIST_SIZE = 0;
 
-    static {
-        try {
-            INITIAL_LIST_SIZE = Meeting.generateMeetings().size();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Rule
     public final ActivityTestRule<StartActivity> mActivityRule =

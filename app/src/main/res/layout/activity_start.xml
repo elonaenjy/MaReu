@@ -24,7 +24,7 @@
             android:layout_height="@dimen/start_image_size"
             android:contentDescription="@string/start_appli_screen_content_description"
             app:layout_constraintBottom_toTopOf="@+id/guideline_start_appli"
-            android:src="@drawable/ic_start_background" />
+            android:src="@drawable/startimage" />
 
         <TextView
             android:id="@+id/text_splashscreen"

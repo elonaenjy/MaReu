@@ -32,11 +32,11 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
+    private boolean[] FILTER_ROOM ;
     private MyAdapter adapter;
     public List<Meeting> lMeetings;
     public List<Room> lRoomsMeeting  ;
 
-    public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
     private Menu menu;
     private final int ADD_MEETING_REQUEST_COODE = 20000;
 
@@ -99,6 +99,15 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void showFilter(List<Meeting> lMeetingsFiltered) {
+        adapter.setData(lMeetingsFiltered);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void deleteFilter()  {
+        adapter.setData(lMeetings);
+        adapter.notifyDataSetChanged();
+         }
 
     private List<Meeting> setDateFilter(){
         Calendar mCalendarPicker=Calendar.getInstance();
@@ -124,16 +133,6 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
         });
         builder.show();
         return null;
-    }
-
-    private void showFilter(List<Meeting> lMeetingsFiltered) {
-        adapter.setData(lMeetingsFiltered);
-        adapter.notifyDataSetChanged();
-            }
-
-    private void deleteFilter() {
-        adapter.setData(lMeetings);
-        adapter.notifyDataSetChanged();
     }
 
     public List<Meeting> setRoomsFilter(){
@@ -197,8 +196,9 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
             });
         });
         dialog.show();
-                return null;
+        return null;
     }
+
 
     public String[]getRoomsAsStringList(){
         int numberRooms;
@@ -237,11 +237,10 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
-            Meeting aMeeting=(Meeting)data.getSerializableExtra("MEETING");
-            super.onActivityResult(requestCode,resultCode,data);
+
+                super.onActivityResult(requestCode,resultCode,data);
         }
     }
 
-    public  void majListRecycler(List<Meeting> listMeetings) {
-    }
+
 }
