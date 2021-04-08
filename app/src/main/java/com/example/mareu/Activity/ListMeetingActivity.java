@@ -21,26 +21,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.mareu.Model.Room;
 import com.example.mareu.R;
+import com.example.mareu.Model.Meeting;
+import com.example.mareu.Service.Repository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class ListMeetingActivity extends AppCompatActivity {
-    public List<Meeting> listMeetings;
-    public List<Meeting> majList;
-    {
-        try {
-            listMeetings = Meeting.generateMeetings();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
+    private MyAdapter adapter;
 
-    public List<Room> lRoomMeeting = Room.generateRooms();
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
     private Menu menu;
     private final int ADD_MEETING_REQUEST_COODE = 20000;
@@ -51,19 +44,28 @@ public class ListMeetingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
 
-        try {
-            setUpRecyclerView();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        setUpRecyclerView();
 
         createNewMeetingAction();
     }
 
     //  ****************************************** INIT  *******************************************
-    private void setUpRecyclerView() throws ParseException {
-        majListRecycler( listMeetings);
-    }
+    private void setUpRecyclerView()  {
+        MyAdapter adapter = new MyAdapter();
+        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
+        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted( state );
+                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
+            }
+        } );
+
+        recyclerView.setAdapter( adapter );
+        adapter.setData(Repository.getMeetings());
+
+        adapter.notifyDataSetChanged();
+     }
 
 
     //  ****************************************** MENU ********************************************
@@ -111,7 +113,7 @@ public class ListMeetingActivity extends AppCompatActivity {
             int month=datePicker.getMonth();
             int day=datePicker.getDayOfMonth();
             mCalendarPicker.set(year,month,day);
-            List<Meeting> lMeetingsFiltered=Repository.filterMeetingsByDate(year, month, day, listMeetings);
+            List<Meeting> lMeetingsFiltered= Repository.filterMeetingsByDate(year, month, day);
             showFilter(lMeetingsFiltered);
 
         });
@@ -185,7 +187,7 @@ public class ListMeetingActivity extends AppCompatActivity {
                     toastRoomNotSelected.show();
                 } else{
                     List<Integer> lRoomSelectedId=filterRoom(checkedRooms);
-                    List<Meeting> lMeetingsFiltered=Repository.lMeetingsFilteredId(lRoomSelectedId,listMeetings);
+                    List<Meeting> lMeetingsFiltered=Repository.lMeetingsFilteredId(lRoomSelectedId);
                     dialog.dismiss();
                     showFilter(lMeetingsFiltered);
                     FILTER_ROOM=checkedRooms;
@@ -234,27 +236,10 @@ public class ListMeetingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
             Meeting aMeeting=(Meeting)data.getSerializableExtra("MEETING");
-            Repository.addMeeting(aMeeting, listMeetings);
-            majList = listMeetings;
-            majListRecycler( majList );
             super.onActivityResult(requestCode,resultCode,data);
         }
     }
 
-    public  void majListRecycler(List<Meeting> majList) {
-        MyAdapter adapter = new MyAdapter();
-        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted( state );
-                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
-            }
-        } );
-
-        recyclerView.setAdapter( adapter );
-
-        adapter.setData( majList );
-        adapter.notifyDataSetChanged();
+    public  void majListRecycler(List<Meeting> listMeetings) {
     }
 }

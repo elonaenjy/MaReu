@@ -12,11 +12,17 @@ import java.util.List;
 public class Repository {
 
     private static List<Meeting> lMeetings = Meeting.generateMeeting();
-    private List<Guest> lGuests = Guest.generateGuests();
-    private List<Room> lRooms = Room.generateRooms();
+    private static List<Guest> lGuests = Guest.generateGuests();
+    private static List<Room> lRooms = Room.generateRooms();
     private List<Meeting> filteredMeetingList = new ArrayList<>();
-    public List<Meeting> getMeetings() {
+    public static List<Meeting> getMeetings() {
         return lMeetings;
+    }
+    public static List<Room> getRooms() {
+        return lRooms;
+    }
+    public static List<Guest> getGuest() {
+        return lGuests;
     }
 
 

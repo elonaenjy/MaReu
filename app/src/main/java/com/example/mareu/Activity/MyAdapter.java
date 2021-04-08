@@ -13,9 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.mareu.Model.Guest;
+import com.example.mareu.Model.Meeting;
+import com.example.mareu.Model.Room;
 import com.example.mareu.R;
+import com.example.mareu.Service.Repository;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,11 +30,8 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     private static final String TEXT_SEPARATOR = " - ";
-    private List<Meeting> listMeetings;
-
-    public List<Guest> listGuests = Guest.generateGuests();
-    public List<Room> lRoomMeeting = Room.generateRooms();
-    public Meeting aMeeting;
+    private List<Meeting> lMeetings;
+    private Meeting aMeeting;
 
     @NonNull
     @Override
@@ -42,6 +44,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        List<Room> lRoomsMeeting = Repository.getRooms();
+        List<Guest> lGuests = Repository.getGuest();
+
+
+
         // Init : getting the meeting information :
         //          id meeting
         //          id room
@@ -49,29 +56,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
         //          Meeting subject
         //          Meeting GuestList
         //*************** id, name and image Room **************
-        int mId = (int) listMeetings.get( position ).getIdRoom();
-        String mRoomName = lRoomMeeting.get( mId - 1 ).getRoomName();
-        int mRoomImage = lRoomMeeting.get( mId - 1 ).getRoomImage();
+        int mId = (int) lMeetings.get( position ).getIdRoom();
+        String mRoomName = lRoomsMeeting.get( mId - 1 ).getRoomName();
+        int mRoomImage = lRoomsMeeting.get( mId - 1 ).getRoomImage();
 
         //************** Meeting Subject
-        String subjectMeeting = listMeetings.get( position ).getMeetingSubject();
+        String subjectMeeting = lMeetings.get( position ).getMeetingSubject();
 
         //************** Meeting StartDate
-        Date mStartDate = listMeetings.get( position ).getMeetingStartDate();
+        Date mStartDate = lMeetings.get( position ).getMeetingStartDate();
         DateFormat meetingStartDate = DateFormat.getDateInstance( DateFormat.MEDIUM );
 
         //************** Meeting StartTime
         DateFormat meetingStartTime = DateFormat.getTimeInstance( DateFormat.SHORT );
 
         //************** Meeting ListGuest and alim email list
-        List<Integer> listGuest = listMeetings.get( position ). getMeetingGuestListId();
+        List<Integer> listGuest = lMeetings.get( position ). getMeetingGuestListId();
         String mGuestListMail = "";
         int nbGuest = listGuest.size() ;
         int idGuest = 0;
 
         for (int ind = 0; ind < nbGuest; ind ++ ) {
             idGuest = listGuest.get( ind );
-            mGuestListMail += listGuests.get( idGuest - 1 ).getGuestMail() + " - ";
+            mGuestListMail += lGuests.get( idGuest - 1 ).getGuestMail() + " - ";
         }
 
         // Image Meeting Room
@@ -94,26 +101,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
         deleteButton( holder, position );
     }
 
-    public void setData(List<Meeting> pListMeetings) {
-        listMeetings = pListMeetings;
-        notifyDataSetChanged();
-    }
 
     private void deleteButton(@NonNull MyViewHolder holder, final int position) {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
-            Toast.makeText( view.getContext(), "Suppression de la réunion " + listMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
-            Meeting dMeeting = listMeetings.get( position );
-            listMeetings.remove( dMeeting );
-            setData( listMeetings);
+            Toast.makeText( view.getContext(), "Suppression de la réunion " + lMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
+            Meeting dMeeting = lMeetings.get( position );
+            lMeetings.remove( dMeeting );
+            setData( lMeetings);
         } );
     }
 
     @Override
     public int getItemCount() {
-        if (listMeetings != null)
-            return listMeetings.size();
+        if (lMeetings != null)
+            return lMeetings.size();
         else
             return 0;
+    }
+
+
+    public void setData(List<Meeting> meetings) {
+        this.lMeetings = lMeetings;
+        notifyDataSetChanged(); // dit à l'adapter de se rafraichir
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
