@@ -31,7 +31,6 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     private static final String TEXT_SEPARATOR = " - ";
     private List<Meeting> lMeetings;
-    private Meeting aMeeting;
 
     @NonNull
     @Override
@@ -46,8 +45,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         List<Room> lRoomsMeeting = Repository.getRooms();
         List<Guest> lGuests = Repository.getGuest();
-
-
 
         // Init : getting the meeting information :
         //          id meeting

@@ -32,7 +32,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
-    private boolean[] FILTER_ROOM ;
+    public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
+
     private MyAdapter adapter;
     public List<Meeting> lMeetings;
     public List<Room> lRoomsMeeting  ;
@@ -85,31 +86,21 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
         int id=item.getItemId();
         List<Meeting> listMeetingsFiltered = new ArrayList<>();
         switch(id){
-            case R.id.menu_filter_date:{
-                listMeetingsFiltered = setDateFilter();
-                showFilter( listMeetingsFiltered );
+            case R.id.menu_filter_date: {
+                setDateFilter();
                 return true;
             }
-            case R.id.menu_filter_room:{
-                listMeetingsFiltered = setRoomsFilter();
-                showFilter( listMeetingsFiltered );
+
+            case R.id.menu_filter_room: {
+                setRoomsFilter();
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    private void showFilter(List<Meeting> lMeetingsFiltered) {
-        adapter.setData(lMeetingsFiltered);
-        adapter.notifyDataSetChanged();
-    }
 
-    private void deleteFilter()  {
-        adapter.setData(lMeetings);
-        adapter.notifyDataSetChanged();
-         }
-
-    private List<Meeting> setDateFilter(){
+        private List<Meeting> setDateFilter(){
         Calendar mCalendarPicker=Calendar.getInstance();
         // Build an AlertDialog
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -125,80 +116,86 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
             int day=datePicker.getDayOfMonth();
             mCalendarPicker.set(year,month,day);
             List<Meeting> lMeetingsFiltered= Repository.filterMeetingsByDate(year, month, day);
-            showFilter(lMeetingsFiltered);
+            adapter.setData(lMeetingsFiltered);
 
         });
         builder.setNeutralButton(R.string.filter_reset_text,(dialog,id)->{
-            deleteFilter();
-        });
+            adapter.setData(Repository.getMeetings());
+                    });
         builder.show();
         return null;
     }
 
-    public List<Meeting> setRoomsFilter(){
+    public void setRoomsFilter() {
         // Build an AlertDialog
-        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // String array for alert dialog multi choice items
-        final int numberRooms=lRoomsMeeting.size();
-        String[]mRooms=getRoomsAsStringList();
+        final int numberRooms = Repository.getRooms().size();
+        String[] mRooms = getRoomsAsStringList();
         // Boolean array for initial selected items
-        final boolean[]checkedRooms=new boolean[numberRooms];
+        final boolean[] checkedRooms = new boolean[numberRooms];
         // Keep memory of the filter selection
-        if(FILTER_ROOM!=null){
-            System.arraycopy(FILTER_ROOM,0,checkedRooms,0,numberRooms);
+        if (FILTER_ROOM != null) {
+            System.arraycopy(FILTER_ROOM, 0, checkedRooms, 0, numberRooms);
         }
 
         // Set multiple choice items for alert dialog
-        builder.setMultiChoiceItems(mRooms,checkedRooms,(dialog,which,isChecked)->{
+        builder.setMultiChoiceItems(mRooms, checkedRooms, (dialog, which, isChecked) -> {
             // Update the current focused item's checked status
-            checkedRooms[which]=isChecked;
+            checkedRooms[which] = isChecked;
         });
+
         // Specify the dialog is not cancelable
         builder.setCancelable(false);
+
         // Set a title for alert dialog
         builder.setTitle(R.string.filter_rooms_text);
+
         // Set the positive/yes button click listener
-        builder.setPositiveButton(R.string.filter_ok_text,(dialog,which)->{
+        builder.setPositiveButton(R.string.filter_ok_text, (dialog, which) -> {
         });
+
         // Set the negative/no button click listener
-        builder.setNeutralButton(R.string.filter_reset_text,(dialog,which)->{
-            deleteFilter();
-            FILTER_ROOM=null;
+        builder.setNeutralButton(R.string.filter_reset_text, (dialog, which) -> {
+            adapter.setData(Repository.getMeetings());
+            FILTER_ROOM = null;
         });
-        final AlertDialog dialog=builder.create();
+
+        final AlertDialog dialog = builder.create();
         // Display the alert dialog on interface
-        dialog.setOnShowListener(dialogInterface->{
-            Button button=dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(view->{
+        dialog.setOnShowListener(dialogInterface -> {
+
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
                 // Checks the checked rooms
-                boolean atLeastOneChecked=false;
-                for(boolean checked:checkedRooms){
-                    if(checked){
-                        atLeastOneChecked=true;
+                boolean atLeastOneChecked = false;
+                for (boolean checked : checkedRooms) {
+                    if (checked) {
+                        atLeastOneChecked = true;
                         break;
                     }
                 }
+
                 // if no rooms checked, Toast to alert user
-                if(!atLeastOneChecked){
-                    Toast toastRoomNotSelected=Toast.makeText(getApplicationContext(),R.string.toast_room_not_selected,Toast.LENGTH_SHORT);
-                    toastRoomNotSelected.setGravity(Gravity.CENTER,0,0);
-                    View toastViewCreateMeeting=toastRoomNotSelected.getView();
-                    TextView toastTextCreateMeeting=toastViewCreateMeeting.findViewById(android.R.id.message);
-                    toastTextCreateMeeting.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.toast_add_meeting_color));
+                if (!atLeastOneChecked) {
+                    Toast toastRoomNotSelected = Toast.makeText(getApplicationContext(), R.string.toast_room_not_selected, Toast.LENGTH_SHORT);
+                    toastRoomNotSelected.setGravity(Gravity.CENTER, 0, 0);
+                    View toastViewCreateMeeting = toastRoomNotSelected.getView();
+                    TextView toastTextCreateMeeting = toastViewCreateMeeting.findViewById(android.R.id.message);
+                    toastTextCreateMeeting.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.toast_add_meeting_color));
                     toastRoomNotSelected.show();
-                } else{
+                } else {
                     List<Integer> lRoomSelectedId=filterRoom(checkedRooms);
                     List<Meeting> lMeetingsFiltered=Repository.lMeetingsFilteredId(lRoomSelectedId);
                     dialog.dismiss();
-                    showFilter(lMeetingsFiltered);
-                    FILTER_ROOM=checkedRooms;
+                    adapter.setData(lMeetingsFiltered);
+                    FILTER_ROOM = checkedRooms;
                 }
             });
         });
         dialog.show();
-        return null;
-    }
 
+    }
 
     public String[]getRoomsAsStringList(){
         int numberRooms;
