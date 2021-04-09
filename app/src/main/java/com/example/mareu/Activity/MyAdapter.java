@@ -20,7 +20,6 @@ import com.example.mareu.R;
 import com.example.mareu.Service.Repository;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

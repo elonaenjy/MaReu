@@ -36,13 +36,14 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
 
     private MyAdapter adapter;
     public List<Meeting> lMeetings;
-    public List<Room> lRoomsMeeting  ;
+    public List<Room> lRoomMeeting = Repository.getRooms();
 
     private Menu menu;
     private final int ADD_MEETING_REQUEST_COODE = 20000;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
+        super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_list_meeting );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -53,22 +54,14 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
     }
 
     //  ****************************************** INIT  *******************************************
-    private void setUpRecyclerView()  {
-        MyAdapter adapter = new MyAdapter();
-        RecyclerView recyclerView = findViewById( R.id.list_recycler_view );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) {
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted( state );
-                recyclerView.smoothScrollToPosition( Integer.MAX_VALUE );
-            }
-        } );
-        recyclerView.setAdapter( adapter );
-        lMeetings = Repository.getMeetings();
-        lRoomsMeeting = Repository.getRooms();
-        adapter.setData(lMeetings);
-        adapter.notifyDataSetChanged();
-     }
+    private void setUpRecyclerView() {
+        final RecyclerView rv = findViewById(R.id.list_recycler_view);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MyAdapter();
+        rv.setAdapter(adapter);
+
+        adapter.setData(Repository.getMeetings());
+    }
 
 
     //  ****************************************** MENU ********************************************
@@ -199,10 +192,10 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
 
     public String[]getRoomsAsStringList(){
         int numberRooms;
-        numberRooms=lRoomsMeeting.size();
+        numberRooms=lRoomMeeting.size();
         String[]lRooms=new String[numberRooms];
         for(int i=0;i<numberRooms; i++){
-            lRooms[i]=String.valueOf(lRoomsMeeting.get(i).getRoomName());
+            lRooms[i]=String.valueOf(lRoomMeeting.get(i).getRoomName());
         }
         return lRooms;
     }
