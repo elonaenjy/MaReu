@@ -14,9 +14,7 @@ public class Meeting implements Serializable {
         private final Date mDateDebMeeting;
         private final Date mDateEndMeeting;
         private final List<Integer> lGuestIdMeeting;
-
-
-
+        private static final List<Meeting> lMeetings = new ArrayList<Meeting>();
 
     public Meeting(long idMeeting, int idRoom, String meetingSubject, Date meetingStartDate, Date meetingEndDate, List<Integer> meetingGuestListId) {
         this.mIdMeeting = idMeeting;
@@ -27,12 +25,10 @@ public class Meeting implements Serializable {
         this.lGuestIdMeeting =  meetingGuestListId;
     }
 
-    private static final List<Meeting> lMeetings = new ArrayList<Meeting>();
-
     public static List<Meeting> generateMeeting() {
-        List<Meeting> lMeetings = new ArrayList<Meeting>();
-        lMeetings = initList();
-        return lMeetings;
+        List<Meeting> lMeetingDeb = new ArrayList<Meeting>();
+        lMeetingDeb = initList();
+        return lMeetingDeb;
     }
 
     private static List<Meeting> initList() {
@@ -56,8 +52,8 @@ public class Meeting implements Serializable {
         dateDebMeeting = new Date( mCalendarDeb.getTimeInMillis() );
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
-                1,
-                "Objet Reunion filtre sur date1",
+                8,
+                "Objet Reunion 2",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 3,4,6 ) );
@@ -69,7 +65,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 2,
-                "Objet Reunion 2",
+                "Objet Reunion 3",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 9, 5 ) );
@@ -80,7 +76,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 3,
-                "Objet Reunion 3",
+                "Objet Reunion 4",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 6,7,8 ) );
@@ -92,7 +88,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 4,
-                "Objet Reunion 4",
+                "Objet Reunion 5",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 3,4,5, 6 ) );
@@ -104,7 +100,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 5,
-                "Objet Reunion 5",
+                "Objet Reunion 6",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 1, 2 ) );
@@ -116,7 +112,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 6,
-                "Objet Reunion 6",
+                "Objet Reunion 7",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 5,6,7,8,10) );
@@ -128,7 +124,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 7,
-                "Objet Reunion 7",
+                "Objet Reunion 8",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 1,2,3,4,9, 5 ) );
@@ -140,7 +136,7 @@ public class Meeting implements Serializable {
         dateFinMeeting = new Date( mCalendarFin.getTimeInMillis() );
         aMeeting = new Meeting( System.currentTimeMillis(),
                 10,
-                "Objet Reunion 8",
+                "Objet Reunion 9",
                 dateDebMeeting,
                 dateFinMeeting,
                 Arrays.asList( 1,2,3,4,9, 5 ) );

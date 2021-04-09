@@ -1,8 +1,5 @@
 package com.example.mareu;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -11,22 +8,20 @@ import androidx.test.espresso.action.GeneralLocation;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Tap;
 import androidx.test.espresso.contrib.PickerActions;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.mareu.Activity.StartActivity;
+import com.example.mareu.Activity.ListMeetingActivity;
+import com.example.mareu.Model.Meeting;
+import com.example.mareu.Service.Repository;
+import com.example.mareu.utils.DeleteViewAction;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.text.ParseException;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -41,7 +36,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsAnything.anything;
 import static org.hamcrest.core.IsNot.not;
@@ -53,46 +47,32 @@ import static org.junit.Assert.assertThat;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class InstrumentedTest {
 
-    private static int INITIAL_LIST_SIZE = 0;
-
-
+    // This is fixed
+    private static final int INITIAL_LIST_SIZE = Repository.getMeetings().size();
     @Rule
-    public final ActivityTestRule<StartActivity> mActivityRule =
-            new ActivityTestRule<>(StartActivity.class);
+    public final ActivityTestRule<ListMeetingActivity> mActivityRule =
+            new ActivityTestRule<>(ListMeetingActivity.class);
 
     @Before
     public void setUp() {
-        StartActivity mActivity = mActivityRule.getActivity();
+        ListMeetingActivity mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
     }
 
     /**
-     * We ensure that our recyclerview is displaying at least on item when we launch the app
+     * We ensure that our recyclerview is displaying at least on item
      */
     @Test
-    public void MaReuList_shouldBeEmptyAtBegin() {
-        try {
-            Thread.sleep( 900 );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+    public void MaReuList_shouldNotBeEmpty() {
         // First scroll to the position that needs to be matched and click on it.
-        onView(withId(R.id.list_recycler_view)).check(matches(hasMinimumChildCount(0)));
+        onView(withId(R.id.list_recycler_view)).check(matches(hasMinimumChildCount(1)));
     }
 
-    // Verify the add action contributes to create a new item in the list
     @Test
-    public void addMeetingWithSucess() {
-        try {
-            Thread.sleep( 900 );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void addMeetingWithSuccess() {
         // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
         // Click on the creation button for a new meeting
@@ -106,7 +86,7 @@ public class InstrumentedTest {
         // START DATE FILLING
         onView(withId(R.id.text_add_meeting_datepicker))
                 .perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 6, 6));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2021, 2, 13));
         onView(withText("OK")).perform(click());
         // START TIME FILLING
         onView(withId(R.id.text_add_meeting_timepicker))
@@ -137,14 +117,8 @@ public class InstrumentedTest {
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE + 1));
     }
 
-    // Verify a subject is given
     @Test
     public void addMeetingWithMissingSubjectThrowsToast() {
-        try {
-            Thread.sleep( 900 );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         // Click on the creation button for a new meeting
         onView(withId(R.id.button_add_meeting))
                 .perform(click());
@@ -157,23 +131,70 @@ public class InstrumentedTest {
         onView(withText(R.string.toast_subject_empty)).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
-    public static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+    @Test
+    public void deleteMeetingWithSuccess() {
+        // Given : We check that the count of items is equal to INITIAL_LIST_SIZE
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
+        // Push on delete button for meeting at index = 1
+        onView(withId(R.id.list_recycler_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
+        // We check that the count of items is equal to INITIAL_LIST_SIZE
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE - 1));
+    }
 
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText( "Child at position " + position + " in parent " );
-                parentMatcher.describeTo( description );
-            }
+    @Test
+    public void filterMeetingByDate() {
+        // Open the overflow menu
+        onView(withId(R.id.menu_overflow_button_create_meeting))
+                .perform(click());
+        // Click on the item menu filter by date
+        onView(withText(R.string.menu_filter_date))
+                .perform(click());
+        // Pick a date, example 13th march 2020 ( 1 meetings hardcoded in Meeting.initListe for this date )
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2021, 03, 13));
+        onView(withText(R.string.filter_ok_text)).perform(click());
+        // We check that the count of items is 2 <-> Because 2 meetings hardcoded in DummyMaReuApiGenerator
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(1));
+        // #################### REPEAT for another date picked ! #####################
+        // Open the overflow menu
+        onView(withId(R.id.menu_overflow_button_create_meeting))
+                .perform(click());
+        // Click on the item menu filter by date
+        onView(withText(R.string.menu_filter_date))
+                .perform(click());
 
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches( parent )
-                        && view.equals( ((ViewGroup) parent).getChildAt( position ) );
-            }
-        };
+        // Pick another date, example 6th may 2019 ( 0 meetings ! )
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 5, 6));
+        onView(withText(R.string.filter_ok_text)).perform(click());
+        // We check that the count of items is 0
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(0));
+    }
+
+    @Test
+    public void filterMeetingByRoom() {
+        // Before setting the filter => INITIAL_LIST_SIZE
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
+        // Open the overflow menu
+        onView(withId(R.id.menu_overflow_button_create_meeting))
+                .perform(click());
+        // Click on the item menu filter by date
+        onView(withText(R.string.menu_filter_room))
+                .perform(click());
+        // Pick a room ("Tahiti" = 1 meeting hardcoded)
+        String room = "Tahiti";
+        onView(withText(room)).perform(click());
+        onView(withText(R.string.filter_ok_text)).perform(click());
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(1));
+        // ##################### RESET FILTER #####################
+        // Open the overflow menu
+        onView(withId(R.id.menu_overflow_button_create_meeting))
+                .perform(click());
+        // Click on the item menu filter by date
+        onView(withText(R.string.menu_filter_room))
+                .perform(click());
+        // Reset the filter => INITIAL_LIST_SIZE
+        onView(withText(R.string.filter_reset_text)).perform(click());
+        onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE));
     }
 
 }
