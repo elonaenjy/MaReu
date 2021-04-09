@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
@@ -75,7 +77,9 @@ public class AddMeetingActivity extends AppCompatActivity {
         // ************************************ Toolbar init ***************************************
         Toolbar toolbar = findViewById( R.id.toolbar_add_meeting );
         setSupportActionBar( toolbar );
-        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+    //    androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
 
         // ************************************ Layout bindings ************************************
         mSubject = findViewById( R.id.edit_text_add_meeting_subject );
@@ -274,7 +278,6 @@ public class AddMeetingActivity extends AppCompatActivity {
         toastTextCreateMeeting.setTextColor( ContextCompat.getColor( getApplicationContext(), R.color.white ) );
 
         toastCreateMeeting.show();
-  //      resultIntent.putExtra( "MEETING", mMeeting );
         setResult( RESULT_OK, resultIntent );
         finish();
     }
@@ -303,30 +306,23 @@ public class AddMeetingActivity extends AppCompatActivity {
     }
 
 
+
     /*************************************** MENU *****************************************/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate( R.menu.create_meeting, menu );
-        return super.onCreateOptionsMenu( menu );
+        getMenuInflater().inflate(R.menu.create_meeting, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_retour_arriere: {
-                Meeting vMeeting = null;
-                finMeeting( vMeeting );
-                finish();
-                return true;
-            }
-            case R.id.menu_button_create_meeting: {
-                createMeeting();
-                return true;
-            }
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-        }
-        return super.onOptionsItemSelected( item );
+        if (item.getItemId() == R.id.menu_button_create_meeting) {
+            createMeeting();
+            return true;
+        }// If we got here, the user's action was not recognized.
+        // Invoke the superclass to handle it.
+        return super.onOptionsItemSelected(item);
     }
 }
