@@ -11,10 +11,11 @@ import java.util.List;
 
 public class Repository {
 
-    public static List<Meeting> lMeetings = Meeting.generateMeeting();
+    private static List<Meeting> lMeetings = Meeting.generateMeeting();
     private static List<Guest> lGuests = Guest.generateGuests();
     private static List<Room> lRooms = Room.generateRooms();
-    public List<Meeting> filteredMeetingList = new ArrayList<>();
+
+//    public List<Meeting> filteredMeetingList = new ArrayList<>();
 
     public static List<Meeting> getMeetings() {
         return lMeetings;
