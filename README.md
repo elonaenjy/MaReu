@@ -8,7 +8,7 @@ Ce dépôt contient le résultat du projet 4 "Ma Reu". L'application contient pl
 * filtre  par date
 * filtre par salle de réunion
 
-Il ne doit pas y avoir de persistance de données et l'application doit démarrer vide.
+Il ne doit pas y avoir de persistance de données et l'application doit démarrer vide. Néanmoins pour faciliter la démonstration de l'application, l'application livrée dans le cadre de la soutenance du projet est livrée avec une liste échantillon isoléé dans une méthode "initListe".
 
 Les sources sont disponibles dans le dépôt public github : https://github.com/elonaenjy/MaReuV2
 
