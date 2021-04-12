@@ -124,7 +124,7 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // String array for alert dialog multi choice items
         final int numberRooms = Repository.getRooms().size();
-        String[] mRooms = getRoomsAsStringList();
+        String[] mRooms = Repository.getRoomsAsStringList();
         // Boolean array for initial selected items
         final boolean[] checkedRooms = new boolean[numberRooms];
         // Keep memory of the filter selection
@@ -190,21 +190,12 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
 
     }
 
-    public String[]getRoomsAsStringList(){
-        int numberRooms;
-        numberRooms=lRoomMeeting.size();
-        String[]lRooms=new String[numberRooms];
-        for(int i=0;i<numberRooms; i++){
-            lRooms[i]=String.valueOf(lRoomMeeting.get(i).getRoomName());
-        }
-        return lRooms;
-    }
 
     // Create a list with the room's selected id
     public List<Integer> filterRoom(boolean[]checkedRooms){
         List<Integer> lRoomSelectedId=new ArrayList<>();
 
-        String[]mRooms=getRoomsAsStringList();
+        String[]mRooms=Repository.getRoomsAsStringList();
         for(int i=0;i<checkedRooms.length;i++){
             boolean checked=checkedRooms[i];
             if(checked){

@@ -80,4 +80,16 @@ public class Repository {
         }
         return roomAvailable;
     }
+
+    // Determination liste des salles de réunion
+    public static String[]getRoomsAsStringList(){
+        int numberRooms;
+        numberRooms=lRooms.size();
+        String[]lRoomName=new String[numberRooms];
+        for(int i=0;i<numberRooms; i++){
+            lRoomName[i]= lRooms.get(i).getRoomName();
+        }
+        return lRoomName;
+    }
+
 }
