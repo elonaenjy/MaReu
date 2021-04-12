@@ -48,14 +48,6 @@ public class Guest {
         return mId;
     }
 
-    public String getGuestName() {
-        return mGuestName;
-    }
-
-    public String getGuestUrl() {
-        return mGuestUrl;
-    }
-
     public String getGuestMail() {
         return mGuestMail;
     }
