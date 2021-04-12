@@ -10,7 +10,7 @@ Ce dépôt contient le résultat du projet 4 "Ma Reu". L'application contient pl
 
 Il ne doit pas y avoir de persistance de données et l'application doit démarrer vide. Néanmoins pour faciliter la démonstration de l'application, l'application livrée dans le cadre de la soutenance du projet est livrée avec une liste échantillon isoléé dans une méthode "initListe".
 
-Les sources sont disponibles dans le dépôt public github : https://github.com/elonaenjy/MaReuV2
+Les sources sont disponibles dans le dépôt public github : https://github.com/elonaenjy/MaReu
 
 Cette application a été développée avec l'IDE Android Studio version 4.1.2 sur les lequel la version SDK Android 10(Q) correspondant à l'API 29 a été installée.
 Les tests ont été faits sur un device de type "Pixel 4 API 29". 
