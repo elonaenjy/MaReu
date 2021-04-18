@@ -21,10 +21,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.mareu.Model.Room;
 import com.example.mareu.R;
 import com.example.mareu.Model.Meeting;
-import com.example.mareu.Service.Repository;
+import com.example.mareu.Service.ApiService;
+import com.example.mareu.di.DI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -33,10 +33,9 @@ import java.util.List;
 
 public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
     public boolean[] FILTER_ROOM;    // Keeps memory of the room filter selection
+    public ApiService apiService;
 
     private MyAdapter adapter;
-    public List<Meeting> lMeetings;
-    public List<Room> lRoomMeeting = Repository.getRooms();
 
     private Menu menu;
     private final int ADD_MEETING_REQUEST_COODE = 20000;
@@ -59,8 +58,9 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MyAdapter();
         rv.setAdapter(adapter);
+        apiService = DI.getApiService();
 
-        adapter.setData(Repository.getMeetings());
+        adapter.setData(apiService.getMeetings());
     }
 
 
@@ -108,12 +108,12 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
             int month=datePicker.getMonth();
             int day=datePicker.getDayOfMonth();
             mCalendarPicker.set(year,month,day);
-            List<Meeting> lMeetingsFiltered= Repository.filterMeetingsByDate(year, month, day);
+            List<Meeting> lMeetingsFiltered= apiService.filterMeetingsByDate(year, month, day);
             adapter.setData(lMeetingsFiltered);
 
         });
         builder.setNeutralButton(R.string.filter_reset_text,(dialog,id)->{
-            adapter.setData(Repository.getMeetings());
+            adapter.setData(apiService.getMeetings());
                     });
         builder.show();
         return null;
@@ -123,8 +123,8 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
         // Build an AlertDialog
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // String array for alert dialog multi choice items
-        final int numberRooms = Repository.getRooms().size();
-        String[] mRooms = Repository.getRoomsAsStringList();
+        final int numberRooms = apiService.getRooms().size();
+        String[] mRooms = apiService.getRoomsAsStringList();
         // Boolean array for initial selected items
         final boolean[] checkedRooms = new boolean[numberRooms];
         // Keep memory of the filter selection
@@ -150,7 +150,7 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
 
         // Set the negative/no button click listener
         builder.setNeutralButton(R.string.filter_reset_text, (dialog, which) -> {
-            adapter.setData(Repository.getMeetings());
+            adapter.setData(apiService.getMeetings());
             FILTER_ROOM = null;
         });
 
@@ -179,7 +179,7 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
                     toastRoomNotSelected.show();
                 } else {
                     List<Integer> lRoomSelectedId=filterRoom(checkedRooms);
-                    List<Meeting> lMeetingsFiltered=Repository.lMeetingsFilteredId(lRoomSelectedId);
+                    List<Meeting> lMeetingsFiltered=apiService.lMeetingsFilteredId(lRoomSelectedId);
                     dialog.dismiss();
                     adapter.setData(lMeetingsFiltered);
                     FILTER_ROOM = checkedRooms;
@@ -195,7 +195,7 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
     public List<Integer> filterRoom(boolean[]checkedRooms){
         List<Integer> lRoomSelectedId=new ArrayList<>();
 
-        String[]mRooms=Repository.getRoomsAsStringList();
+        String[]mRooms=apiService.getRoomsAsStringList();
         for(int i=0;i<checkedRooms.length;i++){
             boolean checked=checkedRooms[i];
             if(checked){
@@ -218,10 +218,7 @@ public class ListMeetingActivity<lMeetings> extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
         if(requestCode==ADD_MEETING_REQUEST_COODE&&resultCode==RESULT_OK){
-
                 super.onActivityResult(requestCode,resultCode,data);
         }
     }
-
-
 }

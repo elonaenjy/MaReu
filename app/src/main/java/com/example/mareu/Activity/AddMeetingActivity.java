@@ -22,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mareu.R;
-import com.example.mareu.Service.Repository;
+import com.example.mareu.Service.ApiService;
+import com.example.mareu.Service.DummyApiGenerator;
+import com.example.mareu.Service.DummyApiService;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.Objects;
 import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
+import com.example.mareu.di.DI;
 
 
 public class AddMeetingActivity extends AppCompatActivity {
@@ -41,9 +44,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     private static final int DURATION_MAX_HOURS = 5; // Max duration for a meeting (in hours)
     private static final int DURATION_STEP_MINUTES = 15; // Duration interval for minutes
 
+    private ApiService apiService;
 
-    public List<Guest> lGuests = Guest.generateGuests();
-    public List<Room> lRooms = Room.generateRooms();
     private Spinner sRoom;
     private MultiAutoCompleteTextView guestsEmails;
 
@@ -57,12 +59,12 @@ public class AddMeetingActivity extends AppCompatActivity {
     private NumberPicker durationMinutes, durationHours;
     private EditText mSubject;
     private TextView startDatePickerText, startTimePickerText;
-//    private List<Integer> mGuestIdList;
-    private int nbRoom = lRooms.size();
-    private int nbGuests = lGuests.size();
+    private int nbRoom = DummyApiGenerator.generateRooms().size();
+    private int nbGuests = DummyApiGenerator.generateRooms().size();
+    private List<Room> lRooms = DummyApiGenerator.generateRooms();
+    private List<Guest> lGuests = DummyApiGenerator.generateGuests();
 
-//    private List<Meeting> lstMeetings;
-    public boolean topVide = false;
+    private boolean topVide = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         setSupportActionBar( toolbar );
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-    //    androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
+        apiService = DI.getApiService();
 
         // ************************************ Layout bindings ************************************
         mSubject = findViewById( R.id.edit_text_add_meeting_subject );
@@ -211,7 +213,7 @@ public class AddMeetingActivity extends AppCompatActivity {
             toastCancelCreation( R.string.toast_duration_empty );
         } else if (topVide) {
             toastCancelCreation( R.string.toast_room_empty );
-        } else if (!Repository.checkRoomAvailability(idRoom, mStartDate, mEndDate)) {
+        } else if (!apiService.checkRoomAvailability(idRoom, mStartDate, mEndDate)) {
             toastCancelCreation( R.string.toast_room_not_available );
         }else if (lGuestIdNb == 0) {
                         toastCancelCreation( R.string.toast_guest_empty );
@@ -270,7 +272,7 @@ public class AddMeetingActivity extends AppCompatActivity {
      */
     private void finMeeting(Meeting mMeeting) {
         Intent resultIntent = new Intent();
-        Repository.createMeeting(mMeeting);
+        apiService.addMeeting(mMeeting);
         Toast toastCreateMeeting = Toast.makeText( getApplicationContext(), R.string.toast_create_Meeting, Toast.LENGTH_LONG );
         toastCreateMeeting.setGravity( Gravity.CENTER, 0, 0 );
         View toastViewCreateMeeting = toastCreateMeeting.getView();

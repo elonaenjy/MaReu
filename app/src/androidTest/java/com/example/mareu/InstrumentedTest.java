@@ -13,8 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.mareu.Activity.ListMeetingActivity;
-import com.example.mareu.Model.Meeting;
-import com.example.mareu.Service.Repository;
+import com.example.mareu.Service.DummyApiGenerator;
 import com.example.mareu.utils.DeleteViewAction;
 
 import org.hamcrest.Matchers;
@@ -49,9 +48,9 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(AndroidJUnit4.class)
 public class InstrumentedTest {
-
     // This is fixed
-    private static final int INITIAL_LIST_SIZE = Repository.getMeetings().size();
+    private static final int INITIAL_LIST_SIZE = DummyApiGenerator.generateMeeting().size();
+
     @Rule
     public final ActivityTestRule<ListMeetingActivity> mActivityRule =
             new ActivityTestRule<>(ListMeetingActivity.class);
@@ -102,6 +101,7 @@ public class InstrumentedTest {
         onView(withId(R.id.spinner_add_meeting_room))
                 .perform(click());
         onData(anything()).atPosition(1).perform(click());
+
         // GUESTS FILLING
         onView(withId(R.id.autocomplete_text_add_meeting_guests))
                 .perform(typeText("f"));
@@ -116,7 +116,6 @@ public class InstrumentedTest {
         // Result : We check that the count of items is equal to INITIAL_LIST_SIZE+1
         onView(withId(R.id.list_recycler_view)).check(withItemCount(INITIAL_LIST_SIZE + 1));
     }
-
     @Test
     public void addMeetingWithMissingSubjectThrowsToast() {
         // Click on the creation button for a new meeting

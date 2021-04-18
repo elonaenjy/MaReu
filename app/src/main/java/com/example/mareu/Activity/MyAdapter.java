@@ -17,7 +17,8 @@ import com.example.mareu.Model.Guest;
 import com.example.mareu.Model.Meeting;
 import com.example.mareu.Model.Room;
 import com.example.mareu.R;
-import com.example.mareu.Service.Repository;
+import com.example.mareu.Service.ApiService;
+import com.example.mareu.di.DI;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
     private static final String TEXT_SEPARATOR = " - ";
     private List<Meeting> lMeetings;
+    private ApiService apiService;
 
     @NonNull
     @Override
@@ -42,8 +44,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        List<Room> lRoomsMeeting = Repository.getRooms();
-        List<Guest> lGuests = Repository.getGuest();
+        // Call the ApiService
+        apiService = DI.getApiService();
+
+        List<Room> lRoomsMeeting = apiService.getRooms();
+        List<Guest> lGuests = apiService.getGuests();
 
         // Init : getting the meeting information :
         //          id meeting
@@ -102,7 +107,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>  {
         holder.mButtonDeleteMeeting.setOnClickListener( view -> {
             Toast.makeText( view.getContext(), "Suppression de la réunion " + lMeetings.get( position ).getMeetingSubject(), Toast.LENGTH_SHORT ).show();
             Meeting dMeeting = lMeetings.get( position );
-            Repository.deleteMeeting( dMeeting );
+            apiService.deleteMeeting( dMeeting );
             setData( lMeetings);
         } );
     }
