@@ -97,6 +97,7 @@ public class InstrumentedTest {
                 .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
         onView(withId(R.id.numberpicker_add_meeting_duration_minutes_))
                 .perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.TOP_CENTER, Press.FINGER, 1, 0));
+
         // ROOM FILLING
         onView(withId(R.id.spinner_add_meeting_room))
                 .perform(click());
